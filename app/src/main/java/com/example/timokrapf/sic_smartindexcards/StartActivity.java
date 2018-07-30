@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 public class StartActivity extends AppCompatActivity {
 
+    private String timo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
