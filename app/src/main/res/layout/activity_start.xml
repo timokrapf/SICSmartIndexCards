@@ -46,13 +46,19 @@
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:text="@string/subject_button"
-            android:id="@+id/subject_button_id"/>
+            android:id="@+id/subject_button_id"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"/>
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:text="@string/schedule_planner"
-            android:id="@+id/schedule_planner_button_id"/>
+            android:id="@+id/schedule_planner_button_id"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"/>
         
     </LinearLayout>
 
