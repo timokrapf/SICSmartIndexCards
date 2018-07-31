@@ -4,5 +4,7 @@
     <string name="empty_subject_list">Aktuell noch keine Fächer vorhanden</string>
     <string name="schedule_planner">Lernplaner</string>
     <string name="subject_button">Fächer</string>
+    <string name="edit_text_subject">Titel deines Faches</string>
+    <string name="plus_button">+</string>
 
 </resources>

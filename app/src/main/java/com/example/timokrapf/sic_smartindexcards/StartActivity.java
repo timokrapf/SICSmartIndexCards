@@ -1,6 +1,11 @@
 package com.example.timokrapf.sic_smartindexcards;
 
-import android.support.v7.app.AppCompatActivity;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+
+import android.support.v4.app.FragmentTransaction;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +14,8 @@ import android.widget.TextView;
 
 
 
-public class StartActivity extends AppCompatActivity {
+
+public class StartActivity extends FragmentActivity {
 
     private ListView listView;
     private TextView emptyListText;
@@ -54,10 +60,15 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void addSubjectButtonClicked() {
-
+            AddSubjectFragment addSubjectFragment = new AddSubjectFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, addSubjectFragment);
+            transaction.commit();
     }
 
     private void scheduleButtonClicked() {
 
     }
+
+
 }

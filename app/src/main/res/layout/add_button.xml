@@ -4,19 +4,19 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <!-- view background color -->
+
 
     <solid android:color="@color/colorAddButton" >
     </solid>
 
-    <!-- view border color and width -->
+
 
     <stroke
         android:width="3dp"
         android:color="@color/colorPrimary" >
     </stroke>
 
-    <!-- If you want to add some padding -->
+
 
     <padding
         android:bottom="4dp"
