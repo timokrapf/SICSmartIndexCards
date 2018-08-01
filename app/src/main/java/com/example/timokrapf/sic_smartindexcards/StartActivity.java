@@ -37,8 +37,8 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     private void initUI() {
       listView = (ListView) findViewById(R.id.subjec_list_id);
       addSubjectText = (EditText) findViewById(R.id.subject_edit_text);
-
-
+      TextView view = (TextView) findViewById(R.id.empty_list_id);
+      listView.setEmptyView(view);
     }
 
     private void initButtons() {
