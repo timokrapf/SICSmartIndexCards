@@ -12,7 +12,9 @@ public class Subject {
     private int subjectId;
     private String subjectTitle;
 
-    public Subject() {
+    public Subject(int subjectId, String subjectTitle) {
+        this.subjectId = subjectId;
+        this.subjectTitle = subjectTitle;
     }
 
     public void setSubjectId(@NonNull int subjectId) {
