@@ -6,5 +6,6 @@
     <string name="subject_button">Fächer</string>
     <string name="edit_text_subject">Titel deines Faches</string>
     <string name="plus_button">+</string>
+    <string name="toast_for_no_subject">Gib den Titel für dein neues Fach ein</string>
 
 </resources>
