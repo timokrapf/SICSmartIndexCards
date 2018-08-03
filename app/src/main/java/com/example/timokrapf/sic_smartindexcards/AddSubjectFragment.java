@@ -43,7 +43,7 @@ public class AddSubjectFragment extends Fragment {
     }
 
     public interface OnAddSubjectButtonClicked {
-        void addSubjectButtonClicked(String subject);
+        void addSubjectButtonClicked(String subjectTitle);
     }
 
 }

@@ -3,6 +3,10 @@ package com.example.timokrapf.sic_smartindexcards;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.Query;
+
+import java.util.List;
+
 
 @Dao
 public interface SubjectDao {
@@ -12,4 +16,7 @@ public interface SubjectDao {
 
     @Delete
     void deleteSubject(Subject subject);
+
+    @Query("SELECT * FROM Subject")
+    List<Subject> getSubjects();
 }

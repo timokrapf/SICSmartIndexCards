@@ -2,17 +2,20 @@ package com.example.timokrapf.sic_smartindexcards;
 
 
 
+import android.arch.persistence.room.Room;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 
 import android.support.v4.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.List;
 
 
 public class StartActivity extends FragmentActivity implements AddButtonFragment.OnAddButtonFragmentClicked, AddSubjectFragment.OnAddSubjectButtonClicked{
@@ -21,22 +24,27 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     private Button subjectButton, scheduleButton;
     private AddSubjectFragment addSubjectFragment;
     private AddButtonFragment addButtonFragment;
-    private String newSubject;
+    private AppDatabase database;
+    private SubjectAdapter adapter;
+    private List<Subject> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         initUI();
+        initDatabaseConnection();
         initStartFragment();
         initButtons();
         setClickListener();
+
     }
 
     private void initUI() {
-      listView = (ListView) findViewById(R.id.subjec_list_id);
-      TextView view = (TextView) findViewById(R.id.empty_list_id);
-      listView.setEmptyView(view);
+      listView = (ListView) findViewById(R.id.subject_list_id);
+      TextView emptyView = (TextView) findViewById(android.R.id.empty);
+      listView.setEmptyView(emptyView);
+
     }
 
     private void initButtons() {
@@ -50,6 +58,14 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
             @Override
             public void onClick(View v) {
                 scheduleButtonClicked();
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                new DeleteSubjectTask().execute(position);
+                return false;
             }
         });
     }
@@ -66,6 +82,20 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         transaction.commit();
     }
 
+    private void initDatabaseConnection() {
+        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "app-database").allowMainThreadQueries().build();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                list = database.subjectDao().getSubjects();
+                adapter = new SubjectAdapter(StartActivity.this, list);
+                listView.setAdapter(adapter);
+            }
+        }).start();
+    }
+
+
+
     @Override
     public void addButtonFragmentClicked() {
         addSubjectFragment = new AddSubjectFragment();
@@ -77,15 +107,47 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     }
 
     @Override
-    public void addSubjectButtonClicked(String subject) {
-        if(subject.equals("")) {
+    public void addSubjectButtonClicked(String subjectTitle) {
+        if(subjectTitle.isEmpty()) {
             Toast.makeText(getApplicationContext(), getString(R.string.toast_for_no_subject), Toast.LENGTH_SHORT).show();
         } else {
-            newSubject = subject;
+            new AddSubjectTask().execute(subjectTitle);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, addButtonFragment);
             transaction.addToBackStack(null);
             transaction.commit();
+        }
+    }
+
+    private class DeleteSubjectTask extends AsyncTask<Integer, Integer, Subject> {
+
+        @Override
+        protected Subject doInBackground(Integer... subjectPositions) {
+            return list.get(subjectPositions[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Subject subject) {
+            list.remove(subject);
+            database.subjectDao().deleteSubject(subject);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private class AddSubjectTask extends AsyncTask<String, Integer, Subject> {
+
+        @Override
+        protected Subject doInBackground(String... subjectTitles) {
+            Subject subject = new Subject();
+            subject.setSubjectTitle(subjectTitles[0]);
+            return subject;
+        }
+
+        @Override
+        protected void onPostExecute(Subject subject) {
+            list.add(subject);
+            database.subjectDao().insertSubject(subject);
+            adapter.notifyDataSetChanged();
         }
     }
 }
