@@ -67,9 +67,9 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view,  int position, long id) {
-                Subject subject = list.get(position);
+                final Subject subject = list.get(position);
                 isNewSubject = false;
-                new SubjectTask().execute(subject);
+                handleDatabase(subject);
                 return false;
             }
         });
@@ -116,10 +116,10 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         if(subjectTitle.isEmpty()) {
             Toast.makeText(getApplicationContext(), getString(R.string.toast_for_no_subject), Toast.LENGTH_SHORT).show();
         } else {
-            Subject  newSubject = new Subject();
+            final Subject  newSubject = new Subject();
             newSubject.setSubjectTitle(subjectTitle);
             isNewSubject = true;
-            new SubjectTask().execute(newSubject);
+            handleDatabase(newSubject);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, addButtonFragment);
             transaction.addToBackStack(null);
@@ -127,6 +127,33 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         }
     }
 
+    private void handleDatabase(final Subject subject) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(isNewSubject) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            list.add(subject);
+                            database.subjectDao().insertSubject(subject);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            list.remove(subject);
+                            database.subjectDao().deleteSubject(subject);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+/*
     class SubjectTask extends AsyncTask<Subject, Integer, String> {
 
         @Override
@@ -153,5 +180,5 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
             }
         }
     }
-
+*/
 }
