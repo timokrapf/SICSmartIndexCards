@@ -4,12 +4,15 @@ package com.example.timokrapf.sic_smartindexcards;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 
 import android.support.v4.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -136,16 +139,17 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
                 @Override
                 public void run() {
                    if(isNewSubject) {
-
                        list.add(subject);
                        database.subjectDao().insertSubject(subject);
                        adapter.notifyDataSetChanged();
+                       Intent intent = new Intent(StartActivity.this, SubjectActivity.class);
+                       startActivity(intent);
                    }  else {
                       list.remove(subject);
                       database.subjectDao().deleteSubject(subject);
-                       adapter.notifyDataSetChanged();
-
+                      adapter.notifyDataSetChanged();
                    }
+
                 }
             });
           }
@@ -179,4 +183,14 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         }
     }
 */
+
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            return true;
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            return true;
+        }
 }
