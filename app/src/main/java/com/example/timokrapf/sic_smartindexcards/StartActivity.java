@@ -3,6 +3,7 @@ package com.example.timokrapf.sic_smartindexcards;
 
 
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 
@@ -27,6 +28,8 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     private AppDatabase database;
     private SubjectAdapter adapter;
     private List<Subject> list;
+    private boolean isNewSubject;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +66,10 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                new DeleteSubjectTask().execute(position);
+            public boolean onItemLongClick(AdapterView<?> parent, View view,  int position, long id) {
+                Subject subject = list.get(position);
+                isNewSubject = false;
+                new SubjectTask().execute(subject);
                 return false;
             }
         });
@@ -111,7 +116,10 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         if(subjectTitle.isEmpty()) {
             Toast.makeText(getApplicationContext(), getString(R.string.toast_for_no_subject), Toast.LENGTH_SHORT).show();
         } else {
-            new AddSubjectTask().execute(subjectTitle);
+            Subject  newSubject = new Subject();
+            newSubject.setSubjectTitle(subjectTitle);
+            isNewSubject = true;
+            new SubjectTask().execute(newSubject);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, addButtonFragment);
             transaction.addToBackStack(null);
@@ -119,35 +127,31 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         }
     }
 
-    private class DeleteSubjectTask extends AsyncTask<Integer, Integer, Subject> {
+    class SubjectTask extends AsyncTask<Subject, Integer, String> {
 
         @Override
-        protected Subject doInBackground(Integer... subjectPositions) {
-            return list.get(subjectPositions[0]);
+        protected String doInBackground(Subject... subjects) {
+            Subject subject = subjects[0];
+            if (isNewSubject) {
+                list.add(subject);
+                database.subjectDao().insertSubject(subject);
+
+            } else {
+                list.remove(subject);
+                database.subjectDao().deleteSubject(subject);
+            }
+            return subject.getSubjectTitle();
         }
 
         @Override
-        protected void onPostExecute(Subject subject) {
-            list.remove(subject);
-            database.subjectDao().deleteSubject(subject);
+        protected void onPostExecute(String subjectTitle) {
             adapter.notifyDataSetChanged();
+            if (isNewSubject) {
+                Toast.makeText(getApplicationContext(), "Du hast das Fach " + subjectTitle + " hinzugefügt", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Du hast das Fach " + subjectTitle + " gelöscht", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    private class AddSubjectTask extends AsyncTask<String, Integer, Subject> {
-
-        @Override
-        protected Subject doInBackground(String... subjectTitles) {
-            Subject subject = new Subject();
-            subject.setSubjectTitle(subjectTitles[0]);
-            return subject;
-        }
-
-        @Override
-        protected void onPostExecute(Subject subject) {
-            list.add(subject);
-            database.subjectDao().insertSubject(subject);
-            adapter.notifyDataSetChanged();
-        }
-    }
 }

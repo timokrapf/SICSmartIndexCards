@@ -19,4 +19,7 @@ public interface SubjectDao {
 
     @Query("SELECT * FROM Subject")
     List<Subject> getSubjects();
+
+    @Query("SELECT * FROM Subject WHERE subject_title LIKE :subjectTitle LIMIT 1")
+    Subject findSubjectByName(String subjectTitle);
 }
