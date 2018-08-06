@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 public class Subject {
 
     @NonNull
+    @ColumnInfo(name = "subject_id")
     @PrimaryKey(autoGenerate = true)
     private int subjectId;
     @ColumnInfo(name = "subject_title")

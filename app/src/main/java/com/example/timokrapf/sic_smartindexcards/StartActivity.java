@@ -67,7 +67,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view,  int position, long id) {
-                final Subject subject = list.get(position);
+                Subject subject = list.get(position);
                 isNewSubject = false;
                 handleDatabase(subject);
                 return false;
@@ -131,26 +131,24 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if(isNewSubject) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            list.add(subject);
-                            database.subjectDao().insertSubject(subject);
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
-                } else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            list.remove(subject);
-                            database.subjectDao().deleteSubject(subject);
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                   if(isNewSubject) {
+
+                       list.add(subject);
+                       database.subjectDao().insertSubject(subject);
+                       adapter.notifyDataSetChanged();
+                   }  else {
+                      list.remove(subject);
+                      database.subjectDao().deleteSubject(subject);
+                       adapter.notifyDataSetChanged();
+
+                   }
                 }
-            }
+            });
+          }
         }).start();
     }
 /*

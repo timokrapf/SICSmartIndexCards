@@ -22,4 +22,7 @@ public interface SubjectDao {
 
     @Query("SELECT * FROM Subject WHERE subject_title LIKE :subjectTitle LIMIT 1")
     Subject findSubjectByName(String subjectTitle);
+
+    @Query("SELECT * FROM Subject WHERE subject_id LIKE :subjectId LIMIT 1")
+    Subject findSubjectById(int subjectId);
 }
