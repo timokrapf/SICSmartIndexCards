@@ -186,11 +186,11 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
 
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {
-            return true;
+            return false;
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
-            return true;
+            return false;
         }
 }
