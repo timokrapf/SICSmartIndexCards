@@ -10,7 +10,7 @@ public class SubjectActivity extends Activity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.subject_item);
+        setContentView(R.layout.recyclerview_subject_item);
 
     }
 

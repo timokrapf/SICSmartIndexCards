@@ -1,5 +1,6 @@
 package com.example.timokrapf.sic_smartindexcards;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -17,12 +18,18 @@ public interface SubjectDao {
     @Delete
     void deleteSubject(Subject subject);
 
-    @Query("SELECT * FROM Subject")
-    List<Subject> getSubjects();
+   /*
+    https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#5
+     */
+    @Query("DELETE FROM subject_table")
+    void deleteAllSubjects();
 
-    @Query("SELECT * FROM Subject WHERE subject_title LIKE :subjectTitle LIMIT 1")
-    Subject findSubjectByName(String subjectTitle);
+    @Query("SELECT * FROM subject_table ORDER BY subject_title ASC")
+    LiveData<List<Subject>> getSubjects();
 
-    @Query("SELECT * FROM Subject WHERE subject_id LIKE :subjectId LIMIT 1")
-    Subject findSubjectById(int subjectId);
+    @Query("SELECT * FROM subject_table WHERE subject_title LIKE :subjectTitle LIMIT 1")
+    LiveData<List<Subject>> findSubjectByName(String subjectTitle);
+
+    @Query("SELECT * FROM subject_table WHERE subject_id LIKE :subjectId LIMIT 1")
+    LiveData<List<Subject>> findSubjectById(int subjectId);
 }
