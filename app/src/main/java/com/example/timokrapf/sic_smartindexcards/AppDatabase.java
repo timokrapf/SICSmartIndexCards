@@ -18,9 +18,13 @@ public abstract class AppDatabase extends RoomDatabase {
    /*
     https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#6
      */
-    public static AppDatabase getDatabase(Context context) {
+    public static AppDatabase getDatabase(final Context context) {
         if(INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "AppDatabase").addCallback(appDatabaseCallback).build();
+            synchronized (AppDatabase.class) {
+            if (INSTANCE == null) {
+                INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "AppDatabase").build();
+                }
+            }
         }
         return INSTANCE;
     }
@@ -44,10 +48,8 @@ https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#11
         }
         @Override
         protected Void doInBackground(Void... voids) {
-            dao.deleteAllSubjects();
-            Subject subject = new Subject();
-            subject.setSubjectTitle("Latein");
-            dao.insertSubject(subject);
+
+            
             return null;
         }
     }

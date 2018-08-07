@@ -13,7 +13,7 @@ public class SubjectRepository {
 
     private SubjectDao mySubjectDao;
     private LiveData<List<Subject>> mySubjectList;
-    private static boolean isNewSubject;
+    private static boolean isNewSubject = true;
 
     SubjectRepository(Application application) {
         AppDatabase database = AppDatabase.getDatabase(application);

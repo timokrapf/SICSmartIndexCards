@@ -32,4 +32,11 @@ public interface SubjectDao {
 
     @Query("SELECT * FROM subject_table WHERE subject_id LIKE :subjectId LIMIT 1")
     LiveData<List<Subject>> findSubjectById(int subjectId);
+
+    /*
+    https://www.lukegjpotter.com/2017/12/android-room-database-tutorial-with.html
+     */
+    @Query("SELECT COUNT(*) FROM subject_table")
+    int getNumber();
+
 }
