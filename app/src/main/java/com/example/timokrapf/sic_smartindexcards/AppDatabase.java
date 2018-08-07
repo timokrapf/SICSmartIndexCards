@@ -30,6 +30,7 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 /*
 https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#11
+Fliegt eventuell noch raus.
  */
     private static RoomDatabase.Callback appDatabaseCallback = new RoomDatabase.Callback() {
         @Override
@@ -49,7 +50,7 @@ https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#11
         @Override
         protected Void doInBackground(Void... voids) {
 
-            
+
             return null;
         }
     }

@@ -3,8 +3,9 @@ package com.example.timokrapf.sic_smartindexcards;
 
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
+
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -79,7 +81,14 @@ https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#13
                 scheduleButtonClicked();
             }
         });
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView textView = findViewById(v.getId());
+                Intent intent = new Intent(StartActivity.this, SubjectActivity.class);
 
+            }
+        });
     }
 
 

@@ -21,6 +21,10 @@ public class SubjectViewModel extends AndroidViewModel {
         subjectsList = myRepository.getSubjects();
     }
 
+    String getSubjectName() {
+        return "";
+    }
+
     LiveData<List<Subject>> getSubjectsList(){
         return subjectsList;
     }
