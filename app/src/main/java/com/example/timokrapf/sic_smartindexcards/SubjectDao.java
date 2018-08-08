@@ -24,8 +24,6 @@ public interface SubjectDao {
     @Query("DELETE FROM subject_table")
     void deleteAllSubjects();
 
-    @Query("SELECT * FROM subject_table ORDER BY subject_title ASC")
-    LiveData<List<Subject>> getSubjects();
 
     @Query("SELECT * FROM subject_table WHERE subject_title LIKE :subjectTitle LIMIT 1")
     LiveData<List<Subject>> findSubjectByName(String subjectTitle);
@@ -38,5 +36,12 @@ public interface SubjectDao {
      */
     @Query("SELECT COUNT(*) FROM subject_table")
     int getNumber();
+
+    /*
+    https://www.sqlite.org/datatype3.html#collation
+     */
+
+    @Query("SELECT * FROM subject_table ORDER BY subject_title COLLATE NOCASE")
+    LiveData<List<Subject>> getSubjects();
 
 }

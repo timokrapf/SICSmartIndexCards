@@ -13,20 +13,16 @@ https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#8
 public class SubjectViewModel extends AndroidViewModel {
 
     private SubjectRepository myRepository;
-    private LiveData<List<Subject>> subjectsList;
+    private LiveData<List<Subject>> subjects;
 
     public SubjectViewModel(@NonNull Application application) {
         super(application);
         myRepository = new SubjectRepository(application);
-        subjectsList = myRepository.getSubjects();
-    }
-
-    String getSubjectName() {
-        return "";
+        subjects = myRepository.getSubjects();
     }
 
     LiveData<List<Subject>> getSubjectsList(){
-        return subjectsList;
+        return subjects;
     }
 
     public void insert(Subject subject) {

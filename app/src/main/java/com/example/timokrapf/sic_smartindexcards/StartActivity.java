@@ -2,26 +2,23 @@ package com.example.timokrapf.sic_smartindexcards;
 
 
 
+
+import android.app.FragmentTransaction;
 import android.arch.lifecycle.Observer;
+
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-
-import android.support.v4.app.FragmentTransaction;
-
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.List;
 
 
@@ -35,10 +32,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     private RecyclerView recyclerView;
 
 
-/*
-https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#13
- */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +44,25 @@ https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#13
 
     }
 
+    /*
+    https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#13
+     */
+
     private void initAdapter() {
         recyclerView = findViewById(R.id.recyclerview);
-        adapter = new SubjectAdapter(this);
+        adapter = new SubjectAdapter(this, new SubjectAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClicked(Subject subject) {
+                String subjectTitle = subject.getSubjectTitle();
+                Intent intent = new Intent(StartActivity.this, SubjectActivity.class);
+                intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
+                startActivity(intent);
+            }
+            @Override
+            public void onItemLongClicked(Subject subject) {
+                viewModel.delete(subject);
+            }
+        });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -81,14 +90,7 @@ https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#13
                 scheduleButtonClicked();
             }
         });
-        recyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView textView = findViewById(v.getId());
-                Intent intent = new Intent(StartActivity.this, SubjectActivity.class);
 
-            }
-        });
     }
 
 
@@ -98,7 +100,7 @@ https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#13
 
     private void initStartFragment() {
         addButtonFragment = new AddButtonFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.add(R.id.fragment_container, addButtonFragment);
         transaction.commit();
     }
@@ -106,7 +108,7 @@ https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#13
     @Override
     public void addButtonFragmentClicked() {
         AddSubjectFragment addSubjectFragment = new AddSubjectFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, addSubjectFragment);
         transaction.addToBackStack(null);
         transaction.commit();
@@ -126,7 +128,7 @@ https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#13
     }
 
     private void replaceWithAddButtonFragment() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, addButtonFragment);
         transaction.addToBackStack(null);
         transaction.commit();
