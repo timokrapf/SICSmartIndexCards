@@ -14,6 +14,7 @@ import android.widget.EditText;
 public class AddSubjectFragment extends Fragment {
 
     OnAddSubjectButtonClicked mCallback;
+    EditText text;
 
     public AddSubjectFragment(){
     }
@@ -25,12 +26,16 @@ public class AddSubjectFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText text = (EditText) view.findViewById(R.id.subject_edit_text);
+                text = (EditText) view.findViewById(R.id.subject_edit_text);
                 String newSubject = text.getText().toString();
                 mCallback.addSubjectButtonClicked(newSubject);
             }
         });
         return view;
+    }
+
+    public void deleteKeyboardEntry() {
+        text.getText().clear();
     }
 
     @Override

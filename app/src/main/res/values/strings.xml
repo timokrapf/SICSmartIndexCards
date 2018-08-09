@@ -8,4 +8,9 @@
     <string name="plus_button">+</string>
     <string name="toast_for_no_subject">Gib den Titel für dein neues Fach ein</string>
     <string name="subject">Deine Fächer</string>
+    <string name="toast_for_subject_already_exists">Dieses Fach existiert bereits</string>
+    <string name="toast_for_new_subject_was_inserted">wurde zu Fächern hinzugefügt</string>
+    <string name="delete_dialog">Willst du das Fach wirklich löschen</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
 </resources>

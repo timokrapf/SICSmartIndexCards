@@ -2,7 +2,9 @@ package com.example.timokrapf.sic_smartindexcards;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class SubjectRepository {
         AppDatabase database = AppDatabase.getDatabase(application);
         mySubjectDao = database.subjectDao();
         mySubjectList = mySubjectDao.getSubjects();
+
     }
 
     LiveData<List<Subject>> getSubjects() {
@@ -34,20 +37,24 @@ public class SubjectRepository {
         new SubjectTask(mySubjectDao).execute(subject);
     }
 
-    private static class SubjectTask extends AsyncTask<Subject, Void, Void> {
+
+    private static class SubjectTask extends AsyncTask<Subject, Void, String> {
 
         private SubjectDao subjectTaskDao;
 
+
         SubjectTask(SubjectDao dao) {
             subjectTaskDao = dao;
+
         }
 
         @Override
-        protected Void doInBackground(Subject... subjects) {
+        protected String doInBackground(Subject... subjects) {
+            Subject currentSubject = subjects[0];
             if(isNewSubject) {
-                subjectTaskDao.insertSubject(subjects[0]);
+                subjectTaskDao.insertSubject(currentSubject);
             } else {
-                subjectTaskDao.deleteSubject(subjects[0]);
+                subjectTaskDao.deleteSubject(currentSubject);
             }
             return null;
         }

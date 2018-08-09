@@ -5,8 +5,6 @@ package com.example.timokrapf.sic_smartindexcards;
 
 import android.app.FragmentTransaction;
 import android.arch.lifecycle.Observer;
-
-
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -18,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.util.List;
 
@@ -25,19 +24,20 @@ import java.util.List;
 public class StartActivity extends FragmentActivity implements AddButtonFragment.OnAddButtonFragmentClicked, AddSubjectFragment.OnAddSubjectButtonClicked{
 
 
-    private Button subjectButton, scheduleButton;
+    private Button scheduleButton;
     private AddButtonFragment addButtonFragment;
     private SubjectViewModel viewModel;
     private SubjectAdapter adapter;
+    private AddSubjectFragment addSubjectFragment;
     private RecyclerView recyclerView;
-
+    private TextView emptyText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         initAdapter();
-        initViewModel();
+        initUI();
         initStartFragment();
         initButtons();
         setClickListener();
@@ -45,7 +45,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     }
 
     /*
-    https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#13
+    https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#13 am 07.08.18
      */
 
     private void initAdapter() {
@@ -67,18 +67,26 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void initViewModel() {
+    private void initUI() {
+        emptyText = (TextView) findViewById(android.R.id.empty);
         viewModel = ViewModelProviders.of(this).get(SubjectViewModel.class);
         viewModel.getSubjectsList().observe(this, new Observer<List<Subject>>() {
             @Override
             public void onChanged(@Nullable List<Subject> subjects) {
                 adapter.setSubjectList(subjects);
+                if(adapter.getItemCount() == 0) {
+                    recyclerView.setVisibility(View.GONE);
+                    emptyText.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    emptyText.setVisibility(View.GONE);
+                }
             }
         });
     }
 
     private void initButtons() {
-        subjectButton = (Button) findViewById(R.id.subject_button_id);
+        Button subjectButton = (Button) findViewById(R.id.subject_button_id);
         scheduleButton = (Button) findViewById(R.id.schedule_planner_button_id);
         subjectButton.setEnabled(false);
     }
@@ -107,7 +115,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
 
     @Override
     public void addButtonFragmentClicked() {
-        AddSubjectFragment addSubjectFragment = new AddSubjectFragment();
+        addSubjectFragment = new AddSubjectFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, addSubjectFragment);
         transaction.addToBackStack(null);
@@ -122,10 +130,17 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         } else {
             Subject  newSubject = new Subject();
             newSubject.setSubjectTitle(subjectTitle);
-            viewModel.insert(newSubject);
-            replaceWithAddButtonFragment();
+            if(adapter.isNewSubject(newSubject)) {
+                viewModel.insert(newSubject);
+                Toast.makeText(getApplicationContext(), subjectTitle + " " + getString(R.string.toast_for_new_subject_was_inserted), Toast.LENGTH_SHORT).show();
+                replaceWithAddButtonFragment();
+            } else {
+                Toast.makeText(getApplicationContext(), getString(R.string.toast_for_subject_already_exists), Toast.LENGTH_SHORT).show();
+                addSubjectFragment.deleteKeyboardEntry();
+            }
         }
     }
+
 
     private void replaceWithAddButtonFragment() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();

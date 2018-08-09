@@ -15,43 +15,17 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract SubjectDao subjectDao();
 
-   /*
-    https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#6
-     */
+    /*
+     https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#6
+      */
     public static AppDatabase getDatabase(final Context context) {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
-            if (INSTANCE == null) {
-                INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "AppDatabase").build();
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "AppDatabase").build();
                 }
             }
         }
         return INSTANCE;
-    }
-/*
-https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#11
-Fliegt eventuell noch raus.
- */
-    private static RoomDatabase.Callback appDatabaseCallback = new RoomDatabase.Callback() {
-        @Override
-    public void onOpen(@NonNull SupportSQLiteDatabase db) {
-            super.onOpen(db);
-            new PopulateDbTask(INSTANCE).execute();
-        }
-    };
-
-    private static class PopulateDbTask extends AsyncTask<Void, Void, Void> {
-
-        private final SubjectDao dao;
-
-        PopulateDbTask(AppDatabase database) {
-            dao = database.subjectDao();
-        }
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-
-            return null;
-        }
     }
 }

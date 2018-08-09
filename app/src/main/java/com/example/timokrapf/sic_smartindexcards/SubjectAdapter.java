@@ -1,11 +1,15 @@
 package com.example.timokrapf.sic_smartindexcards;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -19,8 +23,10 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     private final LayoutInflater inflater;
     private List<Subject> subjectList;
     private final OnItemClickListener listener;
+    private Context context;
 
     SubjectAdapter(Context context, OnItemClickListener listener) {
+        this.context = context;
         inflater = LayoutInflater.from(context);
         this.listener = listener;
     }
@@ -45,6 +51,18 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
             return subjectList.size();
         }
         return 0;
+    }
+
+
+    boolean isNewSubject(Subject newSubject) {
+        for(int i = 0; i < getItemCount(); i++) {
+            Subject currentSubject = subjectList.get(i);
+            String currentTitle = currentSubject.getSubjectTitle();
+            if(currentTitle.compareToIgnoreCase(newSubject.getSubjectTitle()) == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -75,7 +93,22 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                  itemView.setOnLongClickListener(new View.OnLongClickListener() {
                      @Override
                      public boolean onLongClick(View v) {
-                         listener.onItemLongClicked(subject);
+                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                         dialogBuilder.setTitle(R.string.delete_dialog);
+                         dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                             @Override
+                             public void onClick(DialogInterface dialog, int which) {
+                                 listener.onItemLongClicked(subject);
+                                 dialog.cancel();
+                             }
+                         });
+                         dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                             @Override
+                             public void onClick(DialogInterface dialog, int which) {
+                                 dialog.cancel();
+                             }
+                         });
+                         dialogBuilder.create().show();
                          return true;
                      }
                  });
