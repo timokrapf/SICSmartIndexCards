@@ -44,5 +44,4 @@ public interface SubjectDao {
 
     @Query("SELECT * FROM subject_table ORDER BY subject_title COLLATE NOCASE")
     LiveData<List<Subject>> getSubjects();
-
 }

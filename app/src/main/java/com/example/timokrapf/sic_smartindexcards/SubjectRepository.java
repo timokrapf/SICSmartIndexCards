@@ -21,7 +21,6 @@ public class SubjectRepository {
         AppDatabase database = AppDatabase.getDatabase(application);
         mySubjectDao = database.subjectDao();
         mySubjectList = mySubjectDao.getSubjects();
-
     }
 
     LiveData<List<Subject>> getSubjects() {

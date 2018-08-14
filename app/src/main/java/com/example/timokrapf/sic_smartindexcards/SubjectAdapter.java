@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 /*
@@ -65,6 +66,13 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         return true;
     }
 
+    String[] getSubjectTitleArray() {
+        String[] subjectTitleArray = new String[getItemCount()];
+        for (int i = 0; i < getItemCount(); i++) {
+            subjectTitleArray[i] = subjectList.get(i).getSubjectTitle();
+        }
+        return subjectTitleArray;
+    }
 
     void setSubjectList(List<Subject> subjectList) {
         this.subjectList = subjectList;

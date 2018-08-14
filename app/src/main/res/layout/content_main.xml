@@ -22,6 +22,8 @@
         android:layout_height="wrap_content"
         android:text="@string/empty_subject_list"
         android:layout_marginTop="100dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
         android:layout_weight="0.95"/>
 
     <LinearLayout
@@ -38,9 +40,10 @@
             android:layout_weight="0.5"
             android:text="@string/subject_button"
             android:id="@+id/subject_button_id"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryLight"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
+
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"

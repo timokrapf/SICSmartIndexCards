@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +19,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.lang.reflect.Array;
 import java.util.List;
 
 
@@ -31,6 +34,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     private AddSubjectFragment addSubjectFragment;
     private RecyclerView recyclerView;
     private TextView emptyText;
+    private String[] listForSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
             @Override
             public void onChanged(@Nullable List<Subject> subjects) {
                 adapter.setSubjectList(subjects);
+                listForSpinner = adapter.getSubjectTitleArray();
                 if(adapter.getItemCount() == 0) {
                     recyclerView.setVisibility(View.GONE);
                     emptyText.setVisibility(View.VISIBLE);
@@ -83,6 +88,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
                 }
             }
         });
+
     }
 
     private void initButtons() {
@@ -103,7 +109,9 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
 
 
     private void scheduleButtonClicked() {
-
+        Intent i = new Intent(StartActivity.this, LearnplannerActivity.class);
+        i.putExtra(Constants.SPINNER_SUBJECT_KEY, listForSpinner);
+        startActivity(i);
     }
 
     private void initStartFragment() {

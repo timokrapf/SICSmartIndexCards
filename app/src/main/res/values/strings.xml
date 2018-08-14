@@ -13,4 +13,9 @@
     <string name="delete_dialog">Willst du das Fach wirklich löschen</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
+    <string name="chosen_subject">Fach</string>
+    <string name="chosen_date">nächste Abfrage am und um</string>
+    <string name="add_button_learnplaner">speichern</string>
+    <string name="chosen_time">Uhrzeit</string>
+
 </resources>
