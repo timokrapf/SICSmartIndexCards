@@ -17,4 +17,9 @@
         <item name="android:paddingLeft">8dp</item>
     </style>
 
+    <!--https://stackoverflow.com/questions/28738089/change-datepicker-dialog-color-for-android-5-0-->
+    <style name="DialogTheme" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
 </resources>

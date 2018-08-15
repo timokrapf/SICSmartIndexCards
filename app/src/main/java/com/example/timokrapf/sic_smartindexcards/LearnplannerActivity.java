@@ -1,5 +1,7 @@
 package com.example.timokrapf.sic_smartindexcards;
 
+import android.app.Activity;
+import android.app.TimePickerDialog;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 
@@ -23,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -30,50 +33,38 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class LearnplannerActivity extends FragmentActivity {
+public class LearnplannerActivity extends Activity {
 
 
     private Spinner subjectSpinner;
-    private DatePicker datePicker;
     private Button subjectButton, saveButton;
     private ServiceConnection serviceConnection;
     private String[] list;
-    private TimePicker timePicker;
-
+    private EditText time;
+    private DatePicker datePicker;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.learnplaner_activity);
-        getList();
         initUI();
         initButtons();
         setClickListener();
-        //getSpinnerData();
+        getList();
         initSpinner();
     }
 
 
-    private void getList(){
-        Intent i = getIntent();
-        if(i != null) {
-            Bundle extras = i.getExtras();
-            if(extras != null) {
-                list = (String[]) extras.get(Constants.SPINNER_SUBJECT_KEY);
-            }
-        }
-    }
-
-
     public void initUI() {
-        TextView chosenDate = (TextView) findViewById(R.id.chosenDate_id);
+        TextView chosenDate = (TextView) findViewById(R.id.chosen_date_id);
         TextView chosenSubject = (TextView) findViewById(R.id.chosenSubject_id);
+        time = (EditText) findViewById(R.id.time_id);
         datePicker = (DatePicker) findViewById(R.id.date_picker_id);
-        timePicker = (TimePicker) findViewById(R.id.time_picker_id);
     }
 
     public void initButtons() {
@@ -82,6 +73,10 @@ public class LearnplannerActivity extends FragmentActivity {
         Button learnplannerButton = (Button) findViewById(R.id.schedule_planner_button_id);
         learnplannerButton.setEnabled(false);
     }
+
+    /*
+    https://abhiandroid.com/ui/timepicker#Example_of_TimePickerDialog_in_Android_Studio
+    */
 
     private void setClickListener() {
         subjectButton.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +91,20 @@ public class LearnplannerActivity extends FragmentActivity {
                 saveButtonClicked();
             }
         });
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog timePicker;
+                timePicker = new TimePickerDialog(LearnplannerActivity.this, R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        time.setText(selectedHour + ":" + selectedMinute);
+                    }
+                }, 0, 0, true);
+                timePicker.setTitle(Constants.SELECT_DATE);
+                timePicker.show();
+            }
+        });
     }
 
     private void subjectButtonClicked() {
@@ -106,9 +115,32 @@ public class LearnplannerActivity extends FragmentActivity {
     private void saveButtonClicked() {
         //Subject selectedSubject = getSelectedSubject();
 
-        //startLearnplannerService();
-        Toast.makeText(this,  "wurde als Datum gespeichert", Toast.LENGTH_SHORT).show();
+
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth() + 1;
+        int year = datePicker.getYear();
+        String date = String.valueOf(day) + "." + String.valueOf(month) + "." + String.valueOf(year);
+        String chosenTime = time.getText().toString();
+        if (date.isEmpty() || chosenTime.isEmpty() || subjectSpinner.getSelectedItem() == null){
+            Toast.makeText(this, "fehlerhafte Eingabe", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(this, "am " + date + " um " + chosenTime + " Uhr wirst du in "
+                    + subjectSpinner.getSelectedItem() + " ausgefragt", Toast.LENGTH_LONG).show();
+            startScheduleActivity(date, chosenTime);
+            //startLearnplannerService();
+        }
     }
+
+    private void startScheduleActivity(String date, String time){
+        Intent i = new Intent(LearnplannerActivity.this, ScheduleActivity.class);
+        i.putExtra(Constants.CHOSEN_DATE, date);
+        i.putExtra(Constants.CHOSEN_TIME, time);
+        i.putExtra(Constants.CHOSEN_SUBJECT, subjectSpinner.getSelectedItem().toString());
+        startActivity(i);
+    }
+
+
+
 
     /*private void startLearnplannerService() {
 
@@ -138,11 +170,26 @@ public class LearnplannerActivity extends FragmentActivity {
         };
    */
 
+
+
+    private void getList() {
+        Intent i = getIntent();
+        if (i != null) {
+            Bundle extras = i.getExtras();
+            if (extras != null) {
+                list = (String[]) extras.get(Constants.SPINNER_SUBJECT_KEY);
+            }
+        }
+    }
+
     private void initSpinner() {
         subjectSpinner = (Spinner) findViewById(R.id.spinner_chosen_subject_id);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, list);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         subjectSpinner.setAdapter(arrayAdapter);
+
     }
+
 }
 

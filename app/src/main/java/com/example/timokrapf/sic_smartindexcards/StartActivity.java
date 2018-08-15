@@ -1,8 +1,5 @@
 package com.example.timokrapf.sic_smartindexcards;
 
-
-
-
 import android.app.FragmentTransaction;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -13,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -112,6 +110,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         Intent i = new Intent(StartActivity.this, LearnplannerActivity.class);
         i.putExtra(Constants.SPINNER_SUBJECT_KEY, listForSpinner);
         startActivity(i);
+
     }
 
     private void initStartFragment() {
