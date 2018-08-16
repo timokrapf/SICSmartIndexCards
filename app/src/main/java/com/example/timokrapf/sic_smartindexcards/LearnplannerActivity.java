@@ -209,19 +209,7 @@ public class LearnplannerActivity extends FragmentActivity {
             }
         };
    */
-
-
-/*
-    private void getList() {
-        Intent i = getIntent();
-        if (i != null) {
-            Bundle extras = i.getExtras();
-            if (extras != null) {
-                list = (String[]) extras.get(Constants.SPINNER_SUBJECT_KEY);
-            }
-        }
-    }
-*/
+    
 
     private void getList() {
         adapter = new SubjectSpinnerAdapter(this);
