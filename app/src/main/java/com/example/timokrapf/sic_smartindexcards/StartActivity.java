@@ -32,7 +32,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     private AddSubjectFragment addSubjectFragment;
     private RecyclerView recyclerView;
     private TextView emptyText;
-    private String[] listForSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +75,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
             @Override
             public void onChanged(@Nullable List<Subject> subjects) {
                 adapter.setSubjectList(subjects);
-                listForSpinner = adapter.getSubjectTitleArray();
                 if(adapter.getItemCount() == 0) {
                     recyclerView.setVisibility(View.GONE);
                     emptyText.setVisibility(View.VISIBLE);
@@ -108,7 +106,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
 
     private void scheduleButtonClicked() {
         Intent i = new Intent(StartActivity.this, LearnplannerActivity.class);
-        i.putExtra(Constants.SPINNER_SUBJECT_KEY, listForSpinner);
         startActivity(i);
 
     }

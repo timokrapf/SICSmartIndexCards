@@ -19,4 +19,5 @@
     <string name="chosen_time">Uhrzeit</string>
     <string name="schedule">geplante Lerneinheiten</string>
     <string name="select_time">Wähle eine Zeit aus</string>
+    <string name="no_subject_was_chosen">Kein Fach ausgewählt</string>
 </resources>

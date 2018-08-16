@@ -36,6 +36,10 @@ public class SubjectRepository {
         new SubjectTask(mySubjectDao).execute(subject);
     }
 
+    public int getNumber() {
+        return mySubjectDao.getNumber();
+    }
+
 
     private static class SubjectTask extends AsyncTask<Subject, Void, String> {
 

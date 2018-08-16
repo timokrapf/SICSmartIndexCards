@@ -25,10 +25,14 @@ public class SubjectViewModel extends AndroidViewModel {
         return subjects;
     }
 
+    int getNumber() {
+        return myRepository.getNumber();
+    }
+
     public void insert(Subject subject) {
         myRepository.insert(subject);
     }
-     public void delete(Subject subject) {
+    public void delete(Subject subject) {
         myRepository.delete(subject);
      }
 }

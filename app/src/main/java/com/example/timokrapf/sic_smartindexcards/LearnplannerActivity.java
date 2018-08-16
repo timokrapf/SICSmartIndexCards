@@ -37,12 +37,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class LearnplannerActivity extends Activity {
+public class LearnplannerActivity extends FragmentActivity {
 
 
     private Spinner subjectSpinner;
     private Button subjectButton, saveButton;
-    private ServiceConnection serviceConnection;
+    private SubjectSpinnerAdapter adapter;
     private String[] list;
     private EditText time;
     private DatePicker datePicker;
@@ -104,7 +104,7 @@ public class LearnplannerActivity extends Activity {
                 timePicker = new TimePickerDialog(LearnplannerActivity.this, R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        time.setText(selectedHour + ":" + selectedMinute);
+                        setTimeText(selectedHour, selectedMinute);
                         hour = selectedHour;
                         minute = selectedMinute;
                     }
@@ -113,6 +113,18 @@ public class LearnplannerActivity extends Activity {
                 timePicker.show();
             }
         });
+    }
+
+    private void setTimeText(int selectedHour, int selectedMinute) {
+        String hourString = Integer.toString(selectedHour);
+        String minuteString = Integer.toString(selectedMinute);
+        if(selectedHour < 10) {
+            hourString = "0" + selectedHour;
+        }
+        if(selectedMinute < 10) {
+            minuteString = "0" + selectedMinute;
+        }
+        time.setText(hourString + ":" + minuteString);
     }
 
     private void subjectButtonClicked() {
@@ -129,11 +141,11 @@ public class LearnplannerActivity extends Activity {
         int year = datePicker.getYear();
         String date = String.valueOf(day) + "." + String.valueOf(month) + "." + String.valueOf(year);
         String chosenTime = time.getText().toString();
-        if (date.isEmpty() || chosenTime.isEmpty() || subjectSpinner.getSelectedItem() == null){
-            Toast.makeText(this, "fehlerhafte Eingabe", Toast.LENGTH_SHORT).show();
+        if (date.isEmpty() || chosenTime.isEmpty() || adapter.getSubjectTitle().equals(getString(R.string.no_subject_was_chosen))){
+            Toast.makeText(this, "Fehlerhafte Eingabe", Toast.LENGTH_SHORT).show();
         }else {
-            Toast.makeText(this, "am " + date + " um " + chosenTime + " Uhr wirst du in "
-                    + subjectSpinner.getSelectedItem() + " ausgefragt", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Am " + date + " um " + chosenTime + " Uhr wirst du in "
+                    + adapter.getSubjectTitle() + " ausgefragt", Toast.LENGTH_LONG).show();
             startScheduleActivity(date, chosenTime);
             onDateSelectedButtonView();
         }
@@ -163,7 +175,7 @@ public class LearnplannerActivity extends Activity {
         Intent i = new Intent(LearnplannerActivity.this, ScheduleActivity.class);
         i.putExtra(Constants.CHOSEN_DATE, date);
         i.putExtra(Constants.CHOSEN_TIME, time);
-        i.putExtra(Constants.CHOSEN_SUBJECT, subjectSpinner.getSelectedItem().toString());
+        i.putExtra(Constants.CHOSEN_SUBJECT, adapter.getSubjectTitle());
         startActivity(i);
     }
 
@@ -199,7 +211,7 @@ public class LearnplannerActivity extends Activity {
    */
 
 
-
+/*
     private void getList() {
         Intent i = getIntent();
         if (i != null) {
@@ -209,13 +221,21 @@ public class LearnplannerActivity extends Activity {
             }
         }
     }
+*/
 
+    private void getList() {
+        adapter = new SubjectSpinnerAdapter(this);
+        SubjectViewModel model = ViewModelProviders.of(this).get(SubjectViewModel.class);
+        model.getSubjectsList().observe(this, new Observer<List<Subject>>() {
+            @Override
+            public void onChanged(@Nullable List<Subject> subjects) {
+                adapter.setSubjectList(subjects);
+            }
+        });
+    }
     private void initSpinner() {
         subjectSpinner = (Spinner) findViewById(R.id.spinner_chosen_subject_id);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, list);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        subjectSpinner.setAdapter(arrayAdapter);
+        subjectSpinner.setAdapter(adapter);
 
     }
 
