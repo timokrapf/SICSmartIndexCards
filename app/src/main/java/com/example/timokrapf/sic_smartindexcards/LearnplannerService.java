@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
+import java.util.Calendar;
 
 public class LearnplannerService extends Service {
 
@@ -13,14 +16,20 @@ public class LearnplannerService extends Service {
     * */
     private static final int myNotificationID = 12345;
 
-    private IBinder iBinder;
+    private final IBinder iBinder = new ServiceBinder();
 
     @Override
-    public void onCreate() {
-        iBinder = new LocalBinder();
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i("ScheduleService", "Received start id " + startId + ": " + intent);
+
+        return START_STICKY;
     }
 
-    @Nullable
+    public void setAlarm(Calendar c) {
+        new AlarmTask(this, c).run();
+    }
+
+
     @Override
     public IBinder onBind(Intent intent) {
         return iBinder;
@@ -28,14 +37,11 @@ public class LearnplannerService extends Service {
 
 
 
-
-
-
-
-    class LocalBinder extends Binder {
-
-        LearnplannerService getBinder() {
+    public class ServiceBinder extends Binder {
+        LearnplannerService getService() {
             return LearnplannerService.this;
         }
     }
+
+
 }

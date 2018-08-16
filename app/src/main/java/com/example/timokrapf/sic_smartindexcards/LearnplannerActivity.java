@@ -46,6 +46,11 @@ public class LearnplannerActivity extends Activity {
     private String[] list;
     private EditText time;
     private DatePicker datePicker;
+    private ScheduleClient scheduleClient;
+    private TimePickerDialog timePicker;
+    private int hour;
+    private int minute;
+
 
 
     @Override
@@ -65,6 +70,8 @@ public class LearnplannerActivity extends Activity {
         TextView chosenSubject = (TextView) findViewById(R.id.chosenSubject_id);
         time = (EditText) findViewById(R.id.time_id);
         datePicker = (DatePicker) findViewById(R.id.date_picker_id);
+        scheduleClient = new ScheduleClient(this);
+        scheduleClient.doBindService();
     }
 
     public void initButtons() {
@@ -94,11 +101,12 @@ public class LearnplannerActivity extends Activity {
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog timePicker;
                 timePicker = new TimePickerDialog(LearnplannerActivity.this, R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         time.setText(selectedHour + ":" + selectedMinute);
+                        hour = selectedHour;
+                        minute = selectedMinute;
                     }
                 }, 0, 0, true);
                 timePicker.setTitle(Constants.SELECT_DATE);
@@ -127,8 +135,28 @@ public class LearnplannerActivity extends Activity {
             Toast.makeText(this, "am " + date + " um " + chosenTime + " Uhr wirst du in "
                     + subjectSpinner.getSelectedItem() + " ausgefragt", Toast.LENGTH_LONG).show();
             startScheduleActivity(date, chosenTime);
-            //startLearnplannerService();
+            onDateSelectedButtonView();
         }
+    }
+
+    private void onDateSelectedButtonView(){
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth();
+        int year = datePicker.getYear();
+        Calendar c = Calendar.getInstance();
+        c.set(year, month, day);
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, 0);
+        scheduleClient.setAlarmForNotification(c);
+        Toast.makeText(this, "Erinnerung am "+ day +"/"+ (month+1) +"/"+ year, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onStop() {
+        if(scheduleClient != null)
+            scheduleClient.doUnbindService();
+        super.onStop();
     }
 
     private void startScheduleActivity(String date, String time){
