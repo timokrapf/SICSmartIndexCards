@@ -42,14 +42,14 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/date_picker_id"/>
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/chosen_time"
-        android:inputType="time"
         android:layout_below="@+id/date_picker_id"
         android:layout_centerHorizontal="true"
-        android:id="@+id/time_id"/>
+        android:id="@+id/time_id"
+        android:textSize="25sp"/>
 
 
     <Button
@@ -88,7 +88,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:text="@string/schedule_planner"
+            android:text="@string/go_to_schedule"
             android:id="@+id/schedule_planner_button_id"
             android:background="@color/colorPrimaryLight"
             android:textColor="@android:color/white"
