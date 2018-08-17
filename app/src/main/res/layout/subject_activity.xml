@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/subject_activity_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subject_activity_header"
+        android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/subject_activity_textview"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:id="@+id/column_1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/new_sic_id"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:contentDescription="@string/new_sic"
+                android:focusable="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/neue_karte"
+                android:scaleY="0.6"
+               />
+
+            <ImageButton
+                android:id="@+id/progress_card_id"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:contentDescription="@string/new_sic"
+                android:focusable="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/lernerfolg_karte"
+                android:scaleY="0.6"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+        android:id="@+id/column_2"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/quiz_card_id"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:contentDescription="@string/new_sic"
+            android:focusable="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/abfrage_karte"
+            android:scaleY="0.6"
+            />
+
+        <ImageButton
+            android:id="@+id/overview_sics_id"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:contentDescription="@string/new_sic"
+            android:focusable="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/kartenuebersicht"
+            android:scaleY="0.6"
+           />
+
+    </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttons_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/subject_button_id"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="@color/colorPrimary"
+            android:text="@string/subject_button"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/schedule_planner_button_id"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="@color/colorPrimary"
+            android:text="@string/schedule_planner"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

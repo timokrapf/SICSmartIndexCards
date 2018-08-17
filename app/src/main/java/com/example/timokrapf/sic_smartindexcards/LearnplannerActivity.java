@@ -221,6 +221,7 @@ public class LearnplannerActivity extends FragmentActivity {
             }
         });
     }
+
     private void initSpinner() {
         subjectSpinner = (Spinner) findViewById(R.id.spinner_chosen_subject_id);
         subjectSpinner.setAdapter(adapter);
