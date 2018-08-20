@@ -3,6 +3,7 @@ package com.example.timokrapf.sic_smartindexcards;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
 @Entity(tableName = "subject_table")
@@ -14,6 +15,7 @@ public class Subject {
     private int subjectId;
     @ColumnInfo(name = "subject_title")
     private String subjectTitle;
+
 
     public Subject() {
     }
@@ -34,4 +36,6 @@ public class Subject {
     public void setSubjectTitle(String subjectTitle) {
         this.subjectTitle = subjectTitle;
     }
+
+
 }

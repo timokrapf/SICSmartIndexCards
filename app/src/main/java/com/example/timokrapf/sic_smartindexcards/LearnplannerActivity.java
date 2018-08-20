@@ -39,18 +39,14 @@ import java.util.List;
 
 public class LearnplannerActivity extends FragmentActivity {
 
-
-    private Spinner subjectSpinner;
-    private Button subjectButton, saveButton;
+    private Button subjectButton, saveButton, learnplannerButton;
     private SubjectSpinnerAdapter adapter;
-    private String[] list;
-    private EditText time;
+    private TextView time;
     private DatePicker datePicker;
     private ScheduleClient scheduleClient;
     private TimePickerDialog timePicker;
     private int hour;
     private int minute;
-
 
 
     @Override
@@ -68,7 +64,7 @@ public class LearnplannerActivity extends FragmentActivity {
     public void initUI() {
         TextView chosenDate = (TextView) findViewById(R.id.chosen_date_id);
         TextView chosenSubject = (TextView) findViewById(R.id.chosenSubject_id);
-        time = (EditText) findViewById(R.id.time_id);
+        time = (TextView) findViewById(R.id.time_id);
         datePicker = (DatePicker) findViewById(R.id.date_picker_id);
         scheduleClient = new ScheduleClient(this);
         scheduleClient.doBindService();
@@ -77,8 +73,7 @@ public class LearnplannerActivity extends FragmentActivity {
     public void initButtons() {
         subjectButton = (Button) findViewById(R.id.subject_button_id);
         saveButton = (Button) findViewById(R.id.add_button_learnplaner_id);
-        Button learnplannerButton = (Button) findViewById(R.id.schedule_planner_button_id);
-        learnplannerButton.setEnabled(false);
+        learnplannerButton = (Button) findViewById(R.id.schedule_planner_button_id);
     }
 
     /*
@@ -113,6 +108,12 @@ public class LearnplannerActivity extends FragmentActivity {
                 timePicker.show();
             }
         });
+        learnplannerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                learnplannerButtonClicked();
+            }
+        });
     }
 
     private void setTimeText(int selectedHour, int selectedMinute) {
@@ -132,18 +133,22 @@ public class LearnplannerActivity extends FragmentActivity {
         startActivity(i);
     }
 
+    private void learnplannerButtonClicked() {
+        Intent i = new Intent(LearnplannerActivity.this, ScheduleActivity.class);
+        startActivity(i);
+    }
+
     private void saveButtonClicked() {
         //Subject selectedSubject = getSelectedSubject();
-
 
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth() + 1;
         int year = datePicker.getYear();
         String date = String.valueOf(day) + "." + String.valueOf(month) + "." + String.valueOf(year);
         String chosenTime = time.getText().toString();
-        if (date.isEmpty() || chosenTime.isEmpty() || adapter.getSubjectTitle().equals(getString(R.string.no_subject_was_chosen))){
+        if (date.isEmpty() || adapter.getSubjectTitle().equals(getString(R.string.no_subject_was_chosen)) || chosenTime.isEmpty()){
             Toast.makeText(this, "Fehlerhafte Eingabe", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             Toast.makeText(this, "Am " + date + " um " + chosenTime + " Uhr wirst du in "
                     + adapter.getSubjectTitle() + " ausgefragt", Toast.LENGTH_LONG).show();
             startScheduleActivity(date, chosenTime);
@@ -209,7 +214,7 @@ public class LearnplannerActivity extends FragmentActivity {
             }
         };
    */
-    
+
 
     private void getList() {
         adapter = new SubjectSpinnerAdapter(this);
@@ -223,7 +228,7 @@ public class LearnplannerActivity extends FragmentActivity {
     }
 
     private void initSpinner() {
-        subjectSpinner = (Spinner) findViewById(R.id.spinner_chosen_subject_id);
+        Spinner subjectSpinner = (Spinner) findViewById(R.id.spinner_chosen_subject_id);
         subjectSpinner.setAdapter(adapter);
 
     }

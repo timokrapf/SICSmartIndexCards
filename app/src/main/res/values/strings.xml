@@ -10,16 +10,17 @@
     <string name="subject">Deine Fächer</string>
     <string name="toast_for_subject_already_exists">Dieses Fach existiert bereits</string>
     <string name="toast_for_new_subject_was_inserted">wurde zu Fächern hinzugefügt</string>
-    <string name="delete_dialog">Willst du das Fach wirklich löschen</string>
+    <string name="delete_dialog">Willst du das Fach wirklich löschen?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="chosen_subject">Fach</string>
     <string name="chosen_date">nächste Abfrage am</string>
     <string name="add_button_learnplaner">speichern</string>
     <string name="chosen_time">Uhrzeit</string>
-    <string name="schedule">geplante Lerneinheiten</string>
+    <string name="schedule">Geplante Lerneinheiten</string>
     <string name="select_time">Wähle eine Zeit aus</string>
     <string name="no_subject_was_chosen">Kein Fach ausgewählt</string>
-    <string name="subject_activity_header">Deine Fachoptionen</string>
-    <string name="new_sic">neue Karteikarte</string>
+    <string name="no_schedulelist">Kein Lernplan erstellt</string>
+    <string name="go_to_schedule">Zum Plan</string>
+    <string name="delete_schedule_dialog">Willst du diese Lerneinheit wirklich löschen?</string>
 </resources>

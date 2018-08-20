@@ -1,7 +1,6 @@
 package com.example.timokrapf.sic_smartindexcards;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
@@ -9,10 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-
-import java.lang.reflect.Array;
 import java.util.List;
 
 /*
@@ -21,9 +17,9 @@ https://antonioleiva.com/recyclerview-listener/
  */
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder>{
 
-    private final LayoutInflater inflater;
+    private LayoutInflater inflater;
     private List<Subject> subjectList;
-    private final OnItemClickListener listener;
+    private OnItemClickListener listener;
     private Context context;
 
     SubjectAdapter(Context context, OnItemClickListener listener) {

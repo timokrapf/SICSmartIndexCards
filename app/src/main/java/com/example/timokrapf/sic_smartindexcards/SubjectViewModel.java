@@ -14,25 +14,40 @@ public class SubjectViewModel extends AndroidViewModel {
 
     private SubjectRepository myRepository;
     private LiveData<List<Subject>> subjects;
+    private LiveData<List<Schedule>> schedules;
 
     public SubjectViewModel(@NonNull Application application) {
         super(application);
         myRepository = new SubjectRepository(application);
         subjects = myRepository.getSubjects();
+        schedules = myRepository.getScheduleList();
+    }
+
+    LiveData<List<Schedule>> getSchedulesList() {
+        return schedules;
     }
 
     LiveData<List<Subject>> getSubjectsList(){
         return subjects;
     }
 
-    int getNumber() {
-        return myRepository.getNumber();
+    LiveData<Subject> getFetchedSubject(String subjectTitle) {
+        return myRepository.fetchOneSubjectByTitle(subjectTitle);
     }
 
-    public void insert(Subject subject) {
-        myRepository.insert(subject);
+    public void insertSubject(Subject subject) {
+        myRepository.insertSubject(subject);
     }
-    public void delete(Subject subject) {
-        myRepository.delete(subject);
-     }
+
+    public void deleteSubject(Subject subject) {
+        myRepository.deleteSubject(subject);
+    }
+
+    public void insertSchedule(Schedule schedule) {
+        myRepository.insertSchedule(schedule);
+    }
+
+    public void deleteSchedule(Schedule schedule) {
+        myRepository.deleteSchedule(schedule);
+    }
 }

@@ -29,9 +29,6 @@ public interface SubjectDao {
     @Query("SELECT * FROM subject_table WHERE subject_title LIKE :subjectTitle")
     LiveData<Subject> findSubjectByName(String subjectTitle);
 
-    @Query("SELECT * FROM subject_table WHERE subject_id LIKE :subjectId")
-    LiveData<Subject> findSubjectById(int subjectId);
-
     /*
     https://www.lukegjpotter.com/2017/12/android-room-database-tutorial-with.html
      */

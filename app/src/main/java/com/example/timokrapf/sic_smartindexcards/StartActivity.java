@@ -50,7 +50,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
      */
 
     private void initAdapter() {
-        recyclerView = findViewById(R.id.recyclerview);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         adapter = new SubjectAdapter(this, new SubjectAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(Subject subject) {
@@ -61,7 +61,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
             }
             @Override
             public void onItemLongClicked(Subject subject) {
-                viewModel.delete(subject);
+                viewModel.deleteSubject(subject);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -135,7 +135,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
             Subject  newSubject = new Subject();
             newSubject.setSubjectTitle(subjectTitle);
             if(adapter.isNewSubject(newSubject)) {
-                viewModel.insert(newSubject);
+                viewModel.insertSubject(newSubject);
                 Toast.makeText(getApplicationContext(), subjectTitle + " " + getString(R.string.toast_for_new_subject_was_inserted), Toast.LENGTH_SHORT).show();
                 replaceWithAddButtonFragment();
             } else {
