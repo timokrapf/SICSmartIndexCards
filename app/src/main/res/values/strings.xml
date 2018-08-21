@@ -22,5 +22,7 @@
     <string name="no_subject_was_chosen">Kein Fach ausgewählt</string>
     <string name="no_schedulelist">Kein Lernplan erstellt</string>
     <string name="go_to_schedule">Zum Plan</string>
+    <string name="subject_activity_header">Deine Lernoptionen</string>
+    <string name="new_sic">neue Karte</string>
     <string name="delete_schedule_dialog">Willst du diese Lerneinheit wirklich löschen?</string>
 </resources>

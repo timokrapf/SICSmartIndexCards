@@ -3,17 +3,19 @@ package com.example.timokrapf.sic_smartindexcards;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.Calendar;
 
+
 public class LearnplannerService extends Service {
 
     /*
     http://blog.blundellapps.co.uk/notification-for-a-user-chosen-time/
-    * */
+    */
     private static final int myNotificationID = 12345;
 
     private final IBinder iBinder = new ServiceBinder();
@@ -42,6 +44,5 @@ public class LearnplannerService extends Service {
             return LearnplannerService.this;
         }
     }
-
 
 }

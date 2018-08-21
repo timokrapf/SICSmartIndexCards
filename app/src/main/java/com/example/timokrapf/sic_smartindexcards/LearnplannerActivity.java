@@ -41,7 +41,7 @@ public class LearnplannerActivity extends FragmentActivity {
 
     private Button subjectButton, saveButton, learnplannerButton;
     private SubjectSpinnerAdapter adapter;
-    private TextView time;
+    private EditText time;
     private DatePicker datePicker;
     private ScheduleClient scheduleClient;
     private TimePickerDialog timePicker;
@@ -64,7 +64,7 @@ public class LearnplannerActivity extends FragmentActivity {
     public void initUI() {
         TextView chosenDate = (TextView) findViewById(R.id.chosen_date_id);
         TextView chosenSubject = (TextView) findViewById(R.id.chosenSubject_id);
-        time = (TextView) findViewById(R.id.time_id);
+        time = (EditText) findViewById(R.id.time_id);
         datePicker = (DatePicker) findViewById(R.id.date_picker_id);
         scheduleClient = new ScheduleClient(this);
         scheduleClient.doBindService();
@@ -93,9 +93,13 @@ public class LearnplannerActivity extends FragmentActivity {
                 saveButtonClicked();
             }
         });
+
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Calendar currentTime = Calendar.getInstance();
+                int currentHour = currentTime.get(Calendar.HOUR_OF_DAY);
+                int currentMinute = currentTime.get(Calendar.MINUTE);
                 timePicker = new TimePickerDialog(LearnplannerActivity.this, R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
@@ -103,7 +107,7 @@ public class LearnplannerActivity extends FragmentActivity {
                         hour = selectedHour;
                         minute = selectedMinute;
                     }
-                }, 0, 0, true);
+                }, currentHour, currentMinute, true);
                 timePicker.setTitle(Constants.SELECT_DATE);
                 timePicker.show();
             }
@@ -166,8 +170,20 @@ public class LearnplannerActivity extends FragmentActivity {
         c.set(Calendar.MINUTE, minute);
         c.set(Calendar.SECOND, 0);
         scheduleClient.setAlarmForNotification(c);
-        Toast.makeText(this, "Erinnerung am "+ day +"/"+ (month+1) +"/"+ year, Toast.LENGTH_SHORT).show();
     }
+
+   /* private void startLearnplannerSercive(){
+        Intent i = new Intent (this, LearnplannerService.class);
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth();
+        int year = datePicker.getYear();
+        i.putExtra("day", day);
+        i.putExtra("month", month);
+        i.putExtra("year", year);
+        i.putExtra("hour", hour);
+        i.putExtra("minute", minute);
+        startService(i);
+    }*/
 
     @Override
     protected void onStop() {
