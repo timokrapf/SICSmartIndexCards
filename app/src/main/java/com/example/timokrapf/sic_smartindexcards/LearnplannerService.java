@@ -31,17 +31,10 @@ public class LearnplannerService extends Service {
         new AlarmTask(this, c, subject).run();
     }
 
-    public void setGivenSubject(String subject){
-
-    }
-
-
     @Override
     public IBinder onBind(Intent intent) {
         return iBinder;
     }
-
-
 
     public class ServiceBinder extends Binder {
         LearnplannerService getService() {

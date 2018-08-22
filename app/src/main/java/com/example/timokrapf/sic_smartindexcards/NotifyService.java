@@ -50,13 +50,19 @@ public class NotifyService extends Service {
         return iBinder;
     }
 
+    /*
+    http://www.brevitysoftware.com/how-to-get-heads-up-notifications-in-android/
+    */
+
     @SuppressWarnings("deprecation")
     private void sendNotification(String subject) {
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(NotifyService.this)
-                        .setSmallIcon(R.drawable.logo_sic)
-                        .setContentTitle("Abfrage")
-                        .setContentText("deine Abfrage in " + subject);
+                new NotificationCompat.Builder(NotifyService.this);
+                        mBuilder.setSmallIcon(R.drawable.logo_sic);
+                        mBuilder.setContentTitle("Abfrage");
+                        mBuilder.setContentText("deine Abfrage in " + subject);
+                        mBuilder.setDefaults(Notification.DEFAULT_ALL);
+                        mBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
         Intent resultIntent = new Intent(this, SubjectActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(SubjectActivity.class);
@@ -71,7 +77,7 @@ public class NotifyService extends Service {
         mBuilder.setAutoCancel(true);
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        // mId allows you to update the notification later on.
+
         if(mNotificationManager != null) {
             mNotificationManager.notify(NOTIFICATION, mBuilder.build());
             long[] pattern = {0,50,100,50,100,50,100,400,100,300,100,350,50,200,100,100,50,600};

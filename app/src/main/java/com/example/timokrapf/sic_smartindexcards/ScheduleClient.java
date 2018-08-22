@@ -42,9 +42,6 @@ public class ScheduleClient {
         mLearnplannerService.setAlarm(c, subject);
     }
 
-    public void setSubject(String subject){
-        mLearnplannerService.setGivenSubject(subject);
-    }
 
     public void doUnbindService() {
         if (mIsBound) {

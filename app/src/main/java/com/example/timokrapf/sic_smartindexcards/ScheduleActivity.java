@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class ScheduleActivity extends FragmentActivity {
     private RecyclerView recyclerView;
     private TextView emptyText;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +32,7 @@ public class ScheduleActivity extends FragmentActivity {
         initModel();
         getListData();
         enterNewScheduleItem();
+        initButtons();
     }
 
     private void initUI() {
@@ -64,6 +67,33 @@ public class ScheduleActivity extends FragmentActivity {
                 }
             }
         });
+    }
+
+    private void initButtons(){
+        Button subjectButton = (Button) findViewById(R.id.subject_button_id);
+        subjectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                subjectButtonClicked();
+            }
+        });
+        Button scheduleButton = (Button) findViewById(R.id.schedule_planner_button_id);
+        scheduleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scheduleButtonClicked();
+            }
+        });
+    }
+
+    private void subjectButtonClicked(){
+        Intent i = new Intent(ScheduleActivity.this, StartActivity.class);
+        startActivity(i);
+    }
+
+    private void scheduleButtonClicked(){
+        Intent i = new Intent (ScheduleActivity.this, LearnplannerActivity.class);
+        startActivity(i);
     }
 
     private void getListData(){
