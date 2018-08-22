@@ -42,7 +42,7 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/date_picker_id"/>
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/chosen_time"

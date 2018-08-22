@@ -27,8 +27,12 @@ public class LearnplannerService extends Service {
         return START_STICKY;
     }
 
-    public void setAlarm(Calendar c) {
-        new AlarmTask(this, c).run();
+    public void setAlarm(Calendar c, String subject) {
+        new AlarmTask(this, c, subject).run();
+    }
+
+    public void setGivenSubject(String subject){
+
     }
 
 

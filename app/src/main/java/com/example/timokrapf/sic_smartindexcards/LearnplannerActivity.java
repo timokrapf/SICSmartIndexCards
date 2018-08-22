@@ -41,7 +41,7 @@ public class LearnplannerActivity extends FragmentActivity {
 
     private Button subjectButton, saveButton, learnplannerButton;
     private SubjectSpinnerAdapter adapter;
-    private EditText time;
+    private TextView time;
     private DatePicker datePicker;
     private ScheduleClient scheduleClient;
     private TimePickerDialog timePicker;
@@ -64,11 +64,12 @@ public class LearnplannerActivity extends FragmentActivity {
     public void initUI() {
         TextView chosenDate = (TextView) findViewById(R.id.chosen_date_id);
         TextView chosenSubject = (TextView) findViewById(R.id.chosenSubject_id);
-        time = (EditText) findViewById(R.id.time_id);
+        time = (TextView) findViewById(R.id.time_id);
         datePicker = (DatePicker) findViewById(R.id.date_picker_id);
         scheduleClient = new ScheduleClient(this);
         scheduleClient.doBindService();
     }
+
 
     public void initButtons() {
         subjectButton = (Button) findViewById(R.id.subject_button_id);
@@ -143,8 +144,6 @@ public class LearnplannerActivity extends FragmentActivity {
     }
 
     private void saveButtonClicked() {
-        //Subject selectedSubject = getSelectedSubject();
-
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth() + 1;
         int year = datePicker.getYear();
@@ -169,21 +168,8 @@ public class LearnplannerActivity extends FragmentActivity {
         c.set(Calendar.HOUR_OF_DAY, hour);
         c.set(Calendar.MINUTE, minute);
         c.set(Calendar.SECOND, 0);
-        scheduleClient.setAlarmForNotification(c);
+        scheduleClient.setAlarmForNotification(c, adapter.getSubjectTitle());
     }
-
-   /* private void startLearnplannerSercive(){
-        Intent i = new Intent (this, LearnplannerService.class);
-        int day = datePicker.getDayOfMonth();
-        int month = datePicker.getMonth();
-        int year = datePicker.getYear();
-        i.putExtra("day", day);
-        i.putExtra("month", month);
-        i.putExtra("year", year);
-        i.putExtra("hour", hour);
-        i.putExtra("minute", minute);
-        startService(i);
-    }*/
 
     @Override
     protected void onStop() {
@@ -200,38 +186,6 @@ public class LearnplannerActivity extends FragmentActivity {
         startActivity(i);
     }
 
-
-
-
-    /*private void startLearnplannerService() {
-
-        Intent intent = new Intent(this, LearnplannerService.class);
-        Long selectedDate = calendarView.getDate();
-        intent.putExtra("selectedDate", selectedDate);
-        startService(intent);
-    }
-
-   /* private void initServiceConnection() {
-
-        serviceConnection = new ServiceConnection() {
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                System.out.println("Service disconnected");
-            }
-
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                System.out.println("Service connected");
-
-                myLearnplannerService = ((LearnplannerService.LocalBinder) service).getBinder();
-                if (myLearnplannerService != null)
-                    myLearnplannerService.setOnEggTimerStatusChangedListener(LearnplannerActivity.this);
-            }
-        };
-   */
-
-
     private void getList() {
         adapter = new SubjectSpinnerAdapter(this);
         SubjectViewModel model = ViewModelProviders.of(this).get(SubjectViewModel.class);
@@ -246,8 +200,5 @@ public class LearnplannerActivity extends FragmentActivity {
     private void initSpinner() {
         Spinner subjectSpinner = (Spinner) findViewById(R.id.spinner_chosen_subject_id);
         subjectSpinner.setAdapter(adapter);
-
     }
-
 }
-

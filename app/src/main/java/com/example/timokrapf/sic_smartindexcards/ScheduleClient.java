@@ -38,8 +38,12 @@ public class ScheduleClient {
         }
     };
 
-    public void setAlarmForNotification(Calendar c){
-        mLearnplannerService.setAlarm(c);
+    public void setAlarmForNotification(Calendar c, String subject){
+        mLearnplannerService.setAlarm(c, subject);
+    }
+
+    public void setSubject(String subject){
+        mLearnplannerService.setGivenSubject(subject);
     }
 
     public void doUnbindService() {

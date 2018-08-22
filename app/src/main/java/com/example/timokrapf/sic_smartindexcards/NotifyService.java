@@ -8,6 +8,7 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
@@ -34,8 +35,13 @@ public class NotifyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("LocalService", "Received start id " + startId + ": " + intent);
-        if(intent.getBooleanExtra(INTENT_NOTIFY, false))
-            sendNotification();
+        if(intent.getBooleanExtra(INTENT_NOTIFY, false)) {
+            Bundle extras = intent.getExtras();
+            if (extras != null) {
+                String subject = extras.getString("Subject");
+            sendNotification(subject);
+        }
+        }
         return START_NOT_STICKY;
     }
 
@@ -45,12 +51,12 @@ public class NotifyService extends Service {
     }
 
     @SuppressWarnings("deprecation")
-    private void sendNotification() {
+    private void sendNotification(String subject) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(NotifyService.this)
                         .setSmallIcon(R.drawable.logo_sic)
                         .setContentTitle("Abfrage")
-                        .setContentText("deine Abfrage");
+                        .setContentText("deine Abfrage in " + subject);
         Intent resultIntent = new Intent(this, SubjectActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(SubjectActivity.class);
