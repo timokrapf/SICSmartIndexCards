@@ -41,6 +41,7 @@ public class SubjectRepository {
         isNewSubject = true;
         new SubjectUpdateTask(mySubjectDao, myScheduleDao).execute(subject);
     }
+
     public void deleteSubject(Subject subject) {
         isNewSubject = false;
         new SubjectUpdateTask(mySubjectDao, myScheduleDao).execute(subject);

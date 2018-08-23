@@ -40,7 +40,9 @@
             android:id="@+id/subject_button_id"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            style="?android:attr/buttonBarButtonStyle"
+            />
 
         <Button
             android:layout_width="0dp"
@@ -50,7 +52,9 @@
             android:id="@+id/schedule_planner_button_id"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            style="?android:attr/buttonBarButtonStyle"
+            />
 
     </LinearLayout>
 

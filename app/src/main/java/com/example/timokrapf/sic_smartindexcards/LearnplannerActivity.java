@@ -16,6 +16,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatCallback;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -36,8 +39,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import android.support.v7.widget.Toolbar;
 
-public class LearnplannerActivity extends FragmentActivity {
+public class LearnplannerActivity extends FragmentActivity{
 
     private Button subjectButton, saveButton, learnplannerButton;
     private SubjectSpinnerAdapter adapter;
@@ -47,7 +51,6 @@ public class LearnplannerActivity extends FragmentActivity {
     private TimePickerDialog timePicker;
     private int hour;
     private int minute;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +63,12 @@ public class LearnplannerActivity extends FragmentActivity {
         initSpinner();
     }
 
-
     public void initUI() {
-        TextView chosenDate = (TextView) findViewById(R.id.chosen_date_id);
-        TextView chosenSubject = (TextView) findViewById(R.id.chosenSubject_id);
         time = (TextView) findViewById(R.id.time_id);
         datePicker = (DatePicker) findViewById(R.id.date_picker_id);
         scheduleClient = new ScheduleClient(this);
         scheduleClient.doBindService();
     }
-
 
     public void initButtons() {
         subjectButton = (Button) findViewById(R.id.subject_button_id);
@@ -173,8 +172,9 @@ public class LearnplannerActivity extends FragmentActivity {
 
     @Override
     protected void onStop() {
-        if(scheduleClient != null)
+        if(scheduleClient != null) {
             scheduleClient.doUnbindService();
+        }
         super.onStop();
     }
 

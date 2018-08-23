@@ -25,4 +25,8 @@
     <string name="subject_activity_header">Deine Lernoptionen</string>
     <string name="new_sic">neue Karte</string>
     <string name="delete_schedule_dialog">Willst du diese Lerneinheit wirklich löschen?</string>
+    <string name="produce_new_sic">neue Karteikarte</string>
+    <string name="question">deine Frage</string>
+    <string name="answer">deine Antwort</string>
+    <string name="save">speichern</string>
 </resources>

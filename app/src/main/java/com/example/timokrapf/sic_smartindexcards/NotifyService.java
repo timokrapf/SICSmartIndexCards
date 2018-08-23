@@ -7,6 +7,8 @@ import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -83,7 +85,9 @@ public class NotifyService extends Service {
             long[] pattern = {0,50,100,50,100,50,100,400,100,300,100,350,50,200,100,100,50,600};
             ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(pattern, -1);
         }
-
+        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        mBuilder.setSound(uri);
+        stopSelf();
 
 
         /*CharSequence title = "Alarm!!";

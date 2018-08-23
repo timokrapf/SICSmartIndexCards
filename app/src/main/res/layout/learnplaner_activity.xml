@@ -7,6 +7,7 @@
 
     xmlns:tools="http://schemas.android.com/tools">
 
+
     <TextView
         android:id="@+id/chosenSubject_id"
         android:layout_width="match_parent"
@@ -82,6 +83,7 @@
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
             android:textSize="20sp"
+            style="?android:attr/buttonBarButtonStyle"
             />
 
         <Button
@@ -93,7 +95,8 @@
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-           />
+            style="?android:attr/buttonBarButtonStyle"
+            />
 
     </LinearLayout>
 

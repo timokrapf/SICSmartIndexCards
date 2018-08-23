@@ -16,6 +16,7 @@ public class LearnplannerService extends Service {
     /*
     http://blog.blundellapps.co.uk/notification-for-a-user-chosen-time/
     */
+
     private static final int myNotificationID = 12345;
 
     private final IBinder iBinder = new ServiceBinder();

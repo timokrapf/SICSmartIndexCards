@@ -107,6 +107,7 @@ public class ScheduleActivity extends FragmentActivity {
             }
         }
     }
+
     private void enterNewScheduleItem() {
         if(date != null && time != null && subject != null) {
             Schedule schedule = new Schedule();
