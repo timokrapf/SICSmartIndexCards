@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">SIC - Smart Index Cards</string>
+    <string name="add_subject_button">+ Hinzufügen</string>
+    <string name="empty_subject_list">Aktuell noch keine Fächer vorhanden</string>
+    <string name="schedule_planner">Lernplaner</string>
+    <string name="subject_button">Fächer</string>
+    <string name="edit_text_subject">Titel deines Faches</string>
+    <string name="plus_button">+</string>
+    <string name="toast_for_no_subject">Gib den Titel für dein neues Fach ein</string>
+    <string name="subject">Deine Fächer</string>
+    <string name="toast_for_subject_already_exists">Dieses Fach existiert bereits</string>
+    <string name="toast_for_new_subject_was_inserted">wurde zu Fächern hinzugefügt</string>
+    <string name="delete_dialog">Willst du das Fach wirklich löschen?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="chosen_subject">Fach</string>
+    <string name="chosen_date">nächste Abfrage am</string>
+    <string name="add_button_learnplaner">speichern</string>
+    <string name="chosen_time">Uhrzeit</string>
+    <string name="schedule">Geplante Lerneinheiten</string>
+    <string name="select_time">Wähle eine Zeit aus</string>
+    <string name="no_subject_was_chosen">Kein Fach ausgewählt</string>
+    <string name="no_schedulelist">Kein Lernplan erstellt</string>
+    <string name="go_to_schedule">Zum Plan</string>
+    <string name="subject_activity_header">Deine Lernoptionen</string>
+    <string name="new_sic">neue Karte</string>
+    <string name="delete_schedule_dialog">Willst du diese Lerneinheit wirklich löschen?</string>
+
+    <string name="delete_button_actionbar">Löschen</string>
+    <string name="settings_button_actionbar">Einstellungen</string>
+    <string name="settings_test1">Test-Einstellung1</string>
+    <string name="settings_test1_switch">Switch something</string>
+    <string name="settings_test2">Test-Einstellung2</string>
+    <string name="settings_test2_toggle">toggle something</string>
+    <string name="settings_test3">Test-Einstellung3</string>
+    <string name="settings_test3_radio">Test-RadioButton</string>
+</resources>

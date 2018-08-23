@@ -22,7 +22,7 @@ import java.lang.reflect.Array;
 import java.util.List;
 
 
-public class StartActivity extends FragmentActivity implements AddButtonFragment.OnAddButtonFragmentClicked, AddSubjectFragment.OnAddSubjectButtonClicked{
+public class StartActivity extends FragmentActivity implements AddButtonFragment.OnAddButtonFragmentClicked, AddSubjectFragment.OnAddSubjectButtonClicked {
 
 
     private Button scheduleButton;
@@ -44,6 +44,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         setClickListener();
 
         //testtesttest
+        //test2
 
     }
 
@@ -61,8 +62,17 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
                 intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
                 startActivity(intent);
             }
+
             @Override
             public void onItemLongClicked(Subject subject) {
+                /*todo: select item (change color)
+                  include drawable xml file with changed bg-color in ListView-Item-layout
+                  viewModel.setSelected(true);
+                  todo: if (delete-Button in ActionBar clicked) {delete item}
+                */
+
+
+                //delete Subject
                 viewModel.deleteSubject(subject);
             }
         });
@@ -77,7 +87,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
             @Override
             public void onChanged(@Nullable List<Subject> subjects) {
                 adapter.setSubjectList(subjects);
-                if(adapter.getItemCount() == 0) {
+                if (adapter.getItemCount() == 0) {
                     recyclerView.setVisibility(View.GONE);
                     emptyText.setVisibility(View.VISIBLE);
                 } else {
@@ -131,12 +141,12 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
 
     @Override
     public void addSubjectButtonClicked(String subjectTitle) {
-        if(subjectTitle.isEmpty()) {
+        if (subjectTitle.isEmpty()) {
             Toast.makeText(getApplicationContext(), getString(R.string.toast_for_no_subject), Toast.LENGTH_SHORT).show();
         } else {
-            Subject  newSubject = new Subject();
+            Subject newSubject = new Subject();
             newSubject.setSubjectTitle(subjectTitle);
-            if(adapter.isNewSubject(newSubject)) {
+            if (adapter.isNewSubject(newSubject)) {
                 viewModel.insertSubject(newSubject);
                 Toast.makeText(getApplicationContext(), subjectTitle + " " + getString(R.string.toast_for_new_subject_was_inserted), Toast.LENGTH_SHORT).show();
                 replaceWithAddButtonFragment();
@@ -156,13 +166,42 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     }
 
 
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-            return false;
-        }
 
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            return false;
+    //ActionBar:
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_actionbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_button_actionbar:
+                //todo delete item
+                Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.settings_button_actionbar:
+                //open settings activity
+                Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
+                settingsButtonActionbarClicked();
+                break;
         }
+        return true;
+    }
+
+    private void settingsButtonActionbarClicked(){
+        Intent settingsIntent = new Intent(StartActivity.this, SettingsActivity.class);
+        startActivity(settingsIntent);
+    }
+
+
+
+
+
+
+
+
+
+
 }
