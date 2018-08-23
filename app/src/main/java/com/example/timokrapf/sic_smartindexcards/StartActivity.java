@@ -43,9 +43,8 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         initButtons();
         setClickListener();
 
-        //testtesttest
-        //test2
-
+        
+        //test if push works
     }
 
     /*
