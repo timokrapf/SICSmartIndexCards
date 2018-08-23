@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
+
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/chosenSubject_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/chosen_subject"
+        android:padding="3dp"
+        />
+
+
+    <Spinner
+        android:id="@+id/spinner_chosen_subject_id"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp"
+        android:layout_below="@+id/chosenSubject_id"
+        />
+
+    <TextView
+        android:id="@+id/chosen_date_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/chosen_date"
+        android:padding="3dp"
+        android:layout_below="@+id/spinner_chosen_subject_id"
+        />
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chosen_date_id"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/date_picker_id"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/chosen_time"
+        android:layout_below="@+id/date_picker_id"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/time_id"
+        android:textSize="25sp"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_button_learnplaner"
+        android:layout_gravity="end"
+        android:id="@+id/add_button_learnplaner_id"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:layout_below="@+id/time_id"
+        android:layout_alignParentEnd="true"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/buttons_id"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:weightSum="1">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/subject_button"
+            android:id="@+id/subject_button_id"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/go_to_schedule"
+            android:id="@+id/schedule_planner_button_id"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+           />
+
+    </LinearLayout>
+
+</RelativeLayout>

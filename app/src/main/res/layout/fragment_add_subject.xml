@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.7"
+        android:id="@+id/subject_edit_text"
+        android:hint="@string/edit_text_subject"
+        android:inputType="text"
+        android:layout_marginTop="15dp"/>
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:background="@android:color/holo_green_light"
+        android:text="@string/plus_button"
+        android:textSize="30sp"
+        android:id="@+id/final_add_subject_button"
+        android:layout_marginTop="15dp"/>
+
+
+
+</LinearLayout>
