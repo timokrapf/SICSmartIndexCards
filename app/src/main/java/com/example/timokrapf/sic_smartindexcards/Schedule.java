@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 @Entity(tableName = "schedule_table")
-public class Schedule {
+public class Schedule  {
 
     @ColumnInfo(name = "schedule_title")
     private String subjectTitle;

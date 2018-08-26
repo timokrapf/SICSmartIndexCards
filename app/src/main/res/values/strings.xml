@@ -14,19 +14,19 @@
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="chosen_subject">Fach</string>
-    <string name="chosen_date">nächste Abfrage am</string>
-    <string name="add_button_learnplaner">speichern</string>
+    <string name="chosen_date">Nächste Abfrage am</string>
+    <string name="add_button_learnplaner">Speichern</string>
     <string name="chosen_time">Uhrzeit</string>
     <string name="schedule">Geplante Lerneinheiten</string>
     <string name="select_time">Wähle eine Zeit aus</string>
     <string name="no_subject_was_chosen">Kein Fach ausgewählt</string>
     <string name="no_schedulelist">Kein Lernplan erstellt</string>
     <string name="go_to_schedule">Zum Plan</string>
-    <string name="subject_activity_header">Deine Lernoptionen</string>
-    <string name="new_sic">neue Karte</string>
+    <string name="subject_activity_header">Deine Lernoptionen zu</string>
+    <string name="new_sic">Neue Karte</string>
     <string name="delete_schedule_dialog">Willst du diese Lerneinheit wirklich löschen?</string>
-    <string name="produce_new_sic">neue Karteikarte</string>
-    <string name="question">deine Frage</string>
-    <string name="answer">deine Antwort</string>
-    <string name="save">speichern</string>
+    <string name="produce_new_sic">Neue Karteikarte</string>
+    <string name="question">Deine Frage</string>
+    <string name="answer">Deine Antwort</string>
+    <string name="save">Speichern</string>
 </resources>

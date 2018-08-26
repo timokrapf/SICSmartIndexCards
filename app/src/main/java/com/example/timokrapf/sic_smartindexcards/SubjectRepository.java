@@ -20,6 +20,7 @@ public class SubjectRepository {
     private static boolean isNewSubject = true;
     private static boolean isNewSchedule = true;
     private LiveData<Subject> fetchedSubject;
+    private Schedule fetchedSchedule;
 
     SubjectRepository(Application application) {
         AppDatabase database = AppDatabase.getDatabase(application);
@@ -65,6 +66,16 @@ public class SubjectRepository {
             }
         }).start();
         return fetchedSubject;
+    }
+
+    public Schedule getScheduleByAttributes(final String subject, final String date, final String time) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                fetchedSchedule = myScheduleDao.getScheduleByAttributes(subject, date, time);
+            }
+        }).start();
+        return fetchedSchedule;
     }
 
     private static class SubjectUpdateTask extends AsyncTask<Subject, Void, String> {

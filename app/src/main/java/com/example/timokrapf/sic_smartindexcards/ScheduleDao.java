@@ -20,6 +20,9 @@ public interface ScheduleDao {
     @Query("SELECT * FROM schedule_table ORDER BY schedule_date")
     LiveData<List<Schedule>> getSchedule();
 
+    @Query("SELECT * FROM schedule_table WHERE schedule_title LIKE :scheduleTitle AND " + "schedule_date LIKE :scheduleDate AND " + "schedule_time LIKE :scheduleTime LIMIT 1")
+    Schedule getScheduleByAttributes(String scheduleTitle, String scheduleDate, String scheduleTime);
+
     @Query("DELETE FROM schedule_table WHERE schedule_title LIKE :scheduleTitle")
     void removeScheduleByName(String scheduleTitle);
 }

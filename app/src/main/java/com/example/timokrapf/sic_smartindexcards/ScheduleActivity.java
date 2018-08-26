@@ -11,16 +11,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ScheduleActivity extends FragmentActivity {
 
 
     private String date, time, subject;
+    private int day, year, month, hour, minute;
     private ScheduleAdapter adapter;
     private SubjectViewModel viewModel;
     private RecyclerView recyclerView;
     private TextView emptyText;
+    private Calendar calendar;
+    private ScheduleClient client;
 
 
     @Override
@@ -40,6 +46,8 @@ public class ScheduleActivity extends FragmentActivity {
         emptyText = (TextView) findViewById(android.R.id.empty);
 
     }
+
+
 
     private void initAdapter(){
         adapter = new ScheduleAdapter(this, new ScheduleAdapter.OnItemClickListener() {

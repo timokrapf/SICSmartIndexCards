@@ -11,17 +11,27 @@ import android.widget.EditText;
 public class NewSicActivity extends FragmentActivity {
 
     private EditText question, answer;
+    private String subjectTitle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_sic_activity);
         initUI();
+        handleIntent();
         initButtons();
         saveNewCards();
     }
 
-
+    private void handleIntent() {
+        Intent i = getIntent();
+        if(i != null) {
+            Bundle extras = i.getExtras();
+            if(extras != null) {
+                subjectTitle = extras.getString(Constants.SUBJECT_TITLE_KEY);
+            }
+        }
+    }
 
     private void initUI(){
         question = (EditText) findViewById(R.id.question_id);

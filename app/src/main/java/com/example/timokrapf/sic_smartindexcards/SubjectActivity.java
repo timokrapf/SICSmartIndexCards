@@ -17,18 +17,31 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
 
     private ImageButton newSic, quizCard, overviewSic, progressCard;
     private Button subjectsButton, scheduleButton;
+    private TextView activityHeading;
+    private String subjectTitle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subject_activity);
         initUI();
+        handleIntent();
         setOnClickListeners();
 
     }
 
+    private void handleIntent() {
+        Intent i = getIntent();
+        if(i != null) {
+            Bundle extras = i.getExtras();
+            if(extras != null) {
+                subjectTitle = extras.getString(Constants.SUBJECT_TITLE_KEY);
+                activityHeading.setText(getString(R.string.subject_activity_header) + " " + subjectTitle);
+            }
+        }
+    }
     private void initUI() {
-        TextView activityHeading = (TextView) findViewById(R.id.subject_activity_textview);
+        activityHeading = (TextView) findViewById(R.id.subject_activity_textview);
         newSic = (ImageButton) findViewById(R.id.new_sic_id);
         quizCard = (ImageButton) findViewById(R.id.quiz_card_id);
         overviewSic = (ImageButton) findViewById(R.id.overview_sics_id);
@@ -72,6 +85,9 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
 
     private void newSicButtonClicked() {
         Intent i = new Intent(SubjectActivity.this, NewSicActivity.class);
+        if(subjectTitle != null) {
+            i.putExtra(subjectTitle, Constants.SUBJECT_TITLE_KEY);
+        }
         startActivity(i);
     }
 

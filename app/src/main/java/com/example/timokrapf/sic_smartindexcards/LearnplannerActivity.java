@@ -154,11 +154,11 @@ public class LearnplannerActivity extends FragmentActivity{
             Toast.makeText(this, "Am " + date + " um " + chosenTime + " Uhr wirst du in "
                     + adapter.getSubjectTitle() + " ausgefragt", Toast.LENGTH_LONG).show();
             startScheduleActivity(date, chosenTime);
-            onDateSelectedButtonView();
+            onDateSelectedButtonView(date, chosenTime);
         }
     }
 
-    private void onDateSelectedButtonView(){
+    private void onDateSelectedButtonView(String date, String chosenTime){
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();
         int year = datePicker.getYear();
@@ -167,7 +167,7 @@ public class LearnplannerActivity extends FragmentActivity{
         c.set(Calendar.HOUR_OF_DAY, hour);
         c.set(Calendar.MINUTE, minute);
         c.set(Calendar.SECOND, 0);
-        scheduleClient.setAlarmForNotification(c, adapter.getSubjectTitle());
+        scheduleClient.setAlarmForNotification(c, adapter.getSubjectTitle(), date, chosenTime);
     }
 
     @Override

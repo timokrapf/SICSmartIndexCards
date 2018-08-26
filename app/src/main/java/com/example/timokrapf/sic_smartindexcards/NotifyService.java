@@ -40,8 +40,10 @@ public class NotifyService extends Service {
         if(intent.getBooleanExtra(INTENT_NOTIFY, false)) {
             Bundle extras = intent.getExtras();
             if (extras != null) {
-                String subject = extras.getString("Subject");
-            sendNotification(subject);
+                String subject = extras.getString(Constants.CHOSEN_SUBJECT);
+                String date = extras.getString(Constants.CHOSEN_DATE);
+                String time = extras.getString(Constants.CHOSEN_TIME);
+            sendNotification(subject, date, time);
         }
         }
         return START_NOT_STICKY;
@@ -57,7 +59,7 @@ public class NotifyService extends Service {
     */
 
     @SuppressWarnings("deprecation")
-    private void sendNotification(String subject) {
+    private void sendNotification(String subject, String date, String time) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(NotifyService.this);
                         mBuilder.setSmallIcon(R.drawable.logo_sic);
@@ -84,6 +86,7 @@ public class NotifyService extends Service {
             mNotificationManager.notify(NOTIFICATION, mBuilder.build());
             long[] pattern = {0,50,100,50,100,50,100,400,100,300,100,350,50,200,100,100,50,600};
             ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(pattern, -1);
+
         }
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         mBuilder.setSound(uri);
@@ -91,7 +94,7 @@ public class NotifyService extends Service {
 
 
         /*CharSequence title = "Alarm!!";
-        int icon = R.drawable.logo_sic;
+        int ion = R.drawable.logo_sic;
         CharSequence text = "Your notification time is upon us.";
         long time = System.currentTimeMillis();
         Notification notification = new Notification(icon, text, time);
@@ -102,6 +105,7 @@ public class NotifyService extends Service {
         stopSelf();
         */
     }
+
 }
 
 

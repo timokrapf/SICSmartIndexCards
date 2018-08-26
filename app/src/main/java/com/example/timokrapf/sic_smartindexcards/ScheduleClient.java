@@ -38,8 +38,8 @@ public class ScheduleClient {
         }
     };
 
-    public void setAlarmForNotification(Calendar c, String subject){
-        mLearnplannerService.setAlarm(c, subject);
+    public void setAlarmForNotification(Calendar c, String subject, String date, String time){
+        mLearnplannerService.setAlarm(c, subject, date, time);
     }
 
 
