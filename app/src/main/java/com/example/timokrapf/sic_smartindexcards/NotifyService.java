@@ -86,7 +86,6 @@ public class NotifyService extends Service {
             mNotificationManager.notify(NOTIFICATION, mBuilder.build());
             long[] pattern = {0,50,100,50,100,50,100,400,100,300,100,350,50,200,100,100,50,600};
             ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(pattern, -1);
-
         }
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         mBuilder.setSound(uri);

@@ -10,8 +10,9 @@ import java.util.List;
 
 /*
 https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#7
+https://www.techotopia.com/index.php/An_Android_Room_Database_and_Repository_Tutorial
  */
-public class SubjectRepository {
+public class SubjectRepository implements AsyncResult {
 
     private SubjectDao mySubjectDao;
     private ScheduleDao myScheduleDao;
@@ -19,7 +20,6 @@ public class SubjectRepository {
     private LiveData<List<Schedule>> myScheduleList;
     private static boolean isNewSubject = true;
     private static boolean isNewSchedule = true;
-    private LiveData<Subject> fetchedSubject;
     private Schedule fetchedSchedule;
 
     SubjectRepository(Application application) {
@@ -58,24 +58,17 @@ public class SubjectRepository {
         new ScheduleUpdateTask(myScheduleDao).execute(schedule);
     }
 
-    public LiveData<Subject> fetchOneSubjectByTitle(final String subjectTitle) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                fetchedSubject = mySubjectDao.findSubjectByName(subjectTitle);
-            }
-        }).start();
-        return fetchedSubject;
+    public Schedule findFetchedSchedule(String subject, String date, String time) {
+        String[] stringsForSchedule = {subject, date, time};
+        FindScheduleTask task = new FindScheduleTask(myScheduleDao);
+        task.delegate = this;
+        task.execute(stringsForSchedule);
+        return fetchedSchedule;
     }
 
-    public Schedule getScheduleByAttributes(final String subject, final String date, final String time) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                fetchedSchedule = myScheduleDao.getScheduleByAttributes(subject, date, time);
-            }
-        }).start();
-        return fetchedSchedule;
+    @Override
+    public void asyncFinished(Schedule schedule) {
+        fetchedSchedule = schedule;
     }
 
     private static class SubjectUpdateTask extends AsyncTask<Subject, Void, String> {
@@ -119,6 +112,26 @@ public class SubjectRepository {
                 scheduleDao.deleteSchedule(currentSchedule);
             }
             return null;
+        }
+    }
+
+    private static class FindScheduleTask extends AsyncTask<String, Void, Schedule> {
+
+        private ScheduleDao scheduleDao;
+        private SubjectRepository delegate = null;
+
+        FindScheduleTask(ScheduleDao dao) {
+            scheduleDao = dao;
+        }
+
+        @Override
+        protected Schedule doInBackground(String... strings) {
+            return scheduleDao.getScheduleByAttributes(strings[0], strings[1], strings[2]);
+        }
+
+        @Override
+        protected void onPostExecute(Schedule schedule) {
+            delegate.asyncFinished(schedule);
         }
     }
 }

@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 @Database(entities = {Subject.class, Schedule.class}, version = 2)
+
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

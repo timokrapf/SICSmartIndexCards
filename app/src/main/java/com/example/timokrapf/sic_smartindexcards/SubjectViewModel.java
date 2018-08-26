@@ -31,9 +31,6 @@ public class SubjectViewModel extends AndroidViewModel {
         return subjects;
     }
 
-    LiveData<Subject> getFetchedSubject(String subjectTitle) {
-        return myRepository.fetchOneSubjectByTitle(subjectTitle);
-    }
 
     public void insertSubject(Subject subject) {
         myRepository.insertSubject(subject);
