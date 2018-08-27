@@ -29,4 +29,6 @@
     <string name="question">Deine Frage</string>
     <string name="answer">Deine Antwort</string>
     <string name="save">Speichern</string>
+    <string name="sic_quiz">Teste dich</string>
+    <string name="instruction_text">Wische nach rechts, um die Lösung zu erfahren!</string>
 </resources>

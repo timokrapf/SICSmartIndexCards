@@ -16,11 +16,14 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import java.util.List;
+
 public class NotifyService extends Service {
 
     private static final int NOTIFICATION = 123;
     public static final String INTENT_NOTIFY = "com.blundell.tut.service.INTENT_NOTIFY";
     private final IBinder iBinder = new ServiceBinder();
+
 
     public class ServiceBinder extends Binder {
         NotifyService getService() {
@@ -60,52 +63,40 @@ public class NotifyService extends Service {
 
     @SuppressWarnings("deprecation")
     private void sendNotification(String subject, String date, String time) {
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(NotifyService.this);
-                        mBuilder.setSmallIcon(R.drawable.logo_sic);
-                        mBuilder.setContentTitle("Abfrage");
-                        mBuilder.setContentText("deine Abfrage in " + subject);
-                        mBuilder.setDefaults(Notification.DEFAULT_ALL);
-                        mBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
-        Intent resultIntent = new Intent(this, SubjectActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(SubjectActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(NotifyService.this);
+            mBuilder.setSmallIcon(R.drawable.logo_sic);
+            mBuilder.setContentTitle("Abfrage");
+            mBuilder.setContentText("deine Abfrage in " + subject);
+            mBuilder.setDefaults(Notification.DEFAULT_ALL);
+            mBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
+            Intent resultIntent = new Intent(this, SubjectActivity.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+            stackBuilder.addParentStack(SubjectActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            mBuilder.setContentIntent(resultPendingIntent);
 
-        mBuilder.setAutoCancel(true);
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mBuilder.setAutoCancel(true);
+            NotificationManager mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if(mNotificationManager != null) {
-            mNotificationManager.notify(NOTIFICATION, mBuilder.build());
-            long[] pattern = {0,50,100,50,100,50,100,400,100,300,100,350,50,200,100,100,50,600};
-            ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(pattern, -1);
+            if (mNotificationManager != null) {
+                mNotificationManager.notify(NOTIFICATION, mBuilder.build());
+                long[] pattern = {0, 50, 100, 50, 100, 50, 100, 400, 100, 300, 100, 350, 50, 200, 100, 100, 50, 600};
+                ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(pattern, -1);
+            }
+            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+            mBuilder.setSound(uri);
+            stopSelf();
         }
-        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        mBuilder.setSound(uri);
-        stopSelf();
-
-
-        /*CharSequence title = "Alarm!!";
-        int ion = R.drawable.logo_sic;
-        CharSequence text = "Your notification time is upon us.";
-        long time = System.currentTimeMillis();
-        Notification notification = new Notification(icon, text, time);
-        PendingIntent contentIntent = PendingIntent.getActivity(NotifyService.this,
-                0, new Intent(NotifyService.this, SubjectActivity.class), 0);
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notificationManager.notify(NOTIFICATION, notification);
-        stopSelf();
-        */
     }
 
-}
+
 
 
 

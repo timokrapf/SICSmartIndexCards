@@ -41,7 +41,8 @@
         android:datePickerMode="spinner"
         android:calendarViewShown="false"
         android:layout_centerHorizontal="true"
-        android:id="@+id/date_picker_id"/>
+        android:id="@+id/date_picker_id"
+        />
 
     <TextView
         android:layout_width="wrap_content"

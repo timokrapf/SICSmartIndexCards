@@ -43,6 +43,7 @@ public class ScheduleClient {
     }
 
 
+
     public void doUnbindService() {
         if (mIsBound) {
             context.unbindService(connection);

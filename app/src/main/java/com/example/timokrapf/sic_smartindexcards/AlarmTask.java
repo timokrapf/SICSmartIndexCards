@@ -32,7 +32,6 @@ public class AlarmTask implements Runnable {
         intent.putExtra(Constants.CHOSEN_DATE, date);
         intent.putExtra(Constants.CHOSEN_TIME, time);
         PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, 0);
-
         alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
     }
 }

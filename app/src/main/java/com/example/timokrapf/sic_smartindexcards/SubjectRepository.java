@@ -2,9 +2,7 @@ package com.example.timokrapf.sic_smartindexcards;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -20,7 +18,7 @@ public class SubjectRepository implements AsyncResult {
     private LiveData<List<Schedule>> myScheduleList;
     private static boolean isNewSubject = true;
     private static boolean isNewSchedule = true;
-    private Schedule fetchedSchedule;
+    private List<Schedule> fetchedSchedule;
 
     SubjectRepository(Application application) {
         AppDatabase database = AppDatabase.getDatabase(application);
@@ -58,7 +56,7 @@ public class SubjectRepository implements AsyncResult {
         new ScheduleUpdateTask(myScheduleDao).execute(schedule);
     }
 
-    public Schedule findFetchedSchedule(String subject, String date, String time) {
+    public List<Schedule> findFetchedSchedule(String subject, String date, String time) {
         String[] stringsForSchedule = {subject, date, time};
         FindScheduleTask task = new FindScheduleTask(myScheduleDao);
         task.delegate = this;
@@ -66,8 +64,16 @@ public class SubjectRepository implements AsyncResult {
         return fetchedSchedule;
     }
 
+    public void removeScheduleList(List<Schedule> schedules){
+        Schedule[] scheduleArray = new Schedule[schedules.size()];
+        for (int i = 0; i < schedules.size(); i++){
+            scheduleArray[i] = schedules.get(i);
+        }
+        new DeleteScheduleListTask(myScheduleDao).execute(scheduleArray);
+    }
+
     @Override
-    public void asyncFinished(Schedule schedule) {
+    public void asyncFinished(List<Schedule> schedule) {
         fetchedSchedule = schedule;
     }
 
@@ -115,7 +121,7 @@ public class SubjectRepository implements AsyncResult {
         }
     }
 
-    private static class FindScheduleTask extends AsyncTask<String, Void, Schedule> {
+    private static class FindScheduleTask extends AsyncTask<String, Void, List<Schedule>> {
 
         private ScheduleDao scheduleDao;
         private SubjectRepository delegate = null;
@@ -125,13 +131,25 @@ public class SubjectRepository implements AsyncResult {
         }
 
         @Override
-        protected Schedule doInBackground(String... strings) {
+        protected List<Schedule> doInBackground(String... strings) {
             return scheduleDao.getScheduleByAttributes(strings[0], strings[1], strings[2]);
         }
 
         @Override
-        protected void onPostExecute(Schedule schedule) {
+        protected void onPostExecute(List<Schedule> schedule) {
             delegate.asyncFinished(schedule);
+        }
+    }
+
+    private static class DeleteScheduleListTask extends AsyncTask<Schedule, Void, Void>{
+
+        private ScheduleDao scheduleDao;
+        DeleteScheduleListTask(ScheduleDao dao){
+            scheduleDao = dao;
+        }
+        @Override
+        protected Void doInBackground(Schedule... lists) {
+            return null;
         }
     }
 }

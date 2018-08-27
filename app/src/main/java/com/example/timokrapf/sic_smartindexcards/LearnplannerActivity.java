@@ -66,6 +66,7 @@ public class LearnplannerActivity extends FragmentActivity{
     public void initUI() {
         time = (TextView) findViewById(R.id.time_id);
         datePicker = (DatePicker) findViewById(R.id.date_picker_id);
+        datePicker.setMinDate(System.currentTimeMillis() - 1000);
         scheduleClient = new ScheduleClient(this);
         scheduleClient.doBindService();
     }
