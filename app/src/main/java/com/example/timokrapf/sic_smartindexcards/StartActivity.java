@@ -43,8 +43,15 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         initButtons();
         setClickListener();
 
-        
-        //test if push works
+
+        initActionBar();
+    }
+
+
+
+    private void initActionBar(){
+        getActionBar().setTitle("Smart Index Cards");
+        getActionBar().setIcon(R.drawable.logo_sic);
     }
 
     /*

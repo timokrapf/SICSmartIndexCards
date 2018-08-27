@@ -34,4 +34,5 @@
     <string name="settings_test2_toggle">toggle something</string>
     <string name="settings_test3">Test-Einstellung3</string>
     <string name="settings_test3_radio">Test-RadioButton</string>
+    <string name="actionbar_title">Smart Index Cards</string>
 </resources>

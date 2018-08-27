@@ -5,7 +5,7 @@
     <item
         android:id = "@+id/delete_button_actionbar"
         android:title = "@string/delete_button_actionbar"
-        app:showAsAction = "ifRoom"
+        app:showAsAction = "always"
         android:icon = "@drawable/delete_button_bin"/>
 
     <item
