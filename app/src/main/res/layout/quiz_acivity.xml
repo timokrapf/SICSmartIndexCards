@@ -27,6 +27,28 @@
         android:scaleX="0.8"
         android:scaleY="0.5" />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/solution_id"
+        android:hint="@string/solution"
+        android:textAlignment="center"
+        android:maxLength="200"
+        android:maxLines="5"
+        android:inputType="text|textMultiLine"
+        android:paddingBottom="20dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/enter"
+        android:layout_marginBottom="3dp"
+        android:id="@+id/save_button_id"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        />
+
     <LinearLayout
         android:id="@+id/buttons_id"
         android:layout_width="match_parent"
@@ -72,7 +94,7 @@
             android:text="@string/instruction_text"
             android:textSize="25sp"
             android:gravity="bottom|center"
-            android:paddingBottom="70dp"
+            android:paddingBottom="150dp"
             android:textColor="@color/colorPrimaryLight"
             />
 

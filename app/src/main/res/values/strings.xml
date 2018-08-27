@@ -31,4 +31,7 @@
     <string name="save">Speichern</string>
     <string name="sic_quiz">Teste dich</string>
     <string name="instruction_text">Wische nach rechts, um die Lösung zu erfahren!</string>
+    <string name="overview_heaer">Deine sic-Übersicht</string>
+    <string name="solution">Schreibe deine Lösung</string>
+    <string name="enter">Eingabe</string>
 </resources>
