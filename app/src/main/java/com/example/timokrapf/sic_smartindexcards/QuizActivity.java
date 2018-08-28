@@ -7,12 +7,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.Layout;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class QuizActivity extends FragmentActivity {
 
@@ -24,6 +27,7 @@ public class QuizActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_acivity);
         initUI();
+        initActionBar();
         initButtons();
         initInstruction();
 
@@ -99,5 +103,40 @@ public class QuizActivity extends FragmentActivity {
     private void scheduleButtonClicked(){
         Intent i = new Intent (QuizActivity.this, LearnplannerActivity.class);
         startActivity(i);
+    }
+
+
+    //ActionBar:
+    //todo: if possible: replace initActionBar() with xml style
+    private void initActionBar(){
+        getActionBar().setTitle(R.string.quiz);
+        getActionBar().setIcon(R.drawable.abfrage_karte);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_actionbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_button_actionbar:
+                //todo delete item
+                Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.settings_button_actionbar:
+                //open settings activity
+                Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
+                settingsButtonActionbarClicked();
+                break;
+        }
+        return true;
+    }
+
+    private void settingsButtonActionbarClicked(){
+        Intent settingsIntent = new Intent(QuizActivity.this, SettingsActivity.class);
+        startActivity(settingsIntent);
     }
 }

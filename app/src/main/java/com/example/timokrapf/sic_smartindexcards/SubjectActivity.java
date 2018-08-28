@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -25,6 +26,7 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subject_activity);
         initUI();
+        initActionBar();
         handleIntent();
         setOnClickListeners();
 
@@ -37,6 +39,8 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
             if(extras != null) {
                 subjectTitle = extras.getString(Constants.SUBJECT_TITLE_KEY);
                 activityHeading.setText(getString(R.string.subject_activity_header) + " " + subjectTitle);
+                //ActionBar title displays selected subject
+                getActionBar().setTitle("Fach: " + subjectTitle);
             }
         }
     }
@@ -116,14 +120,38 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
         startActivity(i);
     }
 
+    //ActionBar:
+    //todo: if possible: replace initActionBar() with xml style
+    private void initActionBar(){
+        //title is set in handleIntent()
+        getActionBar().setIcon(R.drawable.subject_icon_stripes);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_actionbar, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_button_actionbar:
+                //todo delete item
+                Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.settings_button_actionbar:
+                //open settings activity
+                Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
+                settingsButtonActionbarClicked();
+                break;
+        }
         return true;
+    }
+
+    private void settingsButtonActionbarClicked(){
+        Intent settingsIntent = new Intent(SubjectActivity.this, SettingsActivity.class);
+        startActivity(settingsIntent);
     }
 
 

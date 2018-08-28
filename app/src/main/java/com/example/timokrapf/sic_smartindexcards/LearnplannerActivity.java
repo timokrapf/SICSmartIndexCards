@@ -21,6 +21,8 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -57,10 +59,12 @@ public class LearnplannerActivity extends FragmentActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.learnplaner_activity);
         initUI();
+        initActionBar();
         initButtons();
         setClickListener();
         getList();
         initSpinner();
+
     }
 
     public void initUI() {
@@ -201,5 +205,40 @@ public class LearnplannerActivity extends FragmentActivity{
     private void initSpinner() {
         Spinner subjectSpinner = (Spinner) findViewById(R.id.spinner_chosen_subject_id);
         subjectSpinner.setAdapter(adapter);
+    }
+
+
+    //ActionBar:
+    //todo: if possible: replace initActionBar() with xml style
+    private void initActionBar(){
+        getActionBar().setTitle(R.string.learnplaner);
+        getActionBar().setIcon(R.drawable.learnplanner_icon_calendar);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_actionbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_button_actionbar:
+                //todo delete item
+                Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.settings_button_actionbar:
+                //open settings activity
+                Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
+                settingsButtonActionbarClicked();
+                break;
+        }
+        return true;
+    }
+
+    private void settingsButtonActionbarClicked(){
+        Intent settingsIntent = new Intent(LearnplannerActivity.this, SettingsActivity.class);
+        startActivity(settingsIntent);
     }
 }

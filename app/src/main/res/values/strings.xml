@@ -34,4 +34,19 @@
     <string name="overview_heaer">Deine sic-Übersicht</string>
     <string name="solution">Schreibe deine Lösung</string>
     <string name="enter">Eingabe</string>
+
+    <string name="delete">Löschen</string>
+    <string name="settings">Einstellungen</string>
+    <string name="settings_test1">Test-Einstellung1</string>
+    <string name="settings_test1_switch">Switch something</string>
+    <string name="settings_test2">Test-Einstellung2</string>
+    <string name="settings_test2_toggle">toggle something</string>
+    <string name="settings_test3">Test-Einstellung3</string>
+    <string name="settings_test3_radio">Test-RadioButton</string>
+    <string name="actionbar_title_start">Smart Index Cards</string>
+    <string name="learnplaner">Lernplaner</string>
+    <string name="progress">Lernerfolg</string>
+    <string name="quiz">Abfrage</string>
+    <string name="subject_actionbar">Fach:</string>
+    <string name="overview_actionbar">Kartenübersicht</string>
 </resources>

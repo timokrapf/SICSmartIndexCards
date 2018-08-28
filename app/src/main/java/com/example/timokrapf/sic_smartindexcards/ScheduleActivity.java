@@ -8,9 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -34,6 +37,7 @@ public class ScheduleActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.saved_schedule_activity);
         initUI();
+        initActionBar();
         initAdapter();
         initModel();
         getListData();
@@ -124,6 +128,41 @@ public class ScheduleActivity extends FragmentActivity {
             schedule.setTime(time);
             viewModel.insertSchedule(schedule);
         }
+    }
+
+    //ActionBar:
+    //todo: if possible: replace initActionBar() with xml style
+    private void initActionBar(){
+        getActionBar().setTitle(R.string.schedule_planner);
+        //todo: icon for learnplanner
+        getActionBar().setIcon(R.drawable.logo_sic);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_actionbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_button_actionbar:
+                //todo delete item
+                Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.settings_button_actionbar:
+                //open settings activity
+                Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
+                settingsButtonActionbarClicked();
+                break;
+        }
+        return true;
+    }
+
+    private void settingsButtonActionbarClicked(){
+        Intent settingsIntent = new Intent(ScheduleActivity.this, SettingsActivity.class);
+        startActivity(settingsIntent);
     }
 }
 

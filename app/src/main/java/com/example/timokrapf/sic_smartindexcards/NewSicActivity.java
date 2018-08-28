@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class NewSicActivity extends FragmentActivity {
 
@@ -18,6 +21,7 @@ public class NewSicActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_sic_activity);
         initUI();
+        initActionBar();
         handleIntent();
         initButtons();
         saveNewCards();
@@ -80,5 +84,40 @@ public class NewSicActivity extends FragmentActivity {
     private void saveNewCards(){
         String finalQuestion = question.getText().toString();
         String finalAnswer = answer.getText().toString();
+    }
+
+
+    //ActionBar:
+    //todo: if possible: replace initActionBar() with xml style
+    private void initActionBar(){
+        getActionBar().setTitle(R.string.new_sic);
+        getActionBar().setIcon(R.drawable.karteikarte);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_actionbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_button_actionbar:
+                //todo delete item
+                Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.settings_button_actionbar:
+                //open settings activity
+                Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
+                settingsButtonActionbarClicked();
+                break;
+        }
+        return true;
+    }
+
+    private void settingsButtonActionbarClicked(){
+        Intent settingsIntent = new Intent(NewSicActivity.this, SettingsActivity.class);
+        startActivity(settingsIntent);
     }
 }
