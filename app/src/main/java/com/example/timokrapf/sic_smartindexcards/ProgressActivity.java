@@ -7,16 +7,57 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ProgressActivity extends FragmentActivity {
 
+    private TextView progressText;
+    private int five = 5;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.recyclerview_subject_item);
-
+        setContentView(R.layout.progress_activity);
+        initUI();
         initActionBar();
+        initButtons();
+
+    }
+
+    private void initUI(){
+       progressText = (TextView)findViewById(R.id.progress_textview_id);
+       progressText.setText("Du hast bereits " + five +  " von " + five + " Karten richtig beantwortet");
+    }
+
+    private void initButtons(){
+        Button subjectButton = (Button) findViewById(R.id.subject_button_id);
+        subjectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                subjectButtonClicked();
+            }
+        });
+        Button scheduleButton = (Button) findViewById(R.id.schedule_planner_button_id);
+        scheduleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scheduleButtonClicked();
+            }
+        });
+    }
+
+    private void subjectButtonClicked(){
+        Intent i = new Intent(ProgressActivity.this, StartActivity.class);
+        startActivity(i);
+    }
+
+    private void scheduleButtonClicked(){
+        Intent i = new Intent (ProgressActivity.this, LearnplannerActivity.class);
+        startActivity(i);
     }
 
     //ActionBar:

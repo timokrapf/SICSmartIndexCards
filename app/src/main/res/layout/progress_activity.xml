@@ -1,6 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/progress_activity_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/progress_heading"
+        android:layout_centerHorizontal="true"
+        android:textSize="25sp"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/progress_textview_id"
+        android:layout_centerHorizontal="true"
+        android:textSize="25sp"
+        android:layout_below="@id/progress_activity_header"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/buttons_id"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:weightSum="1">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/subject_button"
+            android:id="@+id/subject_button_id"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            style="?android:attr/buttonBarButtonStyle"
+            />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/go_to_schedule"
+            android:id="@+id/schedule_planner_button_id"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            style="?android:attr/buttonBarButtonStyle"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

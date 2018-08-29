@@ -6,16 +6,65 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.Toast;
 
 public class OverviewActivity extends FragmentActivity {
 
+    private GridView gridView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.recyclerview_subject_item);
+        setContentView(R.layout.overview_activity);
 
         initActionBar();
+        initUI();
+        initButtons();
+    }
+
+    private void initUI(){
+        initGridView();
+    }
+
+    //LAYOUT STEHT THEORETISCH, MUSS NUR ZWECKS BEFÜLLUNG DER GRIDVIEW AUF FERTIGUNG DER NEWSIC WARTEN
+    private void initGridView(){
+        sic sic_data[] = new sic[]{
+                new sic(R.drawable.karteikarte)
+        };
+
+        SicAdapter adapter = new SicAdapter(this, R.layout.gridview_item, sic_data);
+        gridView = (GridView) findViewById(R.id.gridView_id);
+        gridView.setAdapter(adapter);
+    }
+
+    private void initButtons(){
+        Button subjectButton = (Button) findViewById(R.id.subject_button_id);
+        subjectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                subjectButtonClicked();
+            }
+        });
+        Button scheduleButton = (Button) findViewById(R.id.schedule_planner_button_id);
+        scheduleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scheduleButtonClicked();
+            }
+        });
+    }
+
+    private void subjectButtonClicked(){
+        Intent i = new Intent(OverviewActivity.this, StartActivity.class);
+        startActivity(i);
+    }
+
+    private void scheduleButtonClicked(){
+        Intent i = new Intent (OverviewActivity.this, LearnplannerActivity.class);
+        startActivity(i);
     }
 
 
