@@ -17,6 +17,7 @@ public class ProgressActivity extends FragmentActivity {
 
     private TextView progressText;
     private int five = 5;
+    private int seven = 7;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class ProgressActivity extends FragmentActivity {
 
     private void initUI(){
        progressText = (TextView)findViewById(R.id.progress_textview_id);
-       progressText.setText("Du hast bereits " + five +  " von " + five + " Karten richtig beantwortet");
+       progressText.setText("Du hast bereits " + five +  " von " + seven + " Karten richtig beantwortet");
     }
 
     private void initButtons(){
