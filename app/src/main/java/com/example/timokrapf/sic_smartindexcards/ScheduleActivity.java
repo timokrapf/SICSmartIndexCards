@@ -134,13 +134,12 @@ public class ScheduleActivity extends FragmentActivity {
     //todo: if possible: replace initActionBar() with xml style
     private void initActionBar(){
         getActionBar().setTitle(R.string.schedule_planner);
-        //todo: icon for learnplanner
         getActionBar().setIcon(R.drawable.logo_sic);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_actionbar, menu);
+        getMenuInflater().inflate(R.menu.menu_actionbar_other, menu);
         return true;
     }
 

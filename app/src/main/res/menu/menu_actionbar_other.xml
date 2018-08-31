@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <item
-        android:id = "@+id/delete_button_actionbar"
-        android:title = "@string/delete"
-        android:showAsAction = "always"
-        android:icon = "@drawable/delete_button_bin"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id = "@+id/settings_button_actionbar"
         android:title = "@string/settings"
         android:showAsAction = "ifRoom"
         android:icon = "@drawable/settings_button_gear"/>
-
-
-    <!-- icons retrieved from https://material.io/tools/icons/?style=baseline -->
-
 </menu>

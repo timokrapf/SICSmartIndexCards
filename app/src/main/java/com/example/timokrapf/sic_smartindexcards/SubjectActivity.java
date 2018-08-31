@@ -129,7 +129,7 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_actionbar, menu);
+        getMenuInflater().inflate(R.menu.menu_actionbar_other, menu);
         return true;
     }
 
