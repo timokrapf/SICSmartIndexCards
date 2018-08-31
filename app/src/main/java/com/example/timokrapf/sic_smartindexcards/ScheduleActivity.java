@@ -23,13 +23,11 @@ public class ScheduleActivity extends FragmentActivity {
 
 
     private String date, time, subject;
-    private int day, year, month, hour, minute;
     private ScheduleAdapter adapter;
     private SubjectViewModel viewModel;
     private RecyclerView recyclerView;
     private TextView emptyText;
-    private Calendar calendar;
-    private ScheduleClient client;
+    private Schedule schedule;
 
 
     @Override
@@ -37,10 +35,10 @@ public class ScheduleActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.saved_schedule_activity);
         initUI();
+        handleIntent();
         initActionBar();
         initAdapter();
         initModel();
-        getListData();
         enterNewScheduleItem();
         initButtons();
     }
@@ -57,6 +55,10 @@ public class ScheduleActivity extends FragmentActivity {
         adapter = new ScheduleAdapter(this, new ScheduleAdapter.OnItemClickListener() {
             @Override
             public void onItemLongClicked(Schedule schedule) {
+                Intent intent = new Intent(ScheduleActivity.this, ServiceReceiver.class);
+                intent.putExtra(Constants.CHOSEN_SCHEDULE, schedule);
+                intent.putExtra(Constants.RECEIVER_STATUS, Constants.STOP_ALARM_VALUE);
+                sendBroadcast(intent);
                 viewModel.deleteSchedule(schedule);
             }
         });
@@ -108,25 +110,23 @@ public class ScheduleActivity extends FragmentActivity {
         startActivity(i);
     }
 
-    private void getListData(){
+    private void handleIntent(){
         Intent i = getIntent();
         if(i != null) {
             Bundle extras = i.getExtras();
             if (extras != null) {
-                date = extras.getString(Constants.CHOSEN_DATE);
-                time = extras.getString(Constants.CHOSEN_TIME);
-                subject = extras.getString(Constants.CHOSEN_SUBJECT);
+               schedule = extras.getParcelable(Constants.CHOSEN_SCHEDULE);
             }
         }
     }
 
     private void enterNewScheduleItem() {
-        if(date != null && time != null && subject != null) {
-            Schedule schedule = new Schedule();
-            schedule.setSubjectTitle(subject);
-            schedule.setDate(date);
-            schedule.setTime(time);
+        if(schedule != null) {
             viewModel.insertSchedule(schedule);
+            Intent intent = new Intent(ScheduleActivity.this, ServiceReceiver.class);
+            intent.putExtra(Constants.CHOSEN_SCHEDULE, schedule);
+            intent.putExtra(Constants.RECEIVER_STATUS, Constants.START_ALARM_VALUE);
+            sendBroadcast(intent);
         }
     }
 

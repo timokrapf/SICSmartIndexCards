@@ -56,11 +56,10 @@ public class SubjectRepository implements AsyncResult {
         new ScheduleUpdateTask(myScheduleDao).execute(schedule);
     }
 
-    public List<Schedule> findFetchedSchedule(String subject, String date, String time) {
-        String[] stringsForSchedule = {subject, date, time};
+    public List<Schedule> findFetchedSchedule(String subject) {
         FindScheduleTask task = new FindScheduleTask(myScheduleDao);
         task.delegate = this;
-        task.execute(stringsForSchedule);
+        task.execute(subject);
         return fetchedSchedule;
     }
 
@@ -132,7 +131,7 @@ public class SubjectRepository implements AsyncResult {
 
         @Override
         protected List<Schedule> doInBackground(String... strings) {
-            return scheduleDao.getScheduleByAttributes(strings[0], strings[1], strings[2]);
+            return scheduleDao.getScheduleByAttributes(strings[0]);
         }
 
         @Override
@@ -149,6 +148,7 @@ public class SubjectRepository implements AsyncResult {
         }
         @Override
         protected Void doInBackground(Schedule... lists) {
+            scheduleDao.deleteScheduleList(lists);
             return null;
         }
     }

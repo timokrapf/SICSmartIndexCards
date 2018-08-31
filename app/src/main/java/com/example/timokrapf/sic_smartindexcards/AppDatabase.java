@@ -10,7 +10,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Subject.class, Schedule.class}, version = 2)
+@Database(entities = {Subject.class, Schedule.class}, version = 3)
 
 public abstract class AppDatabase extends RoomDatabase {
 

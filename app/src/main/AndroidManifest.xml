@@ -74,10 +74,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".LearnplannerService"
-            android:enabled="true"/>
+
         <service android:name=".NotifyService"
             android:enabled="true"/>
+        <receiver
+            android:name=".ServiceReceiver"
+            android:enabled="true"
+            android:process=":remote" />
     </application>
 
 </manifest>
