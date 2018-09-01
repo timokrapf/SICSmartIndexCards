@@ -28,6 +28,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    compile 'com.andorid.support:appcompat-v7:27.1.1'
     /*
     https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#2
      */

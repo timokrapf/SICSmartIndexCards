@@ -9,14 +9,15 @@
         android:layout_height="wrap_content"
         android:text="@string/progress_heading"
         android:layout_centerHorizontal="true"
-        android:textSize="25sp"/>
+        android:textSize="35sp"
+        android:paddingTop="25dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/progress_textview_id"
         android:layout_centerHorizontal="true"
-        android:textSize="25sp"
+        android:textSize="30sp"
         android:layout_below="@id/progress_activity_header"
         android:paddingTop="20dp"
         />
@@ -50,7 +51,7 @@
             android:id="@+id/subject_button_id"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
+            android:textSize="30sp"
             style="?android:attr/buttonBarButtonStyle"
             />
 
@@ -62,7 +63,7 @@
             android:id="@+id/schedule_planner_button_id"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
+            android:textSize="30sp"
             style="?android:attr/buttonBarButtonStyle"
             />
 

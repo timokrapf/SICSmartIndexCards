@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/frame_layout" >
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/relative_layout_id">
+
+    <TextView
+        android:id="@+id/quiz_activity_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="25dp"
+        android:text="@string/sic_quiz"
+        android:textSize="35sp"
+        android:layout_alignParentTop="true"/>
+
+    <LinearLayout
+        android:id="@+id/linear_layout_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_below="@id/quiz_activity_textview">
+
+    <TextView
+        android:id="@+id/question_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:background="@drawable/karteikarte"
+        android:scaleX="0.8"
+        android:scaleY="0.5"
+        android:textSize="35sp"
+      />
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/solution_id"
+        android:hint="@string/solution"
+        android:textAlignment="center"
+        android:maxLength="200"
+        android:maxLines="5"
+        android:inputType="text|textMultiLine"
+        android:paddingBottom="20dp"
+        android:layout_weight="0.5"
+        android:layout_gravity="center_vertical"
+        android:textSize="35sp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical"
+        android:text="@string/enter"
+        android:layout_marginBottom="3dp"
+        android:id="@+id/save_button_id"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:textSize="35sp"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttons_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/subject_button_id"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@color/colorPrimary"
+            android:text="@string/subject_button"
+            android:textColor="@android:color/white"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/schedule_planner_button_id"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@color/colorPrimary"
+            android:text="@string/schedule_planner"
+            android:textColor="@android:color/white"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/instruction_layer_id">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/instruction_text"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:paddingBottom="250dp"
+            android:textColor="@color/colorPrimaryLight"
+            />
+
+    </RelativeLayout>
+
+</FrameLayout>
