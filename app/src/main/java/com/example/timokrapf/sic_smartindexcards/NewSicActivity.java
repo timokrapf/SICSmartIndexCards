@@ -1,8 +1,12 @@
 package com.example.timokrapf.sic_smartindexcards;
 
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,10 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class NewSicActivity extends FragmentActivity {
 
     private EditText question, answer;
-    private String subjectTitle;
+    private Subject subject;
+    private String emptyText = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,15 +31,16 @@ public class NewSicActivity extends FragmentActivity {
         initActionBar();
         handleIntent();
         initButtons();
-        saveNewCards();
     }
+
+
 
     private void handleIntent() {
         Intent i = getIntent();
         if(i != null) {
             Bundle extras = i.getExtras();
             if(extras != null) {
-                subjectTitle = extras.getString(Constants.SUBJECT_TITLE_KEY);
+                subject = extras.getParcelable(Constants.CHOSEN_SUBJECT);
             }
         }
     }
@@ -40,7 +48,6 @@ public class NewSicActivity extends FragmentActivity {
     private void initUI(){
         question = (EditText) findViewById(R.id.question_id);
         answer = (EditText) findViewById(R.id.answer_id);
-
     }
 
     private void initButtons(){
@@ -68,7 +75,20 @@ public class NewSicActivity extends FragmentActivity {
     }
 
     private void saveButtonClicked(){
-
+        if(subject != null) {
+            String questionString = question.getText().toString();
+            String answerString = answer.getText().toString();
+            if(questionString.equals(emptyText) || answerString.equals(emptyText)) {
+               Toast.makeText(this, getString(R.string.no_complete_card), Toast.LENGTH_SHORT).show();
+            } else {
+                ArrayList<SmartIndexCards> cardsList = subject.getCards();
+                SmartIndexCards card = new SmartIndexCards(subject.getSubjectTitle(), questionString, answerString);
+                cardsList.add(card);
+                answer.setText(emptyText);
+                question.setText(emptyText);
+                Toast.makeText(this, getString(R.string.new_card), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void subjectButtonClicked(){
@@ -80,12 +100,6 @@ public class NewSicActivity extends FragmentActivity {
         Intent i = new Intent (NewSicActivity.this, LearnplannerActivity.class);
         startActivity(i);
     }
-
-    private void saveNewCards(){
-        String finalQuestion = question.getText().toString();
-        String finalAnswer = answer.getText().toString();
-    }
-
 
     //ActionBar:
     //todo: if possible: replace initActionBar() with xml style

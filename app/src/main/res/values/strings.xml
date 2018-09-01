@@ -50,6 +50,8 @@
     <string name="overview_actionbar">Kartenübersicht</string>
     <string name="index_card">Karteikarte</string>
     <string name="progress_heading">Dein Lernfortschritt</string>
+    <string name="no_complete_card">Eingaben für eine korrekte SIC fehlen</string>
+    <string name="new_card">Es wurde eine neue Karte für dein Fach hinzugefügt</string>
     <string name="notification_pref_key">notification_pref</string>
     <string name="notification_pref_title">Benachrichtigungen</string>
 </resources>

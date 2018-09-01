@@ -49,10 +49,10 @@ public class LearnplannerActivity extends FragmentActivity{
     private SubjectSpinnerAdapter adapter;
     private TextView time;
     private DatePicker datePicker;
-    private ScheduleClient scheduleClient;
     private TimePickerDialog timePicker;
     private int hour;
     private int minute;
+    private Schedule schedule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +71,7 @@ public class LearnplannerActivity extends FragmentActivity{
         time = (TextView) findViewById(R.id.time_id);
         datePicker = (DatePicker) findViewById(R.id.date_picker_id);
         datePicker.setMinDate(System.currentTimeMillis() - 1000);
-        scheduleClient = new ScheduleClient(this);
-        scheduleClient.doBindService();
+
     }
 
     public void initButtons() {
@@ -158,8 +157,8 @@ public class LearnplannerActivity extends FragmentActivity{
         } else {
             Toast.makeText(this, "Am " + date + " um " + chosenTime + " Uhr wirst du in "
                     + adapter.getSubjectTitle() + " ausgefragt", Toast.LENGTH_LONG).show();
-            startScheduleActivity(date, chosenTime);
             onDateSelectedButtonView(date, chosenTime);
+            startScheduleActivity();
         }
     }
 
@@ -172,22 +171,20 @@ public class LearnplannerActivity extends FragmentActivity{
         c.set(Calendar.HOUR_OF_DAY, hour);
         c.set(Calendar.MINUTE, minute);
         c.set(Calendar.SECOND, 0);
-        scheduleClient.setAlarmForNotification(c, adapter.getSubjectTitle(), date, chosenTime);
+        schedule = new Schedule();
+        schedule.setSubjectTitle(adapter.getSubjectTitle());
+        schedule.setTime(chosenTime);
+        schedule.setDate(date);
+        schedule.setAlarmTime(c.getTimeInMillis());
+        int requestCode = (int) c.getTimeInMillis() + schedule.getScheduleId();
+        schedule.setRequestCode(requestCode);
     }
 
-    @Override
-    protected void onStop() {
-        if(scheduleClient != null) {
-            scheduleClient.doUnbindService();
-        }
-        super.onStop();
-    }
 
-    private void startScheduleActivity(String date, String time){
+
+    private void startScheduleActivity(){
         Intent i = new Intent(LearnplannerActivity.this, ScheduleActivity.class);
-        i.putExtra(Constants.CHOSEN_DATE, date);
-        i.putExtra(Constants.CHOSEN_TIME, time);
-        i.putExtra(Constants.CHOSEN_SUBJECT, adapter.getSubjectTitle());
+        i.putExtra(Constants.CHOSEN_SCHEDULE, schedule);
         startActivity(i);
     }
 

@@ -43,11 +43,11 @@ public class NotifyService extends Service {
         if(intent.getBooleanExtra(INTENT_NOTIFY, false)) {
             Bundle extras = intent.getExtras();
             if (extras != null) {
-                String subject = extras.getString(Constants.CHOSEN_SUBJECT);
-                String date = extras.getString(Constants.CHOSEN_DATE);
-                String time = extras.getString(Constants.CHOSEN_TIME);
-            sendNotification(subject, date, time);
-        }
+                Schedule schedule = extras.getParcelable(Constants.CHOSEN_SCHEDULE);
+                if(schedule != null) {
+                    sendNotification(schedule);
+                }
+            }
         }
         return START_NOT_STICKY;
     }
@@ -73,15 +73,16 @@ public class NotifyService extends Service {
     */
 
     @SuppressWarnings("deprecation")
-    private void sendNotification(String subject, String date, String time) {
+    private void sendNotification(Schedule schedule) {
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(NotifyService.this);
             mBuilder.setSmallIcon(R.drawable.logo_sic);
             mBuilder.setContentTitle("Abfrage");
-            mBuilder.setContentText("deine Abfrage in " + subject);
+            mBuilder.setContentText("deine Abfrage in " + schedule.getSubjectTitle());
             mBuilder.setDefaults(Notification.DEFAULT_ALL);
             mBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
             Intent resultIntent = new Intent(this, SubjectActivity.class);
+            resultIntent.putExtra(Constants.SUBJECT_TITLE_KEY, schedule.getSubjectTitle());
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
             stackBuilder.addParentStack(SubjectActivity.class);
             stackBuilder.addNextIntent(resultIntent);

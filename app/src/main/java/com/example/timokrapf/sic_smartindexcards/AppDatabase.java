@@ -10,8 +10,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Subject.class, Schedule.class}, version = 2)
-
+@Database(entities = {Subject.class, Schedule.class}, version = 4)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;
@@ -22,6 +21,7 @@ public abstract class AppDatabase extends RoomDatabase {
     /*
      https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#6
       */
+
     public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {

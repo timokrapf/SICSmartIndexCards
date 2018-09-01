@@ -17,11 +17,14 @@ public interface ScheduleDao {
     @Delete
     void deleteSchedule(Schedule schedule);
 
+    @Delete
+    void deleteScheduleList(Schedule[] schedules);
+
     @Query("SELECT * FROM schedule_table ORDER BY schedule_date")
     LiveData<List<Schedule>> getSchedule();
 
-    @Query("SELECT * FROM schedule_table WHERE schedule_title LIKE :scheduleTitle AND " + "schedule_date LIKE :scheduleDate AND " + "schedule_time LIKE :scheduleTime ")
-    List <Schedule> getScheduleByAttributes(String scheduleTitle, String scheduleDate, String scheduleTime);
+    @Query("SELECT * FROM schedule_table WHERE schedule_title LIKE :scheduleTitle ")
+    List <Schedule> getScheduleByAttributes(String scheduleTitle);
 
     @Query("DELETE FROM schedule_table WHERE schedule_title LIKE :scheduleTitle")
     void removeScheduleByName(String scheduleTitle);

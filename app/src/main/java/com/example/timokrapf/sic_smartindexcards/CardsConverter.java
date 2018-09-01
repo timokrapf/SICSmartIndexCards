@@ -2,33 +2,38 @@ package com.example.timokrapf.sic_smartindexcards;
 
 import android.arch.persistence.room.TypeConverter;
 
-import java.util.ArrayList;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+
+/*
+https://mobikul.com/saving-complex-objects-using-android-room-library/
+ */
 public class CardsConverter {
 
+    private static Gson gson = new Gson();
+
     @TypeConverter
-    public static SmartIndexCards toSmartIndexCards(ArrayList<String> strings) {
-        if(strings == null) {
+    public static ArrayList<SmartIndexCards> stringToList(String data) {
+        if(data == null) {
             return null;
         } else {
-            return new SmartIndexCards(strings.get(0), strings.get(1), strings.get(2));
+            Type listType = new TypeToken<ArrayList<SmartIndexCards>>(){}.getType();
+            return gson.fromJson(data, listType);
         }
     }
 
     @TypeConverter
-    public static ArrayList<String> toStringList(SmartIndexCards card) {
-        if(card == null) {
+    public static String ListToString(ArrayList<SmartIndexCards> cards) {
+        if(cards == null) {
             return null;
         } else {
-            ArrayList<String> list = new ArrayList<>();
-            list.add(card.getSubject());
-            list.add(card.getQuestion());
-            list.add(card.getAnswer());
-            return list;
+            return gson.toJson(cards);
         }
     }
-  /*
-    @TypeConverter
-    public static String toString(ArrayList<String>)
-    */
 }
+
+

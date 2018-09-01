@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/schedule_heading"
+        android:text="@string/schedule"
+        android:textSize="35sp"
+        android:paddingTop="25dp"
+        android:textAlignment="center" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/schedule_recyclerview"
+        android:layout_marginTop="30dp"
+        android:background="@android:color/white"
+        tools:listitem="@layout/schedule_item"
+        android:layout_below="@id/schedule_heading"
+        >
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:weightSum="1">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/subject_button"
+            android:id="@+id/subject_button_id"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            style="?android:attr/buttonBarButtonStyle"
+            />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/schedule_planner"
+            android:id="@+id/schedule_planner_button_id"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            style="?android:attr/buttonBarButtonStyle"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_schedulelist"
+        android:layout_marginTop="30dp"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:layout_below="@id/schedule_heading"
+        />
+
+
+
+</RelativeLayout>
