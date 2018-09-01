@@ -18,22 +18,14 @@ public interface SubjectDao {
     @Delete
     void deleteSubject(Subject subject);
 
-
-   /*
-    https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#5
-     */
-    @Query("DELETE FROM subject_table")
-    void deleteAllSubjects();
-
-
-    @Query("SELECT * FROM subject_table WHERE subject_title LIKE :subjectTitle")
-    LiveData<Subject> findSubjectByName(String subjectTitle);
-
     /*
     https://www.lukegjpotter.com/2017/12/android-room-database-tutorial-with.html
      */
     @Query("SELECT COUNT(*) FROM subject_table")
     Integer getNumber();
+
+    @Query("SELECT * FROM subject_table WHERE subject_title LIKE :subjectTitle")
+    Subject findSubjectByName(String subjectTitle);
 
     /*
     https://www.sqlite.org/datatype3.html#collation

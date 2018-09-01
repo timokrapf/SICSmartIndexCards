@@ -20,6 +20,7 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
     private Button subjectsButton, scheduleButton;
     private TextView activityHeading;
     private String subjectTitle;
+    private Subject subject;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,13 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
                 activityHeading.setText(getString(R.string.subject_activity_header) + " " + subjectTitle);
                 //ActionBar title displays selected subject
                 getActionBar().setTitle("Fach: " + subjectTitle);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                      SubjectRepository repository = new SubjectRepository(getApplication());
+                      subject = repository.getFetchedSubject(subjectTitle);
+                    }
+                }).start();
             }
         }
     }
@@ -89,8 +97,8 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
 
     private void newSicButtonClicked() {
         Intent i = new Intent(SubjectActivity.this, NewSicActivity.class);
-        if(subjectTitle != null) {
-            i.putExtra(subjectTitle, Constants.SUBJECT_TITLE_KEY);
+        if(subject != null) {
+            i.putExtra(Constants.CHOSEN_SUBJECT, subject);
         }
         startActivity(i);
     }

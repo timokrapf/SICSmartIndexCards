@@ -71,6 +71,7 @@ public class NotifyService extends Service {
             mBuilder.setDefaults(Notification.DEFAULT_ALL);
             mBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
             Intent resultIntent = new Intent(this, SubjectActivity.class);
+            resultIntent.putExtra(Constants.SUBJECT_TITLE_KEY, schedule.getSubjectTitle());
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
             stackBuilder.addParentStack(SubjectActivity.class);
             stackBuilder.addNextIntent(resultIntent);

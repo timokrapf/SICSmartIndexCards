@@ -21,4 +21,5 @@ public class SmartIndexCards {
     public String getSubject() {
         return subject;
     }
+
 }

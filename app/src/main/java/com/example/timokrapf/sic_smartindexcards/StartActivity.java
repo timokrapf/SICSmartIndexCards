@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -56,9 +57,8 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         adapter = new SubjectAdapter(this, new SubjectAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(Subject subject) {
-                String subjectTitle = subject.getSubjectTitle();
                 Intent intent = new Intent(StartActivity.this, SubjectActivity.class);
-                intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
+                intent.putExtra(Constants.SUBJECT_TITLE_KEY, subject.getSubjectTitle());
                 startActivity(intent);
             }
             @Override
@@ -136,6 +136,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         } else {
             Subject  newSubject = new Subject();
             newSubject.setSubjectTitle(subjectTitle);
+            newSubject.setCards(new ArrayList<SmartIndexCards>());
             if(adapter.isNewSubject(newSubject)) {
                 viewModel.insertSubject(newSubject);
                 Toast.makeText(getApplicationContext(), subjectTitle + " " + getString(R.string.toast_for_new_subject_was_inserted), Toast.LENGTH_SHORT).show();

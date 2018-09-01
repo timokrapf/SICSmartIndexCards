@@ -1,7 +1,11 @@
 package com.example.timokrapf.sic_smartindexcards;
 
 import android.app.Application;
+import android.app.PendingIntent;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import java.util.List;
@@ -10,7 +14,7 @@ import java.util.List;
 https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#7
 https://www.techotopia.com/index.php/An_Android_Room_Database_and_Repository_Tutorial
  */
-public class SubjectRepository implements AsyncResult {
+public class SubjectRepository  {
 
     private SubjectDao mySubjectDao;
     private ScheduleDao myScheduleDao;
@@ -18,7 +22,8 @@ public class SubjectRepository implements AsyncResult {
     private LiveData<List<Schedule>> myScheduleList;
     private static boolean isNewSubject = true;
     private static boolean isNewSchedule = true;
-    private List<Schedule> fetchedSchedule;
+    private MutableLiveData<Subject> fetchedSubject = new MutableLiveData<>();
+    private Context context;
 
     SubjectRepository(Application application) {
         AppDatabase database = AppDatabase.getDatabase(application);
@@ -26,6 +31,7 @@ public class SubjectRepository implements AsyncResult {
         mySubjectList = mySubjectDao.getSubjects();
         myScheduleDao = database.scheduleDao();
         myScheduleList = myScheduleDao.getSchedule();
+        context = application.getBaseContext();
     }
 
     LiveData<List<Schedule>> getScheduleList() {
@@ -36,13 +42,36 @@ public class SubjectRepository implements AsyncResult {
         return mySubjectList;
     }
 
+    /*
+    MutableLiveData<Subject> getFetchedSubject() {
+        return fetchedSubject;
+    }
+    */
+
+    public Subject getFetchedSubject(String subjectTitle) {
+        return mySubjectDao.findSubjectByName(subjectTitle);
+    }
+
     public void insertSubject(Subject subject) {
         isNewSubject = true;
         new SubjectUpdateTask(mySubjectDao, myScheduleDao).execute(subject);
     }
 
-    public void deleteSubject(Subject subject) {
+    public void deleteSubject(final Subject subject) {
         isNewSubject = false;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Schedule> scheduleList = myScheduleDao.getScheduleByAttributes(subject.getSubjectTitle());
+                for(int i = 0; i < scheduleList.size(); i++) {
+                    Schedule schedule = scheduleList.get(i);
+                    Intent intent = new Intent(context, ServiceReceiver.class);
+                    intent.putExtra(Constants.CHOSEN_SCHEDULE, schedule);
+                    intent.putExtra(Constants.RECEIVER_STATUS, Constants.STOP_ALARM_VALUE);
+                    context.sendBroadcast(intent);
+                }
+            }
+        }).start();
         new SubjectUpdateTask(mySubjectDao, myScheduleDao).execute(subject);
     }
 
@@ -56,31 +85,24 @@ public class SubjectRepository implements AsyncResult {
         new ScheduleUpdateTask(myScheduleDao).execute(schedule);
     }
 
-    public List<Schedule> findFetchedSchedule(String subject) {
-        FindScheduleTask task = new FindScheduleTask(myScheduleDao);
+
+  /*
+    public void findSubjectByTitle(String subjectTitle) {
+        FindSubjectTask task = new FindSubjectTask(mySubjectDao);
         task.delegate = this;
-        task.execute(subject);
-        return fetchedSchedule;
+        task.execute(subjectTitle);
     }
 
-    public void removeScheduleList(List<Schedule> schedules){
-        Schedule[] scheduleArray = new Schedule[schedules.size()];
-        for (int i = 0; i < schedules.size(); i++){
-            scheduleArray[i] = schedules.get(i);
-        }
-        new DeleteScheduleListTask(myScheduleDao).execute(scheduleArray);
-    }
 
     @Override
-    public void asyncFinished(List<Schedule> schedule) {
-        fetchedSchedule = schedule;
+    public void asyncFinished(Subject subject) {
+        fetchedSubject.setValue(subject);
     }
-
+*/
     private static class SubjectUpdateTask extends AsyncTask<Subject, Void, String> {
 
         private SubjectDao subjectTaskDao;
         private ScheduleDao scheduleDao;
-
 
         SubjectUpdateTask(SubjectDao dao, ScheduleDao dataAccessO) {
             subjectTaskDao = dao;
@@ -119,37 +141,26 @@ public class SubjectRepository implements AsyncResult {
             return null;
         }
     }
+    /*
+    private static class FindSubjectTask extends AsyncTask<String, Void, Subject> {
 
-    private static class FindScheduleTask extends AsyncTask<String, Void, List<Schedule>> {
-
-        private ScheduleDao scheduleDao;
+        private SubjectDao subjectDao;
         private SubjectRepository delegate = null;
 
-        FindScheduleTask(ScheduleDao dao) {
-            scheduleDao = dao;
+        FindSubjectTask(SubjectDao dao) {
+            subjectDao = dao;
         }
 
         @Override
-        protected List<Schedule> doInBackground(String... strings) {
-            return scheduleDao.getScheduleByAttributes(strings[0]);
+        protected Subject doInBackground(String... strings) {
+            return subjectDao.findSubjectByName(strings[0]);
         }
 
         @Override
-        protected void onPostExecute(List<Schedule> schedule) {
-            delegate.asyncFinished(schedule);
+        protected void onPostExecute(Subject subject) {
+            delegate.asyncFinished(subject);
         }
     }
+    */
 
-    private static class DeleteScheduleListTask extends AsyncTask<Schedule, Void, Void>{
-
-        private ScheduleDao scheduleDao;
-        DeleteScheduleListTask(ScheduleDao dao){
-            scheduleDao = dao;
-        }
-        @Override
-        protected Void doInBackground(Schedule... lists) {
-            scheduleDao.deleteScheduleList(lists);
-            return null;
-        }
-    }
 }

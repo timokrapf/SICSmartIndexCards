@@ -15,8 +15,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class ScheduleActivity extends FragmentActivity {
@@ -55,7 +53,7 @@ public class ScheduleActivity extends FragmentActivity {
         adapter = new ScheduleAdapter(this, new ScheduleAdapter.OnItemClickListener() {
             @Override
             public void onItemLongClicked(Schedule schedule) {
-                Intent intent = new Intent(ScheduleActivity.this, ServiceReceiver.class);
+                Intent intent = new Intent(getBaseContext(), ServiceReceiver.class);
                 intent.putExtra(Constants.CHOSEN_SCHEDULE, schedule);
                 intent.putExtra(Constants.RECEIVER_STATUS, Constants.STOP_ALARM_VALUE);
                 sendBroadcast(intent);
@@ -123,7 +121,7 @@ public class ScheduleActivity extends FragmentActivity {
     private void enterNewScheduleItem() {
         if(schedule != null) {
             viewModel.insertSchedule(schedule);
-            Intent intent = new Intent(ScheduleActivity.this, ServiceReceiver.class);
+            Intent intent = new Intent(getBaseContext(), ServiceReceiver.class);
             intent.putExtra(Constants.CHOSEN_SCHEDULE, schedule);
             intent.putExtra(Constants.RECEIVER_STATUS, Constants.START_ALARM_VALUE);
             sendBroadcast(intent);
