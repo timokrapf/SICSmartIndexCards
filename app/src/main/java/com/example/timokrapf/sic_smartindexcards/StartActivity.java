@@ -37,13 +37,14 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        initActionBar();
         initAdapter();
         initUI();
         initStartFragment();
         initButtons();
         setClickListener();
 
-        initActionBar();
+
     }
 
 
@@ -64,12 +65,12 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
             @Override
             public void onItemLongClicked(Subject subject) {
                 viewModel.deleteSubject(subject);
-
             }
         });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
 
     private void initUI() {
         emptyText = (TextView) findViewById(android.R.id.empty);
@@ -168,7 +169,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_actionbar, menu);
+        getMenuInflater().inflate(R.menu.menu_actionbar_other, menu);
         return true;
     }
 

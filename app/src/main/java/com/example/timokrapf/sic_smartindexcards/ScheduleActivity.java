@@ -131,7 +131,6 @@ public class ScheduleActivity extends FragmentActivity {
     }
 
     //ActionBar:
-    //todo: if possible: replace initActionBar() with xml style
     private void initActionBar(){
         getActionBar().setTitle(R.string.schedule_planner);
         getActionBar().setIcon(R.drawable.logo_sic);

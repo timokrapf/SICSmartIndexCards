@@ -50,4 +50,6 @@
     <string name="overview_actionbar">Kartenübersicht</string>
     <string name="index_card">Karteikarte</string>
     <string name="progress_heading">Dein Lernfortschritt</string>
+    <string name="notification_pref_key">notification_pref</string>
+    <string name="notification_pref_title">Benachrichtigungen</string>
 </resources>

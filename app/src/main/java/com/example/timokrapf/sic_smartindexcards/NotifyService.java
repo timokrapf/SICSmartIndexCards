@@ -52,6 +52,17 @@ public class NotifyService extends Service {
         return START_NOT_STICKY;
     }
 
+    /*
+    @Override
+    public boolean stopService (Intent service){
+        Bundle extras = service.getExtras();
+        if(service.getBooleanExtra("enabled", true)){
+
+        }
+        return false;
+    }
+    */
+
     @Override
     public IBinder onBind(Intent intent) {
         return iBinder;
