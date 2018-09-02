@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +33,6 @@ public class NewSicActivity extends FragmentActivity {
         handleIntent();
         initButtons();
     }
-
 
 
     private void handleIntent() {
@@ -106,6 +106,7 @@ public class NewSicActivity extends FragmentActivity {
     private void initActionBar(){
         getActionBar().setTitle(R.string.new_sic);
         getActionBar().setIcon(R.drawable.karteikarte);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -125,6 +126,9 @@ public class NewSicActivity extends FragmentActivity {
                 //open settings activity
                 Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
                 settingsButtonActionbarClicked();
+                break;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
                 break;
         }
         return true;

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ public class OverviewActivity extends FragmentActivity {
         initUI();
         initButtons();
     }
+
 
     private void initUI(){
         initGridView();
@@ -73,6 +75,7 @@ public class OverviewActivity extends FragmentActivity {
     private void initActionBar(){
         getActionBar().setTitle(R.string.overview_actionbar);
         getActionBar().setIcon(R.drawable.kartenuebersicht);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -92,6 +95,9 @@ public class OverviewActivity extends FragmentActivity {
                 //open settings activity
                 Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
                 settingsButtonActionbarClicked();
+                break;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
                 break;
         }
         return true;

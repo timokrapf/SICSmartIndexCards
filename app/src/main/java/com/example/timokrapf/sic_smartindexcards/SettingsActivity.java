@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RadioButton;
@@ -14,48 +15,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
+public class SettingsActivity extends PreferenceActivity  {
 
-    /*
-    private TextView settings1;
-    private TextView settings2;
-    private TextView settings3;
-    private Switch settingsSwitch1;
-    private ToggleButton settingsToggle1;
-    private RadioButton settingsRadio1;
-    */
     private Preference notificationPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_settings);
+
         addPreferencesFromResource(R.xml.preferences);
-
-        //initUI();
-
-        // display back-button todo: not working yet
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
 
         initActionBar();
 
+        /*
         notificationPref = findPreference(getString(R.string.notification_pref_key));
         notificationPref.setOnPreferenceChangeListener(this);
-
-
+        */
     }
+
 
     /*
-    private void initUI() {
-        settings1 = findViewById(R.id.settings_test1);
-        settings2 = findViewById(R.id.settings_test2);
-        settings3 = findViewById(R.id.settings_test3);
-        settingsSwitch1 = findViewById(R.id.settings_test1_switch);
-        settingsToggle1 = findViewById(R.id.settings_test2_toggle);
-        settingsRadio1 = findViewById(R.id.settings_test3_radio);
-    }
-    */
-
     @Override
     public boolean onPreferenceChange(Preference preference, Object value){
 
@@ -63,16 +42,18 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
 
         if (preference == notificationPref){
             if (notificationPref.isEnabled()){
-                Toast.makeText(this, "Benachrichtigungen ein", Toast.LENGTH_SHORT).show();
-                notificationPrefIntent.putExtra("enabled", true);
-            } else{
                 Toast.makeText(this, "Benachrichtigungen aus", Toast.LENGTH_SHORT).show();
+                notificationPrefIntent.putExtra("enabled", true);
+
+            } else{
+                Toast.makeText(this, "Benachrichtigungen ein", Toast.LENGTH_SHORT).show();
                 notificationPrefIntent.putExtra("enabled", false);
             }
         }
 
         return true;
     }
+    */
 
 
 
@@ -83,6 +64,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
     private void initActionBar(){
         getActionBar().setTitle(R.string.settings);
         getActionBar().setIcon(R.drawable.settings_button_gear);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -102,6 +84,9 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
                 //open settings activity
                 Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
                 settingsButtonActionbarClicked();
+                break;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
                 break;
         }
         return true;

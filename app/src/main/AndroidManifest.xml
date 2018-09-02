@@ -41,35 +41,40 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewSicActivity">
+        <activity android:name=".NewSicActivity"
+            android:parentActivityName=".SubjectActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".OverviewActivity">
+        <activity android:name=".OverviewActivity"
+            android:parentActivityName=".SubjectActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProgressActivity">
+        <activity android:name=".ProgressActivity"
+            android:parentActivityName=".SubjectActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".QuizActivity">
+        <activity android:name=".QuizActivity"
+            android:parentActivityName=".SubjectActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SettingsActivity">
+        <activity android:name=".SettingsActivity"
+            android:parentActivityName=".StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

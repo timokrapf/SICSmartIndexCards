@@ -57,9 +57,11 @@ public class NotifyService extends Service {
     public boolean stopService (Intent service){
         Bundle extras = service.getExtras();
         if(service.getBooleanExtra("enabled", true)){
-
+            return true;
+        } else{
+            return false;
         }
-        return false;
+
     }
     */
 
