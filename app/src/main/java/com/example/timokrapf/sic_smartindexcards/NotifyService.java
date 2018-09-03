@@ -20,7 +20,6 @@ import java.util.List;
 
 public class NotifyService extends Service {
 
-    private static final int NOTIFICATION = 123;
     public static final String INTENT_NOTIFY = "com.blundell.tut.service.INTENT_NOTIFY";
     private final IBinder iBinder = new ServiceBinder();
 
@@ -81,18 +80,17 @@ public class NotifyService extends Service {
                             PendingIntent.FLAG_UPDATE_CURRENT
                     );
             mBuilder.setContentIntent(resultPendingIntent);
-
+            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+            mBuilder.setSound(uri);
             mBuilder.setAutoCancel(true);
             NotificationManager mNotificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             if (mNotificationManager != null) {
-                mNotificationManager.notify(NOTIFICATION, mBuilder.build());
+                mNotificationManager.notify(schedule.getRequestCode(), mBuilder.build());
                 long[] pattern = {0, 50, 100, 50, 100, 50, 100, 400, 100, 300, 100, 350, 50, 200, 100, 100, 50, 600};
                 ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(pattern, -1);
             }
-            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-            mBuilder.setSound(uri);
             stopSelf();
         }
     }

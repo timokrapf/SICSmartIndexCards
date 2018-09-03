@@ -16,7 +16,6 @@ public class SubjectViewModel extends AndroidViewModel {
     private SubjectRepository myRepository;
     private LiveData<List<Subject>> subjects;
     private LiveData<List<Schedule>> schedules;
-    private MutableLiveData<Subject> fetchedSubject;
 
     public SubjectViewModel(@NonNull Application application) {
         super(application);

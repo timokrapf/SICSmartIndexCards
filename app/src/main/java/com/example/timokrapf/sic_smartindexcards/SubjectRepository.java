@@ -22,7 +22,6 @@ public class SubjectRepository  {
     private LiveData<List<Schedule>> myScheduleList;
     private static boolean isNewSubject = true;
     private static boolean isNewSchedule = true;
-    private MutableLiveData<Subject> fetchedSubject = new MutableLiveData<>();
     private Context context;
 
     SubjectRepository(Application application) {
