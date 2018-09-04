@@ -43,7 +43,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         initStartFragment();
         initButtons();
         setClickListener();
-
         initActionBar();
     }
 
@@ -136,7 +135,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         } else {
             Subject  newSubject = new Subject();
             newSubject.setSubjectTitle(subjectTitle);
-            newSubject.setCards(new ArrayList<SmartIndexCards>());
             if(adapter.isNewSubject(newSubject)) {
                 viewModel.insertSubject(newSubject);
                 Toast.makeText(getApplicationContext(), subjectTitle + " " + getString(R.string.toast_for_new_subject_was_inserted), Toast.LENGTH_SHORT).show();

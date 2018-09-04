@@ -2,9 +2,12 @@ package com.example.timokrapf.sic_smartindexcards;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.Layout;
 import android.view.Menu;
@@ -12,32 +15,53 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class QuizActivity extends FragmentActivity {
 
     private TextView question;
+    private EditText answer;
+    private Subject subject;
     private RelativeLayout topLevelLayout;
+    private List<SmartIndexCards> currentCards;
+    private SmartIndexCards currentCard;
+    private SubjectViewModel viewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_acivity);
         initUI();
+        handleIntent();
         initActionBar();
+        setQuestionText();
         initButtons();
         initInstruction();
 
     }
 
+    private void handleIntent() {
+        Intent intent = getIntent();
+        if(intent != null) {
+            Bundle extras = intent.getExtras();
+            if(extras != null) {
+                subject = extras.getParcelable(Constants.CHOSEN_SUBJECT);
+            }
+        }
+    }
 
 
     private void initUI(){
         question = (TextView) findViewById(R.id.question_id);
-        setQuestionText();
+        answer = (EditText) findViewById(R.id.solution_id);
     }
 
     private void initInstruction(){
@@ -73,9 +97,43 @@ public class QuizActivity extends FragmentActivity {
         }
         return ranBefore;
     }
-
+    /*
+    https://developer.android.com/reference/java/util/Random
+     */
     private void setQuestionText(){
+        if(subject != null) {
+            viewModel = ViewModelProviders.of(this).get(SubjectViewModel.class);
+            viewModel.findCardsForSubject(subject.getSubjectTitle());
+            viewModel.getCards().observe(this, new Observer<List<SmartIndexCards>>() {
+                @Override
+                public void onChanged(@Nullable List<SmartIndexCards> cards) {
+                    if(cards.isEmpty()) {
+                        Intent intent = new Intent(QuizActivity.this, SubjectActivity.class);
+                        intent.putExtra(Constants.SUBJECT_TITLE_KEY, subject.getSubjectTitle());
+                        intent.putExtra(Constants.TOAST_FOR_NO_CARD_CREATED, getString(R.string.no_card_created));
+                        startActivity(intent);
+                    } else {
+                        currentCards = cards;
+                        setCurrentCard();
+                    }
+                }
+            });
 
+        }
+    }
+
+    private void setCurrentCard() {
+        Random random = new Random();
+        if(currentCards.size() > 0) {
+            int randomInt = random.nextInt(currentCards.size());
+            currentCard = currentCards.get(randomInt);
+            question.setText(currentCard.getQuestion());
+        } else {
+            Intent intent = new Intent(QuizActivity.this, SubjectActivity.class);
+            intent.putExtra(Constants.SUBJECT_TITLE_KEY, subject.getSubjectTitle());
+            intent.putExtra(Constants.TOAST_FOR_All_QUESTION_ANSWERED, getString(R.string.answered_all_questions));
+            startActivity(intent);
+        }
     }
 
     private void initButtons(){
@@ -91,6 +149,25 @@ public class QuizActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 scheduleButtonClicked();
+            }
+        });
+        Button enterButton = (Button) findViewById(R.id.save_button_id);
+        enterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String givenAnswer = answer.getText().toString();
+                String rightAnswer = currentCard.getAnswer();
+                if(givenAnswer.equals("")) {
+                    Toast.makeText(QuizActivity.this, getString(R.string.no_answer_given), Toast.LENGTH_SHORT).show();
+                } else if(givenAnswer.equals(rightAnswer)) {
+                    Toast.makeText(QuizActivity.this, getString(R.string.right_answer_given), Toast.LENGTH_SHORT).show();
+                    answer.setText("");
+                    currentCards.remove(currentCard);
+                    setCurrentCard();
+                } else {
+                    Toast.makeText(QuizActivity.this, getString(R.string.wrong_answer_given), Toast.LENGTH_SHORT).show();
+                    answer.setText("");
+                }
             }
         });
     }

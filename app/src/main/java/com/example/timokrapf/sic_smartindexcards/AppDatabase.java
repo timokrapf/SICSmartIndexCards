@@ -10,13 +10,14 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Subject.class, Schedule.class}, version = 4)
+@Database(entities = {Subject.class, Schedule.class, SmartIndexCards.class}, version = 6)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;
 
     public abstract SubjectDao subjectDao();
     public abstract ScheduleDao scheduleDao();
+    public abstract SmartIndexCardsDao cardsDao();
 
     /*
      https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#6

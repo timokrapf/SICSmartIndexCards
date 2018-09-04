@@ -52,4 +52,9 @@
     <string name="progress_heading">Dein Lernfortschritt</string>
     <string name="no_complete_card">Eingaben für eine korrekte SIC fehlen</string>
     <string name="new_card">Es wurde eine neue Karte für dein Fach hinzugefügt</string>
+    <string name="no_answer_given">Bitte gib eine Antwort ein</string>
+    <string name="right_answer_given">Das war richtig! Gut gemacht!</string>
+    <string name="wrong_answer_given">Das war leider falsch. Das wird schon!</string>
+    <string name="no_card_created">Du musst zuerst Karten erstellen</string>
+    <string name="answered_all_questions">Gratuliere! Du hast alles richtig beantwortet</string>
 </resources>

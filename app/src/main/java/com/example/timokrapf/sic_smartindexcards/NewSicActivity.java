@@ -81,9 +81,12 @@ public class NewSicActivity extends FragmentActivity {
             if(questionString.equals(emptyText) || answerString.equals(emptyText)) {
                Toast.makeText(this, getString(R.string.no_complete_card), Toast.LENGTH_SHORT).show();
             } else {
-                ArrayList<SmartIndexCards> cardsList = subject.getCards();
-                SmartIndexCards card = new SmartIndexCards(subject.getSubjectTitle(), questionString, answerString);
-                cardsList.add(card);
+                SubjectRepository repository = new SubjectRepository(getApplication());
+                SmartIndexCards cards = new SmartIndexCards();
+                cards.setAnswer(answerString);
+                cards.setQuestion(questionString);
+                cards.setSubject(subject.getSubjectTitle());
+                repository.insertCard(cards);
                 answer.setText(emptyText);
                 question.setText(emptyText);
                 Toast.makeText(this, getString(R.string.new_card), Toast.LENGTH_SHORT).show();

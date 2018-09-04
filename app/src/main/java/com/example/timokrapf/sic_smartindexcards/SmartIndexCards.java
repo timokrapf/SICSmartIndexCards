@@ -1,13 +1,25 @@
 package com.example.timokrapf.sic_smartindexcards;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
+@Entity(tableName = "sic")
 public class SmartIndexCards {
+    @ColumnInfo(name = "subject")
+    private String subject;
+    @ColumnInfo(name = "question")
+    private String question;
+    @ColumnInfo(name = "answer")
+    private String answer;
+    @NonNull
+    @ColumnInfo(name = "sic_id")
+    @PrimaryKey(autoGenerate = true)
+    int id;
 
-    private String subject, question, answer;
+    public SmartIndexCards() {
 
-    public SmartIndexCards(String subject, String question, String answer) {
-        this.subject = subject;
-        this.question = question;
-        this.answer = answer;
     }
 
     public String getAnswer() {
@@ -22,4 +34,24 @@ public class SmartIndexCards {
         return subject;
     }
 
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    @NonNull
+    public int getId() {
+        return id;
+    }
+
+    public void setId(@NonNull int id) {
+        this.id = id;
+    }
 }
