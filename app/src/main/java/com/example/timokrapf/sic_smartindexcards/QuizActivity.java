@@ -45,7 +45,6 @@ public class QuizActivity extends FragmentActivity {
         setQuestionText();
         initButtons();
         initInstruction();
-
     }
 
     private void handleIntent() {
@@ -128,6 +127,7 @@ public class QuizActivity extends FragmentActivity {
             int randomInt = random.nextInt(currentCards.size());
             currentCard = currentCards.get(randomInt);
             question.setText(currentCard.getQuestion());
+            question.setTextSize(25);
         } else {
             Intent intent = new Intent(QuizActivity.this, SubjectActivity.class);
             intent.putExtra(Constants.SUBJECT_TITLE_KEY, subject.getSubjectTitle());

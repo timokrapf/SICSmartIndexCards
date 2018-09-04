@@ -8,6 +8,7 @@ import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -29,6 +31,7 @@ public class NotifyService extends Service {
     private static final String NOTIFICATION_ID = "channel_id";
     private static final String NOTIFICATION_CHANNEL_NAME = "channel_name";
     private SubjectRepository repository;
+
 
     public class ServiceBinder extends Binder {
         NotifyService getService() {
@@ -50,7 +53,13 @@ public class NotifyService extends Service {
                 String subjectTitle = extras.getString(Constants.SUBJECT_TITLE_KEY);
                 int requestcode = extras.getInt(Constants.CHOSEN_REQUESTCODE);
                 if(subjectTitle != null) {
-                    createNotification(subjectTitle, requestcode);
+                    SharedPreferences sharedPref =
+                            PreferenceManager.getDefaultSharedPreferences(this);
+                    Boolean switchPref = sharedPref.getBoolean
+                            (SettingsActivity.KEY_PREF_NOTIFICATION_SWITCH, false);
+                    if(switchPref) {
+                        createNotification(subjectTitle, requestcode);
+                    }
                 }
             }
         }
@@ -166,8 +175,9 @@ public class NotifyService extends Service {
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent)
                     .setTicker("Abfrage")
-                    .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400})
-                    .setPriority(Notification.PRIORITY_HIGH);
+                    .setPriority(Notification.PRIORITY_HIGH)
+                    .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+
         }
         repository = new SubjectRepository(getApplication());
         repository.removeScheduleByRequestCode(requestcode);

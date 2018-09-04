@@ -57,4 +57,10 @@
     <string name="wrong_answer_given">Das war leider falsch. Das wird schon!</string>
     <string name="no_card_created">Du musst zuerst Karten erstellen</string>
     <string name="answered_all_questions">Gratuliere! Du hast alles richtig beantwortet</string>
+    <string name="notification_preference">Benachrichtigung</string>
+    <string name="notification_pref_description">Schalte deine Benachrichtigungen an oder aus</string>
+    <string name="sound_preference">Ton</string>
+    <string name="sound_pref_description">Schalte den Ton an oder aus</string>
+    <string name="vibrate_preference">Vibrate</string>
+    <string name="vibrate_pref_description">Schalte die Vibration an oder aus</string>
 </resources>

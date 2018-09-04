@@ -4,7 +4,9 @@ import android.app.FragmentTransaction;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -44,6 +46,8 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         initButtons();
         setClickListener();
         initActionBar();
+        initSettings();
+
     }
 
 
@@ -154,6 +158,14 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         transaction.commit();
     }
 
+    private void initSettings(){
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        //SharedPreferences sharedPref =
+                //PreferenceManager.getDefaultSharedPreferences(this);
+        //Boolean switchPref = sharedPref.getBoolean
+                //(SettingsActivity.KEY_PREF_NOTIFICATION_SWITCH, false);
+    }
+
 
     //ActionBar:
     //todo: create different menu-xml files for StartActivity and other Activities
@@ -180,7 +192,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
                 break;
             case R.id.settings_button_actionbar:
                 //open settings activity
-                Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
                 settingsButtonActionbarClicked();
                 break;
         }

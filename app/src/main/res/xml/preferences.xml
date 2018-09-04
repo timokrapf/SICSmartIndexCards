@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="notification_pref"
+        android:title="@string/notification_preference"
+        android:summary="@string/notification_pref_description"
+        />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="sound_pref"
+        android:title="@string/sound_preference"
+        android:summary="@string/sound_pref_description"
+    />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="vibrate_pref"
+        android:title="@string/vibrate_preference"
+        android:summary="@string/vibrate_pref_description"
+        />
+
+</PreferenceScreen>
