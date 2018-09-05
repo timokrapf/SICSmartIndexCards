@@ -49,6 +49,14 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
                       subject = repository.getFetchedSubject(subjectTitle);
                     }
                 }).start();
+                String toastText1 = extras.getString(Constants.TOAST_FOR_All_QUESTION_ANSWERED);
+                String toastText2 = extras.getString(Constants.TOAST_FOR_NO_CARD_CREATED);
+                if(toastText1 != null) {
+                    Toast.makeText(this, toastText1, Toast.LENGTH_LONG).show();
+                }
+                if(toastText2 != null) {
+                    Toast.makeText(this, toastText2, Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
@@ -105,16 +113,25 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
 
     private void quizCardButtonClicked(){
         Intent i = new Intent(SubjectActivity.this, QuizActivity.class);
+        if(subject != null) {
+            i.putExtra(Constants.CHOSEN_SUBJECT, subject);
+        }
         startActivity(i);
     }
 
     private void overviewSicButtonClicked(){
         Intent i = new Intent (SubjectActivity.this, OverviewActivity.class);
+        if(subject != null) {
+            i.putExtra(Constants.CHOSEN_SUBJECT, subject);
+        }
         startActivity(i);
     }
 
     private void progressCardButtonClicked(){
         Intent i = new Intent (SubjectActivity.this, ProgressActivity.class);
+        if(subject != null) {
+            i.putExtra(Constants.CHOSEN_SUBJECT, subject);
+        }
         startActivity(i);
     }
 

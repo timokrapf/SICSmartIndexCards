@@ -14,15 +14,17 @@ import java.util.List;
 https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#7
 https://www.techotopia.com/index.php/An_Android_Room_Database_and_Repository_Tutorial
  */
-public class SubjectRepository  {
+public class SubjectRepository implements AsyncResult {
 
     private SubjectDao mySubjectDao;
     private ScheduleDao myScheduleDao;
+    private SmartIndexCardsDao myCardsDao;
     private LiveData<List<Subject>> mySubjectList;
     private LiveData<List<Schedule>> myScheduleList;
+    private MutableLiveData<List<SmartIndexCards>> myCardsList = new MutableLiveData<>() ;
     private static boolean isNewSubject = true;
     private static boolean isNewSchedule = true;
-    private MutableLiveData<Subject> fetchedSubject = new MutableLiveData<>();
+    private static boolean isNewCard = true;
     private Context context;
 
     SubjectRepository(Application application) {
@@ -31,6 +33,7 @@ public class SubjectRepository  {
         mySubjectList = mySubjectDao.getSubjects();
         myScheduleDao = database.scheduleDao();
         myScheduleList = myScheduleDao.getSchedule();
+        myCardsDao = database.cardsDao();
         context = application.getBaseContext();
     }
 
@@ -42,11 +45,19 @@ public class SubjectRepository  {
         return mySubjectList;
     }
 
+    MutableLiveData<List<SmartIndexCards>> getMyCardsList() {
+        return myCardsList;
+    }
+
     /*
     MutableLiveData<Subject> getFetchedSubject() {
         return fetchedSubject;
     }
     */
+
+    public void removeScheduleByRequestCode(int requestcode) {
+        new RemoveScheduleByRequestcodeTask(myScheduleDao).execute(requestcode);
+    }
 
     public Subject getFetchedSubject(String subjectTitle) {
         return mySubjectDao.findSubjectByName(subjectTitle);
@@ -75,6 +86,16 @@ public class SubjectRepository  {
         new SubjectUpdateTask(mySubjectDao, myScheduleDao).execute(subject);
     }
 
+    public void insertCard(SmartIndexCards card) {
+        isNewCard = true;
+        new SicUpdateTask(myCardsDao).execute(card);
+    }
+
+    public void deleteCard(SmartIndexCards card) {
+        isNewCard = false;
+        new SicUpdateTask(myCardsDao).execute(card);
+    }
+
     public void insertSchedule(Schedule schedule) {
         isNewSchedule = true;
         new ScheduleUpdateTask(myScheduleDao).execute(schedule);
@@ -86,19 +107,19 @@ public class SubjectRepository  {
     }
 
 
-  /*
-    public void findSubjectByTitle(String subjectTitle) {
-        FindSubjectTask task = new FindSubjectTask(mySubjectDao);
+
+    public void findCardsForSubject(String subjectTitle) {
+        CardsTask task = new CardsTask(myCardsDao);
         task.delegate = this;
         task.execute(subjectTitle);
     }
 
 
     @Override
-    public void asyncFinished(Subject subject) {
-        fetchedSubject.setValue(subject);
+    public void asyncFinished(List<SmartIndexCards> cards) {
+        myCardsList.setValue(cards);
     }
-*/
+
     private static class SubjectUpdateTask extends AsyncTask<Subject, Void, String> {
 
         private SubjectDao subjectTaskDao;
@@ -122,6 +143,26 @@ public class SubjectRepository  {
         }
     }
 
+    private static class SicUpdateTask extends AsyncTask<SmartIndexCards, Void, Void> {
+
+        private SmartIndexCardsDao cardsDao;
+
+        SicUpdateTask(SmartIndexCardsDao dao) {
+            cardsDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(SmartIndexCards... smartIndexCards) {
+            if(isNewCard) {
+                cardsDao.insertCard(smartIndexCards[0]);
+            } else {
+                cardsDao.deleteCard(smartIndexCards[0]);
+            }
+            return null;
+        }
+    }
+
+
     private static class ScheduleUpdateTask extends AsyncTask<Schedule, Void, String> {
 
         private ScheduleDao scheduleDao;
@@ -141,26 +182,42 @@ public class SubjectRepository  {
             return null;
         }
     }
-    /*
-    private static class FindSubjectTask extends AsyncTask<String, Void, Subject> {
 
-        private SubjectDao subjectDao;
-        private SubjectRepository delegate = null;
+    private static class RemoveScheduleByRequestcodeTask extends AsyncTask<Integer, Void, Void> {
 
-        FindSubjectTask(SubjectDao dao) {
-            subjectDao = dao;
+        private ScheduleDao scheduleDao;
+
+        RemoveScheduleByRequestcodeTask(ScheduleDao dao) {
+           scheduleDao = dao;
         }
 
         @Override
-        protected Subject doInBackground(String... strings) {
-            return subjectDao.findSubjectByName(strings[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Subject subject) {
-            delegate.asyncFinished(subject);
+        protected Void doInBackground(Integer... integers) {
+            scheduleDao.removeScheduleByRequestcode(integers[0]);
+            return null;
         }
     }
-    */
+
+
+    private static class CardsTask extends AsyncTask<String, Void, List<SmartIndexCards>> {
+
+        private SmartIndexCardsDao cardsDao;
+        private SubjectRepository delegate = null;
+
+        CardsTask(SmartIndexCardsDao dao) {
+            cardsDao = dao;
+        }
+
+        @Override
+        protected List<SmartIndexCards> doInBackground(String... strings) {
+            return cardsDao.getCardsForSubject(strings[0]);
+        }
+
+        @Override
+        protected void onPostExecute(List<SmartIndexCards> cards) {
+            delegate.asyncFinished(cards);
+        }
+    }
+
 
 }

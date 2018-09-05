@@ -1,100 +1,66 @@
 package com.example.timokrapf.sic_smartindexcards;
 
-import android.app.Service;
-import android.content.Context;
+
+import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.support.v4.app.NavUtils;
+import android.preference.PreferenceFragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class SettingsActivity extends PreferenceActivity  {
+public class SettingsActivity extends AppCompatActivity {
 
-    private Preference notificationPref;
+    public static final String KEY_PREF_NOTIFICATION_SWITCH = "notification_pref";
+    public static final String KEY_PREF_SOUND_SWITCH = "sound_pref";
+    public static final String KEY_PREF_VIBRATE_SWITCH = "vibrate_pref";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        addPreferencesFromResource(R.xml.preferences);
-
+        getFragmentManager().beginTransaction()
+                .replace(android.R.id.content, new SettingsFragment())
+                .commit();
         initActionBar();
-
-        /*
-        notificationPref = findPreference(getString(R.string.notification_pref_key));
-        notificationPref.setOnPreferenceChangeListener(this);
-        */
     }
 
-
-    /*
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object value){
-
-        Intent notificationPrefIntent = new Intent (SettingsActivity.this, NotifyService.class);
-
-        if (preference == notificationPref){
-            if (notificationPref.isEnabled()){
-                Toast.makeText(this, "Benachrichtigungen aus", Toast.LENGTH_SHORT).show();
-                notificationPrefIntent.putExtra("enabled", true);
-
-            } else{
-                Toast.makeText(this, "Benachrichtigungen ein", Toast.LENGTH_SHORT).show();
-                notificationPrefIntent.putExtra("enabled", false);
-            }
-        }
-
-        return true;
-    }
-    */
-
-
-
-
-    //----------------------------------------------------------------------
     //ActionBar:
+    //todo: create different menu-xml files for StartActivity and other Activities
+
     //todo: if possible: replace initActionBar() with xml style
-    private void initActionBar(){
-        getActionBar().setTitle(R.string.settings);
-        getActionBar().setIcon(R.drawable.settings_button_gear);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+    private void initActionBar() {
+       ActionBar actionBar = getSupportActionBar();
+       if(actionBar != null){
+           actionBar.setTitle("Smart Index Cards");
+           actionBar.setIcon(R.drawable.logo_sic);
+           actionBar.setDisplayShowHomeEnabled(true);
+           actionBar.setDisplayHomeAsUpEnabled(true);
+       }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_actionbar_other, menu);
+    public boolean onSupportNavigateUp(){
+        finish();
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.delete_button_actionbar:
-                //todo delete item
-                Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.settings_button_actionbar:
-                //open settings activity
-                Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
-                settingsButtonActionbarClicked();
-                break;
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                break;
+
+
+    public static class SettingsFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.preferences);
         }
-        return true;
     }
-
-    private void settingsButtonActionbarClicked(){
-        Intent settingsIntent = new Intent(SettingsActivity.this, SettingsActivity.class);
-        startActivity(settingsIntent);
-    }
-
 }

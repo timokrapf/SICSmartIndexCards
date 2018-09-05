@@ -25,7 +25,10 @@
         android:layout_weight="0.5"
         android:background="@drawable/karteikarte"
         android:scaleX="0.8"
-        android:scaleY="0.5" />
+        android:scaleY="0.5"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="100sp"/>
 
     <EditText
         android:layout_width="match_parent"

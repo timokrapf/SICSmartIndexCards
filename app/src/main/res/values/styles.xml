@@ -10,8 +10,13 @@
         <item name="android:actionBarStyle">@style/ActionBarStyle</item>
     </style>
 
+    <style name="AppTheme2" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 
-   <!--https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#9 -->
+    <!--https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#9 -->
     <style name="subject_title">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">26dp</item>
@@ -30,7 +35,6 @@
     <style name="ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/colorPrimary</item>
     </style>
-
 
 
 </resources>

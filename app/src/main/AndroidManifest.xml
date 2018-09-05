@@ -3,8 +3,7 @@
     package="com.example.timokrapf.sic_smartindexcards">
 
     <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-sdk android:minSdkVersion="21"
-        android:targetSdkVersion="27"/>
+
 
     <application
         android:allowBackup="true"
@@ -74,7 +73,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SettingsActivity"
-            android:parentActivityName=".StartActivity">
+            android:parentActivityName=".StartActivity"
+            android:theme="@style/AppTheme2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

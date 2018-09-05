@@ -1,7 +1,9 @@
 package com.example.timokrapf.sic_smartindexcards;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.TimePickerDialog;
+import android.graphics.drawable.Icon;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 
@@ -208,8 +210,11 @@ public class LearnplannerActivity extends FragmentActivity{
     //ActionBar:
     //todo: if possible: replace initActionBar() with xml style
     private void initActionBar(){
-        getActionBar().setTitle(R.string.learnplaner);
-        getActionBar().setIcon(R.drawable.learnplanner_icon_calendar);
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.learnplaner);
+            actionBar.setIcon(R.drawable.learnplanner_icon_calendar);
+        }
     }
 
     @Override
@@ -218,18 +223,11 @@ public class LearnplannerActivity extends FragmentActivity{
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.delete_button_actionbar:
-                //todo delete item
-                Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.settings_button_actionbar:
-                //open settings activity
-                Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
-                settingsButtonActionbarClicked();
-                break;
+        if (item.getItemId() == R.id.settings_button_actionbar){
+            settingsButtonActionbarClicked();
         }
         return true;
     }

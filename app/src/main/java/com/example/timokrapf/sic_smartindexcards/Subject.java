@@ -23,8 +23,6 @@ public class Subject implements Parcelable {
     private int subjectId;
     @ColumnInfo(name = "subject_title")
     private String subjectTitle;
-    @TypeConverters(CardsConverter.class)
-    private ArrayList<SmartIndexCards> mCards = null;
 
 
 
@@ -48,13 +46,7 @@ public class Subject implements Parcelable {
         this.subjectTitle = subjectTitle;
     }
 
-    public ArrayList<SmartIndexCards> getCards() {
-        return mCards;
-    }
 
-    public void setCards(ArrayList<SmartIndexCards> cards) {
-        this.mCards = cards;
-    }
 
     @Override
     public int describeContents() {
@@ -65,14 +57,13 @@ public class Subject implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.subjectId);
         dest.writeString(this.subjectTitle);
-        dest.writeList(this.mCards);
+
     }
 
     protected Subject(Parcel in) {
         this.subjectId = in.readInt();
         this.subjectTitle = in.readString();
-        this.mCards = new ArrayList<SmartIndexCards>();
-        in.readList(this.mCards, SmartIndexCards.class.getClassLoader());
+
     }
 
     public static final Parcelable.Creator<Subject> CREATOR = new Parcelable.Creator<Subject>() {

@@ -17,8 +17,9 @@ public interface ScheduleDao {
     @Delete
     void deleteSchedule(Schedule schedule);
 
-    @Delete
-    void deleteScheduleList(Schedule[] schedules);
+
+    @Query("DELETE FROM schedule_table WHERE requestcode LIKE :requestcode")
+    void removeScheduleByRequestcode(int requestcode);
 
     @Query("SELECT * FROM schedule_table ORDER BY schedule_date")
     LiveData<List<Schedule>> getSchedule();

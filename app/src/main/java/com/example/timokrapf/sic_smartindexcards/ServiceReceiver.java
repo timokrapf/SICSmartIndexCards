@@ -18,7 +18,8 @@ public class ServiceReceiver extends BroadcastReceiver {
         if (schedule != null) {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent i = new Intent(context, NotifyService.class);
-            i.putExtra(Constants.CHOSEN_SCHEDULE, schedule);
+            i.putExtra(Constants.SUBJECT_TITLE_KEY, schedule.getSubjectTitle());
+            i.putExtra(Constants.CHOSEN_REQUESTCODE, schedule.getRequestCode());
             i.putExtra(NotifyService.INTENT_NOTIFY, true);
             PendingIntent pendingIntent = PendingIntent.getService(context, schedule.getRequestCode(), i, PendingIntent.FLAG_UPDATE_CURRENT);
             if (alarmManager != null) {

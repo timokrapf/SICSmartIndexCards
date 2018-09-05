@@ -16,16 +16,14 @@ public class SubjectViewModel extends AndroidViewModel {
     private SubjectRepository myRepository;
     private LiveData<List<Subject>> subjects;
     private LiveData<List<Schedule>> schedules;
-    private MutableLiveData<Subject> fetchedSubject;
+    private MutableLiveData<List<SmartIndexCards>> cards;
 
     public SubjectViewModel(@NonNull Application application) {
         super(application);
         myRepository = new SubjectRepository(application);
         subjects = myRepository.getSubjects();
         schedules = myRepository.getScheduleList();
-        /*
-        fetchedSubject = myRepository.getFetchedSubject();
-        */
+        cards = myRepository.getMyCardsList();
     }
 
     LiveData<List<Schedule>> getSchedulesList() {
@@ -35,11 +33,10 @@ public class SubjectViewModel extends AndroidViewModel {
     LiveData<List<Subject>> getSubjectsList(){
         return subjects;
     }
-    /*
-    MutableLiveData<Subject> getFetchedSubject() {
-        return fetchedSubject;
+
+    MutableLiveData<List<SmartIndexCards>> getCards() {
+        return cards;
     }
-    */
 
     public void insertSubject(Subject subject) {
         myRepository.insertSubject(subject);
@@ -56,9 +53,17 @@ public class SubjectViewModel extends AndroidViewModel {
     public void deleteSchedule(Schedule schedule) {
         myRepository.deleteSchedule(schedule);
     }
-    /*
-    public void findFetchedSubject(String subjectTitle) {
-        myRepository.findSubjectByTitle(subjectTitle);
+
+    public void insertCard(SmartIndexCards card) {
+        myRepository.insertCard(card);
     }
-    */
+
+    public void deleteCard(SmartIndexCards card) {
+        myRepository.deleteCard(card);
+    }
+
+    public void findCardsForSubject(String subjectTitle) {
+        myRepository.findCardsForSubject(subjectTitle);
+    }
+
 }

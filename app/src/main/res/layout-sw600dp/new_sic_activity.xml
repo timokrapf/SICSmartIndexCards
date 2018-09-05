@@ -22,7 +22,7 @@
         android:orientation="vertical">
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:id="@+id/question_id"
@@ -38,7 +38,7 @@
             />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:id="@+id/answer_id"

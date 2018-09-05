@@ -1,10 +1,13 @@
 package com.example.timokrapf.sic_smartindexcards;
 
+import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -38,13 +41,13 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        initActionBar();
         initAdapter();
         initUI();
         initStartFragment();
         initButtons();
         setClickListener();
-
+        initActionBar();
+        initSettings();
 
     }
 
@@ -70,7 +73,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-
 
     private void initUI() {
         emptyText = (TextView) findViewById(android.R.id.empty);
@@ -138,7 +140,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         } else {
             Subject  newSubject = new Subject();
             newSubject.setSubjectTitle(subjectTitle);
-            newSubject.setCards(new ArrayList<SmartIndexCards>());
             if(adapter.isNewSubject(newSubject)) {
                 viewModel.insertSubject(newSubject);
                 Toast.makeText(getApplicationContext(), subjectTitle + " " + getString(R.string.toast_for_new_subject_was_inserted), Toast.LENGTH_SHORT).show();
@@ -158,19 +159,27 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         transaction.commit();
     }
 
+    private void initSettings(){
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+    }
+
 
     //ActionBar:
+    //todo: create different menu-xml files for StartActivity and other Activities
 
     //todo: if possible: replace initActionBar() with xml style
 
     private void initActionBar(){
-        getActionBar().setTitle("Smart Index Cards");
-        getActionBar().setIcon(R.drawable.logo_sic);
+        ActionBar actionBar = getActionBar();
+        if(actionBar != null) {
+            actionBar.setTitle("Smart Index Cards");
+            actionBar.setIcon(R.drawable.logo_sic);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_actionbar_other, menu);
+        getMenuInflater().inflate(R.menu.menu_actionbar, menu);
         return true;
     }
 
@@ -183,7 +192,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
                 break;
             case R.id.settings_button_actionbar:
                 //open settings activity
-                Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
                 settingsButtonActionbarClicked();
                 break;
         }
