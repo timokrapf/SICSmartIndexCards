@@ -29,7 +29,8 @@ public class QuizActivity extends FragmentActivity {
 
     private TextView question;
     private EditText answer;
-    private Subject subject;
+
+    private String subjectTitle;
     private RelativeLayout topLevelLayout;
     private List<SmartIndexCards> currentCards;
     private SmartIndexCards currentCard;
@@ -44,7 +45,34 @@ public class QuizActivity extends FragmentActivity {
         initActionBar();
         setQuestionText();
         initButtons();
+        setListener();
         initInstruction();
+    }
+
+    private void setListener() {
+        View  layout = (View) findViewById(R.id.frame_layout);
+        layout.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeLeft() {
+                super.onSwipeLeft();
+            }
+            @Override
+            public void onSwipeRight() {
+                super.onSwipeRight();
+                if(question.getText().equals(currentCard.getQuestion())) {
+                    question.setText(currentCard.getAnswer());
+                } else if(currentCards.size() == 1){
+                    Intent intent = new Intent(QuizActivity.this, SubjectActivity.class);
+                    intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
+                    intent.putExtra(Constants.TOAST_FOR_ALMOST, getString(R.string.almost_everything_right));
+                    startActivity(intent);
+                } else {
+                    currentCards.remove(currentCard);
+                    setCurrentCard();
+                }
+
+            }
+        });
     }
 
     private void handleIntent() {
@@ -52,7 +80,7 @@ public class QuizActivity extends FragmentActivity {
         if(intent != null) {
             Bundle extras = intent.getExtras();
             if(extras != null) {
-                subject = extras.getParcelable(Constants.CHOSEN_SUBJECT);
+                subjectTitle = extras.getString(Constants.SUBJECT_TITLE_KEY);
             }
         }
     }
@@ -100,22 +128,15 @@ public class QuizActivity extends FragmentActivity {
     https://developer.android.com/reference/java/util/Random
      */
     private void setQuestionText(){
-        if(subject != null) {
+        if(subjectTitle != null) {
             viewModel = ViewModelProviders.of(this).get(SubjectViewModel.class);
-            viewModel.findCardsForSubject(subject.getSubjectTitle());
+            viewModel.findCardsForSubject(subjectTitle);
             viewModel.getCards().observe(this, new Observer<List<SmartIndexCards>>() {
                 @Override
                 public void onChanged(@Nullable List<SmartIndexCards> cards) {
-                    if(cards.isEmpty()) {
-                        Intent intent = new Intent(QuizActivity.this, SubjectActivity.class);
-                        intent.putExtra(Constants.SUBJECT_TITLE_KEY, subject.getSubjectTitle());
-                        intent.putExtra(Constants.TOAST_FOR_NO_CARD_CREATED, getString(R.string.no_card_created));
-                        startActivity(intent);
-                    } else {
-                        currentCards = cards;
-                        setCurrentCard();
+                    currentCards = cards;
+                    setCurrentCard();
                     }
-                }
             });
 
         }
@@ -127,10 +148,11 @@ public class QuizActivity extends FragmentActivity {
             int randomInt = random.nextInt(currentCards.size());
             currentCard = currentCards.get(randomInt);
             question.setText(currentCard.getQuestion());
-            question.setTextSize(25);
+            question.setTextSize(40);
+
         } else {
             Intent intent = new Intent(QuizActivity.this, SubjectActivity.class);
-            intent.putExtra(Constants.SUBJECT_TITLE_KEY, subject.getSubjectTitle());
+            intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
             intent.putExtra(Constants.TOAST_FOR_All_QUESTION_ANSWERED, getString(R.string.answered_all_questions));
             startActivity(intent);
         }
@@ -159,9 +181,11 @@ public class QuizActivity extends FragmentActivity {
                 String rightAnswer = currentCard.getAnswer();
                 if(givenAnswer.equals("")) {
                     Toast.makeText(QuizActivity.this, getString(R.string.no_answer_given), Toast.LENGTH_SHORT).show();
-                } else if(givenAnswer.equals(rightAnswer)) {
+                } else if(givenAnswer.compareToIgnoreCase(rightAnswer) == 0) {
                     Toast.makeText(QuizActivity.this, getString(R.string.right_answer_given), Toast.LENGTH_SHORT).show();
                     answer.setText("");
+                    currentCard.setWasRightAnswer(true);
+                    viewModel.updateCard(currentCard);
                     currentCards.remove(currentCard);
                     setCurrentCard();
                 } else {

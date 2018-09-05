@@ -16,7 +16,9 @@ public class SmartIndexCards {
     @NonNull
     @ColumnInfo(name = "sic_id")
     @PrimaryKey(autoGenerate = true)
-    int id;
+    private int id;
+    @ColumnInfo(name = "boolean")
+    private boolean wasRightAnswer;
 
     public SmartIndexCards() {
 
@@ -44,6 +46,14 @@ public class SmartIndexCards {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public boolean isWasRightAnswer() {
+        return wasRightAnswer;
+    }
+
+    public void setWasRightAnswer(boolean wasRightAnswer) {
+        this.wasRightAnswer = wasRightAnswer;
     }
 
     @NonNull

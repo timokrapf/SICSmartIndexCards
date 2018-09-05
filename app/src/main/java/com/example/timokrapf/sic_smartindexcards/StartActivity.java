@@ -140,6 +140,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         } else {
             Subject  newSubject = new Subject();
             newSubject.setSubjectTitle(subjectTitle);
+            newSubject.setNumberOfCards(0);
             if(adapter.isNewSubject(newSubject)) {
                 viewModel.insertSubject(newSubject);
                 Toast.makeText(getApplicationContext(), subjectTitle + " " + getString(R.string.toast_for_new_subject_was_inserted), Toast.LENGTH_SHORT).show();

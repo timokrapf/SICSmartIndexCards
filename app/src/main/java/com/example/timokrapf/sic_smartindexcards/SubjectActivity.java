@@ -20,7 +20,9 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
     private Button subjectsButton, scheduleButton;
     private TextView activityHeading;
     private String subjectTitle;
-    private Subject subject;
+    private SubjectRepository repository;
+    private int quizActivityCanBeOpenedInt= 0;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,15 +44,8 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
                 activityHeading.setText(getString(R.string.subject_activity_header) + " " + subjectTitle);
                 //ActionBar title displays selected subject
                 getActionBar().setTitle("Fach: " + subjectTitle);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                      SubjectRepository repository = new SubjectRepository(getApplication());
-                      subject = repository.getFetchedSubject(subjectTitle);
-                    }
-                }).start();
                 String toastText1 = extras.getString(Constants.TOAST_FOR_All_QUESTION_ANSWERED);
-                String toastText2 = extras.getString(Constants.TOAST_FOR_NO_CARD_CREATED);
+                String toastText2 = extras.getString(Constants.TOAST_FOR_ALMOST);
                 if(toastText1 != null) {
                     Toast.makeText(this, toastText1, Toast.LENGTH_LONG).show();
                 }
@@ -105,32 +100,48 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
 
     private void newSicButtonClicked() {
         Intent i = new Intent(SubjectActivity.this, NewSicActivity.class);
-        if(subject != null) {
-            i.putExtra(Constants.CHOSEN_SUBJECT, subject);
+        if(subjectTitle != null) {
+            i.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
         }
         startActivity(i);
     }
 
     private void quizCardButtonClicked(){
-        Intent i = new Intent(SubjectActivity.this, QuizActivity.class);
-        if(subject != null) {
-            i.putExtra(Constants.CHOSEN_SUBJECT, subject);
+        repository = new SubjectRepository(getApplication());
+        final Intent i = new Intent(SubjectActivity.this, QuizActivity.class);
+        if(subjectTitle != null) {
+            i.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Subject subject = repository.getFetchedSubject(subjectTitle);
+                    if(subject.getNumberOfCards() == 0) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(SubjectActivity.this, getString(R.string.no_card_created), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    } else {
+                        startActivity(i);
+                    }
+                }
+            }).start();
         }
-        startActivity(i);
     }
 
     private void overviewSicButtonClicked(){
         Intent i = new Intent (SubjectActivity.this, OverviewActivity.class);
-        if(subject != null) {
-            i.putExtra(Constants.CHOSEN_SUBJECT, subject);
+        if(subjectTitle != null) {
+            i.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
         }
         startActivity(i);
     }
 
     private void progressCardButtonClicked(){
         Intent i = new Intent (SubjectActivity.this, ProgressActivity.class);
-        if(subject != null) {
-            i.putExtra(Constants.CHOSEN_SUBJECT, subject);
+        if(subjectTitle != null) {
+            i.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
         }
         startActivity(i);
     }
