@@ -47,17 +47,17 @@ public class NotifyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("LocalService", "Received start id " + startId + ": " + intent);
-        if(intent.getBooleanExtra(INTENT_NOTIFY, false)) {
+        if (intent.getBooleanExtra(INTENT_NOTIFY, false)) {
             Bundle extras = intent.getExtras();
             if (extras != null) {
                 String subjectTitle = extras.getString(Constants.SUBJECT_TITLE_KEY);
                 int requestcode = extras.getInt(Constants.CHOSEN_REQUESTCODE);
-                if(subjectTitle != null) {
+                if (subjectTitle != null) {
                     SharedPreferences sharedPref =
                             PreferenceManager.getDefaultSharedPreferences(this);
                     Boolean switchPref = sharedPref.getBoolean
                             (SettingsActivity.KEY_PREF_NOTIFICATION_SWITCH, false);
-                    if(switchPref) {
+                    if (switchPref) {
                         createNotification(subjectTitle, requestcode);
                     }
                 }
@@ -136,6 +136,8 @@ public class NotifyService extends Service {
         Intent intent;
         PendingIntent pendingIntent;
         Notification.Builder builder;
+        SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(this);
         if (notifManager == null) {
             notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         }
@@ -156,12 +158,21 @@ public class NotifyService extends Service {
             builder.setContentTitle("Abfrage")  // required
                     .setSmallIcon(R.drawable.logo_sic) // required
                     .setContentText("deine Abfrage in " + subjectTitle)  // required
-                    .setDefaults(Notification.DEFAULT_ALL)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent)
                     .setTicker("Abfrage")
                     .setChannelId(NOTIFICATION_ID)
-                    .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                    .setPriority(Notification.PRIORITY_MAX);
+            Boolean vibrateSwitchPref = sharedPref.getBoolean
+                    (SettingsActivity.KEY_PREF_VIBRATE_SWITCH, false);
+            if (vibrateSwitchPref) {
+                builder.setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            }
+            Boolean soundSwitchPref = sharedPref.getBoolean
+                    (SettingsActivity.KEY_PREF_SOUND_SWITCH, false);
+            if(soundSwitchPref){
+                builder.setDefaults(Notification.DEFAULT_SOUND);
+            }
         } else {
             builder = new Notification.Builder(this);
             intent = new Intent(this, SubjectActivity.class);
@@ -171,13 +182,20 @@ public class NotifyService extends Service {
             builder.setContentTitle("Abfrage")                           // required
                     .setSmallIcon(R.drawable.logo_sic) // required
                     .setContentText("deine Abfrage in " + subjectTitle)  // required
-                    .setDefaults(Notification.DEFAULT_ALL)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent)
                     .setTicker("Abfrage")
-                    .setPriority(Notification.PRIORITY_HIGH)
-                    .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-
+                    .setPriority(Notification.PRIORITY_MAX);
+            Boolean switchPref = sharedPref.getBoolean
+                    (SettingsActivity.KEY_PREF_VIBRATE_SWITCH, false);
+            if (switchPref) {
+                builder.setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            }
+            Boolean soundSwitchPref = sharedPref.getBoolean
+                    (SettingsActivity.KEY_PREF_SOUND_SWITCH, false);
+            if(soundSwitchPref){
+                builder.setDefaults(Notification.DEFAULT_SOUND);
+            }
         }
         repository = new SubjectRepository(getApplication());
         repository.removeScheduleByRequestCode(requestcode);

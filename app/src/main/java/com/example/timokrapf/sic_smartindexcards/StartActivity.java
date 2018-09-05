@@ -1,5 +1,6 @@
 package com.example.timokrapf.sic_smartindexcards;
 
+import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -160,10 +161,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
 
     private void initSettings(){
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        //SharedPreferences sharedPref =
-                //PreferenceManager.getDefaultSharedPreferences(this);
-        //Boolean switchPref = sharedPref.getBoolean
-                //(SettingsActivity.KEY_PREF_NOTIFICATION_SWITCH, false);
     }
 
 
@@ -173,8 +170,11 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     //todo: if possible: replace initActionBar() with xml style
 
     private void initActionBar(){
-        getActionBar().setTitle("Smart Index Cards");
-        getActionBar().setIcon(R.drawable.logo_sic);
+        ActionBar actionBar = getActionBar();
+        if(actionBar != null) {
+            actionBar.setTitle("Smart Index Cards");
+            actionBar.setIcon(R.drawable.logo_sic);
+        }
     }
 
     @Override

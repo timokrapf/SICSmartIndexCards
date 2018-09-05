@@ -5,14 +5,15 @@
     <item
         android:id = "@+id/delete_button_actionbar"
         android:title = "@string/delete"
-        app:showAsAction = "always"
+        app:showAsAction = "ifRoom"
         android:icon = "@drawable/delete_button_bin"/>
 
     <item
         android:id = "@+id/settings_button_actionbar"
         android:title = "@string/settings"
-        app:showAsAction = "ifRoom"
-        android:icon = "@drawable/settings_button_gear"/>
+        android:icon = "@drawable/settings_button_gear"
+        app:showAsAction="always"
+        />
 
 
     <!-- icons retrieved from https://material.io/tools/icons/?style=baseline -->

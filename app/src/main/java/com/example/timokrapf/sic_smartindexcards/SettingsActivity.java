@@ -1,19 +1,24 @@
 package com.example.timokrapf.sic_smartindexcards;
 
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends AppCompatActivity {
 
     public static final String KEY_PREF_NOTIFICATION_SWITCH = "notification_pref";
     public static final String KEY_PREF_SOUND_SWITCH = "sound_pref";
@@ -25,11 +30,35 @@ public class SettingsActivity extends Activity {
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsFragment())
                 .commit();
+        initActionBar();
     }
 
-    public static class SettingsFragment extends PreferenceFragment{
+    //ActionBar:
+    //todo: create different menu-xml files for StartActivity and other Activities
+
+    //todo: if possible: replace initActionBar() with xml style
+
+    private void initActionBar() {
+       ActionBar actionBar = getSupportActionBar();
+       if(actionBar != null){
+           actionBar.setTitle("Smart Index Cards");
+           actionBar.setIcon(R.drawable.logo_sic);
+           actionBar.setDisplayShowHomeEnabled(true);
+           actionBar.setDisplayHomeAsUpEnabled(true);
+       }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
+
+
+
+    public static class SettingsFragment extends PreferenceFragment {
         @Override
-        public void onCreate (Bundle savedInstanceState){
+        public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
         }
