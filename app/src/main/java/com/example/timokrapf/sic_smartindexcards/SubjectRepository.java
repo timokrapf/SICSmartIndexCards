@@ -107,11 +107,16 @@ public class SubjectRepository implements AsyncResult {
     }
 
 
-
     public void findCardsForSubject(String subjectTitle) {
         CardsTask task = new CardsTask(myCardsDao);
         task.delegate = this;
         task.execute(subjectTitle);
+    }
+
+
+    //try: highlight subject
+    public void highlightSubject(Subject subject){
+        //select item
     }
 
 

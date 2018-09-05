@@ -68,6 +68,9 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
             @Override
             public void onItemLongClicked(Subject subject) {
                 viewModel.deleteSubject(subject);
+
+                //try: select subject
+                viewModel.selectSubject(subject);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -165,10 +168,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
 
 
     //ActionBar:
-    //todo: create different menu-xml files for StartActivity and other Activities
-
-    //todo: if possible: replace initActionBar() with xml style
-
     private void initActionBar(){
         ActionBar actionBar = getActionBar();
         if(actionBar != null) {

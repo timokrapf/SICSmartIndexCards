@@ -208,7 +208,6 @@ public class LearnplannerActivity extends FragmentActivity{
 
 
     //ActionBar:
-    //todo: if possible: replace initActionBar() with xml style
     private void initActionBar(){
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {

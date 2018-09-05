@@ -71,7 +71,6 @@ public class OverviewActivity extends FragmentActivity {
 
 
     //ActionBar:
-    //todo: if possible: replace initActionBar() with xml style
     private void initActionBar(){
         getActionBar().setTitle(R.string.overview_actionbar);
         getActionBar().setIcon(R.drawable.kartenuebersicht);
@@ -88,7 +87,6 @@ public class OverviewActivity extends FragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete_button_actionbar:
-                //todo delete item
                 Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.settings_button_actionbar:

@@ -34,10 +34,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     //ActionBar:
-    //todo: create different menu-xml files for StartActivity and other Activities
-
-    //todo: if possible: replace initActionBar() with xml style
-
     private void initActionBar() {
        ActionBar actionBar = getSupportActionBar();
        if(actionBar != null){
@@ -53,8 +49,6 @@ public class SettingsActivity extends AppCompatActivity {
         finish();
         return true;
     }
-
-
 
     public static class SettingsFragment extends PreferenceFragment {
         @Override

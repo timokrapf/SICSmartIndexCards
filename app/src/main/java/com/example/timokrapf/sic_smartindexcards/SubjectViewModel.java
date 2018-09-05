@@ -66,4 +66,10 @@ public class SubjectViewModel extends AndroidViewModel {
         myRepository.findCardsForSubject(subjectTitle);
     }
 
+
+    //try: select subject
+    public void selectSubject(Subject subject){
+        myRepository.highlightSubject(subject);
+    }
+
 }

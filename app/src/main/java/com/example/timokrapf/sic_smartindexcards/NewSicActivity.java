@@ -105,7 +105,6 @@ public class NewSicActivity extends FragmentActivity {
     }
 
     //ActionBar:
-    //todo: if possible: replace initActionBar() with xml style
     private void initActionBar(){
         getActionBar().setTitle(R.string.new_sic);
         getActionBar().setIcon(R.drawable.karteikarte);
@@ -121,10 +120,6 @@ public class NewSicActivity extends FragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.delete_button_actionbar:
-                //todo delete item
-                Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.settings_button_actionbar:
                 //open settings activity
                 Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
