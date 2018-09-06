@@ -30,7 +30,7 @@
     <string name="answer">Deine Antwort</string>
     <string name="save">Speichern</string>
     <string name="sic_quiz">Teste dich</string>
-    <string name="instruction_text">Wische nach rechts, um die Lösung zu erfahren!</string>
+    <string name="instruction_text">Wische nach rechts, um die Lösung zu erfahren und nochmal um eine neue Frage zu erhalten!</string>
     <string name="overview_header">Deine sic-Übersicht</string>
     <string name="solution">Schreibe deine Lösung</string>
     <string name="enter">Eingabe</string>
@@ -63,4 +63,6 @@
     <string name="sound_pref_description">Schalte den Ton an oder aus</string>
     <string name="vibrate_preference">Vibrate</string>
     <string name="vibrate_pref_description">Schalte die Vibration an oder aus</string>
+    <string name="no_new_card">Diese Frage existiert schon</string>
+    <string name="almost_everything_right">Nicht ganz versuchs nochmal</string>
 </resources>

@@ -66,10 +66,16 @@ public class SubjectViewModel extends AndroidViewModel {
         myRepository.findCardsForSubject(subjectTitle);
     }
 
+    Subject fetchSubject(String subjectTitle) {
+        return myRepository.getFetchedSubject(subjectTitle);
+    }
 
-    //try: select subject
-    public void selectSubject(Subject subject){
-        myRepository.highlightSubject(subject);
+    public void updateCard(SmartIndexCards card) {
+        myRepository.updateCard(card);
+    }
+
+    public void updateSubject(Subject subject) {
+        myRepository.updateSubject(subject);
     }
 
 }

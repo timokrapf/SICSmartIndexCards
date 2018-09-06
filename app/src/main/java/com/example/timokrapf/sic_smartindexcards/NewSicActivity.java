@@ -17,12 +17,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NewSicActivity extends FragmentActivity {
 
     private EditText question, answer;
-    private Subject subject;
+    private String subjectTitle;
     private String emptyText = "";
+    private SmartIndexCards card;
+    private SubjectViewModel model;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,39 @@ public class NewSicActivity extends FragmentActivity {
         initUI();
         initActionBar();
         handleIntent();
+        setViewModel();
         initButtons();
+    }
+
+    private void setViewModel() {
+        model = ViewModelProviders.of(this).get(SubjectViewModel.class);
+        model.getCards().observe(this, new Observer<List<SmartIndexCards>>() {
+            @Override
+            public void onChanged(@Nullable List<SmartIndexCards> cards) {
+                for(int i = 0; i < cards.size(); i++) {
+                    SmartIndexCards currentCard = cards.get(i);
+                    if(currentCard.getQuestion().compareToIgnoreCase(card.getQuestion()) == 0) {
+                        Toast.makeText(NewSicActivity.this, getString(R.string.no_new_card), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                model.insertCard(card);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Subject subject = model.fetchSubject(subjectTitle);
+                        int currentNumber = subject.getNumberOfCards();
+                        int newNumber = currentNumber + 1;
+                        subject.setNumberOfCards(newNumber);
+                        model.updateSubject(subject);
+                    }
+                }).start();
+                answer.setText(emptyText);
+                question.setText(emptyText);
+                Toast.makeText(NewSicActivity.this, getString(R.string.new_card), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
 
@@ -40,7 +75,7 @@ public class NewSicActivity extends FragmentActivity {
         if(i != null) {
             Bundle extras = i.getExtras();
             if(extras != null) {
-                subject = extras.getParcelable(Constants.CHOSEN_SUBJECT);
+                subjectTitle = extras.getString(Constants.SUBJECT_TITLE_KEY);
             }
         }
     }
@@ -75,21 +110,17 @@ public class NewSicActivity extends FragmentActivity {
     }
 
     private void saveButtonClicked(){
-        if(subject != null) {
+        if(subjectTitle != null) {
             String questionString = question.getText().toString();
             String answerString = answer.getText().toString();
             if(questionString.equals(emptyText) || answerString.equals(emptyText)) {
                Toast.makeText(this, getString(R.string.no_complete_card), Toast.LENGTH_SHORT).show();
             } else {
-                SubjectRepository repository = new SubjectRepository(getApplication());
-                SmartIndexCards cards = new SmartIndexCards();
-                cards.setAnswer(answerString);
-                cards.setQuestion(questionString);
-                cards.setSubject(subject.getSubjectTitle());
-                repository.insertCard(cards);
-                answer.setText(emptyText);
-                question.setText(emptyText);
-                Toast.makeText(this, getString(R.string.new_card), Toast.LENGTH_SHORT).show();
+                card = new SmartIndexCards();
+                card.setAnswer(answerString);
+                card.setQuestion(questionString);
+                card.setSubject(subjectTitle);
+                model.findCardsForSubject(subjectTitle);
             }
         }
     }

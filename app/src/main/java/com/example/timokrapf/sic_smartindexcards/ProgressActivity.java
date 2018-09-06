@@ -2,8 +2,12 @@ package com.example.timokrapf.sic_smartindexcards;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -14,25 +18,62 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProgressActivity extends FragmentActivity {
 
+    private String subjectTitle;
+    private ArrayList<SmartIndexCards> rightCards;
     private TextView progressText;
-    private int five = 5;
-    private int seven = 7;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.progress_activity);
+        handleIntent();
         initUI();
         initActionBar();
         initButtons();
+        setValuesForProgressText();
+
+    }
+
+    private void handleIntent() {
+        Intent intent = getIntent();
+        if(intent != null) {
+            Bundle extras = intent.getExtras();
+            if(extras != null) {
+                subjectTitle = extras.getString(Constants.SUBJECT_TITLE_KEY);
+            }
+        }
+    }
+
+    private void setValuesForProgressText() {
+        rightCards = new ArrayList<>();
+        SubjectViewModel model = ViewModelProviders.of(this).get(SubjectViewModel.class);
+        if(subjectTitle != null) {
+            model.findCardsForSubject(subjectTitle);
+            model.getCards().observe(this, new Observer<List<SmartIndexCards>>() {
+                @Override
+                public void onChanged(@Nullable List<SmartIndexCards> cards) {
+                    if(!cards.isEmpty()) {
+                        for(int i = 0; i < cards.size(); i++) {
+                            SmartIndexCards currentCard = cards.get(i);
+                            if(currentCard.isWasRightAnswer()) {
+                                rightCards.add(currentCard);
+                            }
+                        }
+                        progressText.setText("Du hast bereits " + rightCards.size() +  " von " + cards.size() + " Karten richtig beantwortet");
+                    }
+                }
+            });
+        }
 
     }
 
     private void initUI(){
-       progressText = (TextView)findViewById(R.id.progress_textview_id);
-       progressText.setText("Du hast bereits " + five +  " von " + seven + " Karten richtig beantwortet");
+        progressText = (TextView)findViewById(R.id.progress_textview_id);
     }
 
     private void initButtons(){

@@ -49,11 +49,13 @@ public class SubjectRepository implements AsyncResult {
         return myCardsList;
     }
 
-    /*
-    MutableLiveData<Subject> getFetchedSubject() {
-        return fetchedSubject;
+    public void updateSubject(Subject subject) {
+        new UpdateOldSubjectTask(mySubjectDao).execute(subject);
     }
-    */
+
+    public void updateCard(SmartIndexCards card) {
+        new UpdateOldCardTask(myCardsDao).execute(card);
+    }
 
     public void removeScheduleByRequestCode(int requestcode) {
         new RemoveScheduleByRequestcodeTask(myScheduleDao).execute(requestcode);
@@ -63,9 +65,13 @@ public class SubjectRepository implements AsyncResult {
         return mySubjectDao.findSubjectByName(subjectTitle);
     }
 
+    public List<SmartIndexCards> getRightAnswers(boolean isRight) {
+        return myCardsDao.getRightAnsweredCards(isRight);
+    }
+
     public void insertSubject(Subject subject) {
         isNewSubject = true;
-        new SubjectUpdateTask(mySubjectDao, myScheduleDao).execute(subject);
+        new SubjectUpdateTask(mySubjectDao, myScheduleDao, myCardsDao).execute(subject);
     }
 
     public void deleteSubject(final Subject subject) {
@@ -83,7 +89,7 @@ public class SubjectRepository implements AsyncResult {
                 }
             }
         }).start();
-        new SubjectUpdateTask(mySubjectDao, myScheduleDao).execute(subject);
+        new SubjectUpdateTask(mySubjectDao, myScheduleDao, myCardsDao).execute(subject);
     }
 
     public void insertCard(SmartIndexCards card) {
@@ -129,10 +135,12 @@ public class SubjectRepository implements AsyncResult {
 
         private SubjectDao subjectTaskDao;
         private ScheduleDao scheduleDao;
+        private SmartIndexCardsDao smartIndexCardsDao;
 
-        SubjectUpdateTask(SubjectDao dao, ScheduleDao dataAccessO) {
+        SubjectUpdateTask(SubjectDao dao, ScheduleDao dataAccessO, SmartIndexCardsDao sicDao) {
             subjectTaskDao = dao;
             scheduleDao = dataAccessO;
+            smartIndexCardsDao = sicDao;
         }
 
         @Override
@@ -143,6 +151,7 @@ public class SubjectRepository implements AsyncResult {
             } else {
                 subjectTaskDao.deleteSubject(currentSubject);
                 scheduleDao.removeScheduleByName(currentSubject.getSubjectTitle());
+                smartIndexCardsDao.deleteCardsByTitle(currentSubject.getSubjectTitle());
             }
             return null;
         }
@@ -224,5 +233,33 @@ public class SubjectRepository implements AsyncResult {
         }
     }
 
+    private static class UpdateOldSubjectTask extends AsyncTask<Subject, Void, Void> {
 
+        private SubjectDao subjectDao;
+
+        UpdateOldSubjectTask(SubjectDao dao) {
+            subjectDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Subject... subjects) {
+            subjectDao.updateSubject(subjects[0]);
+            return null;
+        }
+    }
+
+    private static class UpdateOldCardTask extends AsyncTask<SmartIndexCards, Void, Void> {
+
+        private SmartIndexCardsDao cardsDao;
+
+        UpdateOldCardTask(SmartIndexCardsDao dao) {
+            cardsDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(SmartIndexCards... smartIndexCards) {
+            cardsDao.updateCard(smartIndexCards[0]);
+            return null;
+        }
+    }
 }
