@@ -43,7 +43,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     private RecyclerView recyclerView;
     private TextView emptyText, itemView;
     private ActionMode mActionMode;
-    private Subject subjectsToDelete;
+    private Subject subjectToDelete;
 
 
     @Override
@@ -78,9 +78,12 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
             public void onItemLongClicked(Subject subject, TextView view) {
                 /*
                 viewModel.deleteSubject(subject);*/
-                itemView = view;
-                subjectsToDelete = subject;
-                mActionMode = startActionMode(mActionModeCallback);
+                if(subjectToDelete == null) {
+                    itemView = view;
+                    itemView.setBackgroundColor(Color.RED);
+                    subjectToDelete = subject;
+                    mActionMode = startActionMode(mActionModeCallback);
+                }
             }
         });
         recyclerView.setAdapter(adapter);
@@ -251,8 +254,8 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
                             //selectedSubject = viewModel.fetchSubject(selectedSubjectTitle);
                             //viewModel.deleteSubject(selectedSubject);
 
-                            viewModel.deleteSubject(subjectsToDelete);
-                            subjectsToDelete = null;
+                            viewModel.deleteSubject(subjectToDelete);
+                            subjectToDelete = null;
                             itemView.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
                             String deleteToastText = "Löschen war erfolgreich";
                             Context toastContext = getApplicationContext();
@@ -278,7 +281,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         // Called when the user exits the action mode
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            if(subjectsToDelete != null) {
+            if(subjectToDelete != null) {
                 itemView.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
             }
             /*if(items.size() == subjectsToDelete) {

@@ -117,7 +117,6 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                              @Override
                              public void onClick(DialogInterface dialog, int which) {
                                  listener.onItemLongClicked(subject, subjectItemView);
-                                 subjectItemView.setBackgroundColor(Color.RED);
                                  dialog.cancel();
                              }
                          });
