@@ -157,7 +157,6 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
     }
 
     //ActionBar:
-    //todo: if possible: replace initActionBar() with xml style
     private void initActionBar(){
         //title is set in handleIntent()
         getActionBar().setIcon(R.drawable.subject_icon_stripes);
@@ -172,10 +171,6 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.delete_button_actionbar:
-                //todo delete item
-                Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.settings_button_actionbar:
                 //open settings activity
                 Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();

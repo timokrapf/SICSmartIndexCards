@@ -25,6 +25,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     private OnItemClickListener listener;
     private Context context;
 
+
     SubjectAdapter(Context context, OnItemClickListener listener) {
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -95,6 +96,9 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                  itemView.setOnLongClickListener(new View.OnLongClickListener() {
                      @Override
                      public boolean onLongClick(View v) {
+
+                         //ursprünglicher Code:
+                         /*
                          AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
                          dialogBuilder.setTitle(R.string.delete_dialog);
                          dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -112,6 +116,29 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                          });
                          dialogBuilder.create().show();
                          return true;
+                         */
+
+
+                         //try new Code. (Dialog probably not necessary):
+                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                         dialogBuilder.setTitle("Fach " + subject.getSubjectTitle() + " auswählen?");
+                         dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                             @Override
+                             public void onClick(DialogInterface dialog, int which) {
+                                 listener.onItemLongClicked(subject);
+                                 subjectItemView.setBackgroundColor(Color.MAGENTA);
+                                 dialog.cancel();
+                             }
+                         });
+                         dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                             @Override
+                             public void onClick(DialogInterface dialog, int which) {
+                                 dialog.cancel();
+                             }
+                         });
+                         dialogBuilder.create().show();
+                         return true;
+                         //end of new code
                      }
                  });
              }

@@ -2,20 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!--
     <item
         android:id = "@+id/delete_button_actionbar"
         android:title = "@string/delete"
-        app:showAsAction = "ifRoom"
+        app:showAsAction = "always"
         android:icon = "@drawable/delete_button_bin"/>
+    -->
 
     <item
         android:id = "@+id/settings_button_actionbar"
         android:title = "@string/settings"
         android:icon = "@drawable/settings_button_gear"
-        app:showAsAction="always"
+        android:showAsAction="always"
         />
 
-
+    <!-- android:showAsAction must be used instead of app:showAsAction -->
     <!-- icons retrieved from https://material.io/tools/icons/?style=baseline -->
 
 </menu>

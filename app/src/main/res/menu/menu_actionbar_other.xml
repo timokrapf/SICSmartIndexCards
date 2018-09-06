@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:andoroid="http://schemas.android.com/tools">
 
     <item
         android:id = "@+id/settings_button_actionbar"
         android:title = "@string/settings"
-        android:showAsAction = "ifRoom"
+        andoroid:showAsAction = "ifRoom"
         android:icon = "@drawable/settings_button_gear"/>
 </menu>
