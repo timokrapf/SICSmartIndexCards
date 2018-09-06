@@ -3,6 +3,8 @@ package com.example.timokrapf.sic_smartindexcards;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -73,7 +75,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
 
          private SubjectViewHolder(View itemView) {
              super(itemView);
-             subjectItemView = itemView.findViewById(R.id.recyclerview_textview);
+             subjectItemView = (TextView) itemView.findViewById(R.id.recyclerview_textview);
          }
 
          private void bind(final Subject subject, final OnItemClickListener listener) {
@@ -90,12 +92,32 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                  itemView.setOnLongClickListener(new View.OnLongClickListener() {
                      @Override
                      public boolean onLongClick(View v) {
+                         /*
                          AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
                          dialogBuilder.setTitle(R.string.delete_dialog);
                          dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                              @Override
                              public void onClick(DialogInterface dialog, int which) {
                                  listener.onItemLongClicked(subject);
+                                 dialog.cancel();
+                             }
+                         });
+                         dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                             @Override
+                             public void onClick(DialogInterface dialog, int which) {
+                                 dialog.cancel();
+                             }
+                         });
+                         dialogBuilder.create().show();
+                         return true;
+                        */
+                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                         dialogBuilder.setTitle(subject.getSubjectTitle() + " auswählen?");
+                         dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                             @Override
+                             public void onClick(DialogInterface dialog, int which) {
+                                 listener.onItemLongClicked(subject, subjectItemView);
+                                 subjectItemView.setBackgroundColor(Color.RED);
                                  dialog.cancel();
                              }
                          });
@@ -116,6 +138,6 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
 
      public interface OnItemClickListener {
         void onItemClicked(Subject subject);
-        void onItemLongClicked(Subject subject);
+        void onItemLongClicked(Subject subject, TextView view);
      }
 }

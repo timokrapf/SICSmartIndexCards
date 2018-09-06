@@ -15,7 +15,7 @@ import java.util.List;
 generate parcelable
  */
 @Entity(tableName = "subject_table")
-public class Subject implements Parcelable {
+public class Subject  {
 
     @NonNull
     @ColumnInfo(name = "subject_id")
@@ -23,7 +23,6 @@ public class Subject implements Parcelable {
     private int subjectId;
     @ColumnInfo(name = "subject_title")
     private String subjectTitle;
-
     @ColumnInfo(name = "number_of_cards")
     private int numberOfCards;
 
@@ -55,33 +54,5 @@ public class Subject implements Parcelable {
         this.numberOfCards = numberOfCards;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.subjectId);
-        dest.writeString(this.subjectTitle);
-        dest.writeInt(this.numberOfCards);
-    }
-
-    protected Subject(Parcel in) {
-        this.subjectId = in.readInt();
-        this.subjectTitle = in.readString();
-        this.numberOfCards = in.readInt();
-    }
-
-    public static final Parcelable.Creator<Subject> CREATOR = new Parcelable.Creator<Subject>() {
-        @Override
-        public Subject createFromParcel(Parcel source) {
-            return new Subject(source);
-        }
-
-        @Override
-        public Subject[] newArray(int size) {
-            return new Subject[size];
-        }
-    };
 }

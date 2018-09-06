@@ -1,11 +1,15 @@
 package com.example.timokrapf.sic_smartindexcards;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -14,7 +18,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -35,7 +41,10 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     private SubjectAdapter adapter;
     private AddSubjectFragment addSubjectFragment;
     private RecyclerView recyclerView;
-    private TextView emptyText;
+    private TextView emptyText, itemView;
+    private ActionMode mActionMode;
+    private Subject subjectsToDelete;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +75,12 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
                 startActivity(intent);
             }
             @Override
-            public void onItemLongClicked(Subject subject) {
-                viewModel.deleteSubject(subject);
+            public void onItemLongClicked(Subject subject, TextView view) {
+                /*
+                viewModel.deleteSubject(subject);*/
+                itemView = view;
+                subjectsToDelete = subject;
+                mActionMode = startActionMode(mActionModeCallback);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -187,10 +200,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.delete_button_actionbar:
-                //todo delete item
-                Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.settings_button_actionbar:
                 //open settings activity
                 settingsButtonActionbarClicked();
@@ -203,4 +212,82 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         Intent settingsIntent = new Intent(StartActivity.this, SettingsActivity.class);
         startActivity(settingsIntent);
     }
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        private ArrayList<Subject> subjects;
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_context_actionbar, menu);
+            //mActionMode.setTitle(selectedSubjectTitle + " ausgewählt");
+            return true;
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            Context context = StartActivity.this;
+            switch (item.getItemId()) {
+                case R.id.delete_button_actionbar:
+                    //show delete dialog (does not work yet):
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                    dialogBuilder.setTitle("Willst du diese wirklich löschen?");
+                    dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            //todo delete item
+                            //not working. Need Thread apparently:
+                            //selectedSubject = viewModel.fetchSubject(selectedSubjectTitle);
+                            //viewModel.deleteSubject(selectedSubject);
+
+                            viewModel.deleteSubject(subjectsToDelete);
+                            subjectsToDelete = null;
+                            itemView.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+                            String deleteToastText = "Löschen war erfolgreich";
+                            Context toastContext = getApplicationContext();
+                            Toast.makeText(toastContext, deleteToastText, Toast.LENGTH_SHORT).show();
+                            dialog.cancel();
+                        }
+                    });
+                    dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    dialogBuilder.create().show();
+
+                    mode.finish(); // Action picked, so close the CAB
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            if(subjectsToDelete != null) {
+                itemView.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+            }
+            /*if(items.size() == subjectsToDelete) {
+                for(int i = 0; i < items.size(); i++) {
+                    TextView item = items.get(i);
+                    item.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+                }
+            }*/
+            mActionMode = null;
+        }
+    };
 }

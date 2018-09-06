@@ -50,16 +50,7 @@ public class NewSicActivity extends FragmentActivity {
                     }
                 }
                 model.insertCard(card);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Subject subject = model.fetchSubject(subjectTitle);
-                        int currentNumber = subject.getNumberOfCards();
-                        int newNumber = currentNumber + 1;
-                        subject.setNumberOfCards(newNumber);
-                        model.updateSubject(subject);
-                    }
-                }).start();
+                updateSubject();
                 answer.setText(emptyText);
                 question.setText(emptyText);
                 Toast.makeText(NewSicActivity.this, getString(R.string.new_card), Toast.LENGTH_SHORT).show();
@@ -68,6 +59,18 @@ public class NewSicActivity extends FragmentActivity {
 
     }
 
+    private void updateSubject() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Subject subject = model.fetchSubject(subjectTitle);
+                int currentNumber = subject.getNumberOfCards();
+                int newNumber = currentNumber + 1;
+                subject.setNumberOfCards(newNumber);
+                model.updateSubject(subject);
+            }
+        }).start();
+    }
 
 
     private void handleIntent() {
@@ -115,6 +118,8 @@ public class NewSicActivity extends FragmentActivity {
             String answerString = answer.getText().toString();
             if(questionString.equals(emptyText) || answerString.equals(emptyText)) {
                Toast.makeText(this, getString(R.string.no_complete_card), Toast.LENGTH_SHORT).show();
+            } else if(questionString.compareToIgnoreCase(answerString) == 0) {
+                Toast.makeText(this, getString(R.string.answer_equals_question), Toast.LENGTH_SHORT).show();
             } else {
                 card = new SmartIndexCards();
                 card.setAnswer(answerString);
@@ -151,10 +156,7 @@ public class NewSicActivity extends FragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.delete_button_actionbar:
-                //todo delete item
-                Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
-                break;
+
             case R.id.settings_button_actionbar:
                 //open settings activity
                 Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();

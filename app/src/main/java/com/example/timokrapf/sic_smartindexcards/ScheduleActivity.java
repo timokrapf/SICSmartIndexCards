@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -145,9 +146,8 @@ public class ScheduleActivity extends FragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.delete_button_actionbar:
-                //todo delete item
-                Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
                 break;
             case R.id.settings_button_actionbar:
                 //open settings activity

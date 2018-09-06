@@ -65,4 +65,9 @@
     <string name="vibrate_pref_description">Schalte die Vibration an oder aus</string>
     <string name="no_new_card">Diese Frage existiert schon</string>
     <string name="almost_everything_right">Nicht ganz versuchs nochmal</string>
+    <string name="no_cards_created">Aktuell sind noch keine Karten erstellt</string>
+    <string name="choose_card">Klick auf eine Karte und swipe hoch</string>
+    <string name="delete_card_dialog">Willst du die Karte wirklich löschen</string>
+    <string name="delete_card">Die Karte wurde gelöscht</string>
+    <string name="answer_equals_question">Antwort und Frage unterscheiden sich nicht</string>
 </resources>

@@ -223,10 +223,6 @@ public class QuizActivity extends FragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.delete_button_actionbar:
-                //todo delete item
-                Toast.makeText(this, "Löschen", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.settings_button_actionbar:
                 //open settings activity
                 Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();

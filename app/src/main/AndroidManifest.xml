@@ -33,7 +33,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ScheduleActivity">
+        <activity android:name=".ScheduleActivity"
+            android:parentActivityName=".LearnplannerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
