@@ -6,7 +6,8 @@
         android:id = "@+id/delete_button_actionbar"
         android:title = "@string/delete"
         app:showAsAction = "always"
-        android:icon = "@drawable/delete_button_bin"/>
+        android:icon = "@drawable/delete_button_bin"
+        />
 
 
 </menu>

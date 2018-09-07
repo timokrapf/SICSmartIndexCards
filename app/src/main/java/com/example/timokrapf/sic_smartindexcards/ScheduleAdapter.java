@@ -18,6 +18,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
     private Context context;
     private List<Schedule> scheduleList;
     private OnItemClickListener listener;
+    private boolean chooseModeIsOn;
 
     ScheduleAdapter(Context context, OnItemClickListener listener) {
         this.context = context;
@@ -46,6 +47,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         return 0;
     }
 
+    void setChooseModeIsOn(boolean chooseModeIsOn) {
+        this.chooseModeIsOn = chooseModeIsOn;
+    }
     void setScheduleList(List<Schedule> scheduleList) {
         this.scheduleList = scheduleList;
         notifyDataSetChanged();
@@ -64,7 +68,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         }
 
         private void bind(final Schedule schedule, final OnItemClickListener listener) {
-            if(scheduleList == null) {
+            if (scheduleList == null) {
                 subjectTitleView.setText(R.string.no_schedulelist);
             } else {
                 subjectTitleView.setText(schedule.getSubjectTitle());
@@ -73,30 +77,40 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
                 itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-                        dialogBuilder.setTitle(R.string.delete_schedule_dialog);
-                        dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                listener.onItemLongClicked(schedule);
-                                dialog.cancel();
+
+                                if (!chooseModeIsOn) {
+                                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                                    dialogBuilder.setTitle(R.string.schedules_want_to_select);
+                                    dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            listener.onItemLongClicked(schedule, itemView);
+                                            chooseModeIsOn = true;
+                                            dialog.cancel();
+                                        }
+                                    });
+                                    dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                                    dialogBuilder.create().show();
+                                }
+                                return true;
                             }
-                        });
-                        dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                        dialogBuilder.create().show();
-                        return true;
+                     });
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClicked(schedule, itemView);
                     }
                 });
+                }
             }
         }
-    }
-
     public interface OnItemClickListener {
-       void onItemLongClicked(Schedule schedule);
+        void onItemLongClicked(Schedule schedule, View itemView);
+        void onItemClicked(Schedule schedule, View itemView);
     }
 }

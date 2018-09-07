@@ -70,4 +70,8 @@
     <string name="delete_card_dialog">Willst du die Karte wirklich löschen</string>
     <string name="delete_card">Die Karte wurde gelöscht</string>
     <string name="answer_equals_question">Antwort und Frage unterscheiden sich nicht</string>
+    <string name="do_you_want_to_delete">Willst du Ausgewähltes wirklich löschen?</string>
+    <string name="cards_want_to_select">Willst du Karten markieren, um sie zu löschen</string>
+    <string name="schedules_want_to_select">Willst du Erinnerungen markieren, um sie löschen</string>
+    <string name="subjects_want_to_select">Willst du Fächer markieren, um sie zu löschen</string>
 </resources>

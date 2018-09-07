@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     >
-<!--
-    <item
-        android:id = "@+id/delete_button_actionbar"
-        android:title = "@string/delete"
-        app:showAsAction = "ifRoom"
-        android:icon = "@drawable/delete_button_bin"/>
--->
     <item
         android:id = "@+id/settings_button_actionbar"
         android:title = "@string/settings"

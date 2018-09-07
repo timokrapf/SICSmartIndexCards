@@ -1,15 +1,22 @@
 package com.example.timokrapf.sic_smartindexcards;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
@@ -18,6 +25,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OverviewActivity extends FragmentActivity {
@@ -28,6 +36,10 @@ public class OverviewActivity extends FragmentActivity {
     private RecyclerView view;
     private SubjectViewModel model;
     private SicAdapter adapter;
+    private ActionMode mActionMode;
+    private ArrayList<SmartIndexCards> cards = new ArrayList<>();
+    private ArrayList<TextView> views = new ArrayList<>();
+    private boolean multiSelect = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,19 +108,22 @@ public class OverviewActivity extends FragmentActivity {
     private void initAdapter() {
         adapter = new SicAdapter(this, new SicAdapter.OnItemClickListener() {
             @Override
-            public void onItemClicked(SmartIndexCards card) {
-                currentCardView.setText(card.getQuestion());
-                adapter.setCurrentCard(card);
+            public void onItemClicked(SmartIndexCards card, TextView view) {
+                if(multiSelect) {
+                    selectItem(card, view);
+                    views.add(view);
+                } else {
+                    currentCardView.setText(card.getQuestion());
+                    adapter.setCurrentCard(card);
+                }
             }
 
             @Override
-            public void onItemLongClicked(SmartIndexCards card) {
-                    model.deleteCard(card);
-                    Toast.makeText(OverviewActivity.this, getString(R.string.delete_card), Toast.LENGTH_SHORT).show();
-                    model.findCardsForSubject(subjectTitle);
-                    if(card.getQuestion().equals(currentCardView.getText().toString()) || card.getAnswer().equals(currentCardView.getText().toString())) {
-                        currentCardView.setText(R.string.choose_card);
-                    }
+            public void onItemLongClicked(SmartIndexCards card, TextView view) {
+                multiSelect = true;
+                mActionMode = startActionMode(mActionModeCallback);
+                selectItem(card, view);
+                views.add(view);
             }
         });
         view.setAdapter(adapter);
@@ -132,17 +147,7 @@ public class OverviewActivity extends FragmentActivity {
             }
         }).start();
     }
-/*
-    private void initGridView(){
-        sic sic_data[] = new sic[]{
-                new sic(R.drawable.karteikarte)
-        };
 
-        SicAdapter adapter = new SicAdapter(this, R.layout.gridview_item, sic_data);
-        gridView = (GridView) findViewById(R.id.gridView_id);
-        gridView.setAdapter(adapter);
-    }
-*/
     private void initButtons(){
         Button subjectButton = (Button) findViewById(R.id.subject_button_id);
         subjectButton.setOnClickListener(new View.OnClickListener() {
@@ -169,13 +174,24 @@ public class OverviewActivity extends FragmentActivity {
         Intent i = new Intent (OverviewActivity.this, LearnplannerActivity.class);
         startActivity(i);
     }
-
-
+    private void selectItem(SmartIndexCards card, TextView view) {
+        if (multiSelect) {
+            if (cards.contains(card)) {
+                cards.remove(card);
+                view.setBackground(getDrawable(R.drawable.karteikarte));
+            } else {
+                cards.add(card);
+                view.setBackgroundColor(Color.RED);
+            }
+        }
+    }
     //ActionBar:
     //todo: if possible: replace initActionBar() with xml style
     private void initActionBar(){
         getActionBar().setTitle(R.string.overview_actionbar);
         getActionBar().setIcon(R.drawable.kartenuebersicht);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     @Override
@@ -187,7 +203,11 @@ public class OverviewActivity extends FragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
+            case android.R.id.home:
+                Intent intent = new Intent(OverviewActivity.this, SubjectActivity.class);
+                intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
+                startActivity(intent);
+                break;
             case R.id.settings_button_actionbar:
                 //open settings activity
                 Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
@@ -201,4 +221,68 @@ public class OverviewActivity extends FragmentActivity {
         Intent settingsIntent = new Intent(OverviewActivity.this, SettingsActivity.class);
         startActivity(settingsIntent);
     }
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_context_actionbar, menu);
+
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
+            Context context = OverviewActivity.this;
+            switch (item.getItemId()) {
+                case R.id.delete_button_actionbar:
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                    dialogBuilder.setTitle(R.string.do_you_want_to_delete);
+                    dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            for(int i = 0; i < cards.size(); i++) {
+                                SmartIndexCards card = cards.get(i);
+                                model.deleteCard(card);
+                            }
+                            model.findCardsForSubject(subjectTitle);
+                            mode.finish();
+                            dialog.cancel();
+                        }
+                    });
+                    dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mode.finish();
+                            dialog.cancel();
+                        }
+                    });
+                    dialogBuilder.create().show();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+            adapter.setChooseModeIsOn(false);
+            for(int j = 0; j < views.size(); j++) {
+                TextView view = views.get(j);
+                view.setBackground(getDrawable(R.drawable.karteikarte));
+            }
+            cards.clear();
+            multiSelect = false;
+            views.clear();
+        }
+    };
 }
+

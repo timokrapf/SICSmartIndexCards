@@ -1,21 +1,28 @@
 package com.example.timokrapf.sic_smartindexcards;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScheduleActivity extends FragmentActivity {
@@ -27,7 +34,10 @@ public class ScheduleActivity extends FragmentActivity {
     private RecyclerView recyclerView;
     private TextView emptyText;
     private Schedule schedule;
-
+    private ArrayList<View> views = new ArrayList<>();
+    private boolean multiSelect = false;
+    private ArrayList<Schedule> schedules = new ArrayList<>();
+    private ActionMode mActionMode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,12 +63,20 @@ public class ScheduleActivity extends FragmentActivity {
     private void initAdapter(){
         adapter = new ScheduleAdapter(this, new ScheduleAdapter.OnItemClickListener() {
             @Override
-            public void onItemLongClicked(Schedule schedule) {
-                Intent intent = new Intent(getBaseContext(), ServiceReceiver.class);
-                intent.putExtra(Constants.CHOSEN_SCHEDULE, schedule);
-                intent.putExtra(Constants.RECEIVER_STATUS, Constants.STOP_ALARM_VALUE);
-                sendBroadcast(intent);
-                viewModel.deleteSchedule(schedule);
+            public void onItemLongClicked(Schedule schedule, View view) {
+                multiSelect = true;
+                mActionMode = startActionMode(mActionModeCallback);
+                selectItem(schedule, view);
+                views.add(view);
+
+            }
+
+            @Override
+            public void onItemClicked(Schedule schedule, View itemView) {
+                if(multiSelect) {
+                    selectItem(schedule, itemView);
+                    views.add(itemView);
+                }
             }
         });
         recyclerView.setAdapter(adapter);
@@ -128,13 +146,24 @@ public class ScheduleActivity extends FragmentActivity {
             sendBroadcast(intent);
         }
     }
-
+    private void selectItem(Schedule schedule, View view) {
+        if (multiSelect) {
+            if (schedules.contains(schedule)) {
+                schedules.remove(schedule);
+                view.setBackgroundColor(Color.WHITE);
+            } else {
+                schedules.add(schedule);
+                view.setBackgroundColor(Color.RED);
+            }
+        }
+    }
     //ActionBar:
     //todo: if possible: replace initActionBar() with xml style
     private void initActionBar(){
         getActionBar().setTitle(R.string.schedule_planner);
         //todo: icon for learnplanner
         getActionBar().setIcon(R.drawable.logo_sic);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -162,6 +191,72 @@ public class ScheduleActivity extends FragmentActivity {
         Intent settingsIntent = new Intent(ScheduleActivity.this, SettingsActivity.class);
         startActivity(settingsIntent);
     }
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_context_actionbar, menu);
+
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
+            Context context = ScheduleActivity.this;
+            switch (item.getItemId()) {
+                case R.id.delete_button_actionbar:
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                    dialogBuilder.setTitle(R.string.do_you_want_to_delete);
+                    dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            for(int i = 0; i < schedules.size(); i++) {
+                                Schedule schedule = schedules.get(i);
+                                Intent intent = new Intent(getBaseContext(), ServiceReceiver.class);
+                                intent.putExtra(Constants.CHOSEN_SCHEDULE, schedule);
+                                intent.putExtra(Constants.RECEIVER_STATUS, Constants.STOP_ALARM_VALUE);
+                                sendBroadcast(intent);
+                                viewModel.deleteSchedule(schedule);
+                            }
+                            mode.finish();
+                            dialog.cancel();
+                        }
+                    });
+                    dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mode.finish();
+                            dialog.cancel();
+                        }
+                    });
+                    dialogBuilder.create().show();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+            adapter.setChooseModeIsOn(false);
+            for(int j = 0; j < views.size(); j++) {
+                View view = views.get(j);
+                view.setBackgroundColor(Color.WHITE);
+            }
+            schedules.clear();
+            multiSelect = false;
+            views.clear();
+        }
+    };
 }
 
 

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -103,11 +104,11 @@ public class NewSicActivity extends FragmentActivity {
                 subjectButtonClicked();
             }
         });
-        Button scheduleButton = (Button) findViewById(R.id.schedule_planner_button_id);
-        scheduleButton.setOnClickListener(new View.OnClickListener() {
+        Button overviewButton = (Button) findViewById(R.id.schedule_planner_button_id);
+        overviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scheduleButtonClicked();
+                overviewButtonClicked();
             }
         });
     }
@@ -135,8 +136,9 @@ public class NewSicActivity extends FragmentActivity {
         startActivity(i);
     }
 
-    private void scheduleButtonClicked(){
-        Intent i = new Intent (NewSicActivity.this, LearnplannerActivity.class);
+    private void overviewButtonClicked(){
+        Intent i = new Intent (NewSicActivity.this, OverviewActivity.class);
+        i.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
         startActivity(i);
     }
 
@@ -145,6 +147,7 @@ public class NewSicActivity extends FragmentActivity {
     private void initActionBar(){
         getActionBar().setTitle(R.string.new_sic);
         getActionBar().setIcon(R.drawable.karteikarte);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -156,7 +159,11 @@ public class NewSicActivity extends FragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
+            case android.R.id.home:
+                Intent intent = new Intent(NewSicActivity.this, SubjectActivity.class);
+                intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
+                startActivity(intent);
+                break;
             case R.id.settings_button_actionbar:
                 //open settings activity
                 Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();

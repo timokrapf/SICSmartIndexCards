@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -107,6 +108,8 @@ public class ProgressActivity extends FragmentActivity {
     private void initActionBar(){
         getActionBar().setTitle(R.string.progress);
         getActionBar().setIcon(R.drawable.lernerfolg_karte);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     @Override
@@ -123,7 +126,13 @@ public class ProgressActivity extends FragmentActivity {
                 Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
                 settingsButtonActionbarClicked();
                 break;
+            case android.R.id.home:
+                Intent intent = new Intent(ProgressActivity.this, SubjectActivity.class);
+                intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
+                startActivity(intent);
+                break;
         }
+
         return true;
     }
 

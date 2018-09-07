@@ -42,7 +42,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     private SubjectAdapter adapter;
     private AddSubjectFragment addSubjectFragment;
     private RecyclerView recyclerView;
-    private TextView emptyText, itemView;
+    private TextView emptyText;
     private ActionMode mActionMode;
     private ArrayList<Subject> subjects;
     private ArrayList<TextView> views;
@@ -86,11 +86,11 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
             }
             @Override
             public void onItemLongClicked(Subject subject, TextView view) {
-                /*
-                viewModel.deleteSubject(subject);*/
+
                     multiSelect = true;
                     mActionMode = startActionMode(mActionModeCallback);
-
+                    selectItem(subject, view);
+                    views.add(view);
 
 
             }
@@ -243,35 +243,26 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
 
-        // Called when the action mode is created; startActionMode() was called
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            // Inflate a menu resource providing context menu items
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.menu_context_actionbar, menu);
-
-            //mActionMode.setTitle(selectedSubjectTitle + " ausgewählt");
-
 
             return true;
         }
 
-        // Called each time the action mode is shown. Always called after onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false; // Return false if nothing is done
+            return false;
         }
 
-        // Called when the user selects a contextual menu item
         @Override
         public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
             Context context = StartActivity.this;
             switch (item.getItemId()) {
                 case R.id.delete_button_actionbar:
-                    //show delete dialog (does not work yet):
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-                    dialogBuilder.setTitle("Willst du diese wirklich löschen?");
+                    dialogBuilder.setTitle(R.string.do_you_want_to_delete);
                     dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -298,7 +289,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
             }
         }
 
-        // Called when the user exits the action mode
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             mActionMode = null;

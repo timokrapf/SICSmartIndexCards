@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -212,6 +213,8 @@ public class QuizActivity extends FragmentActivity {
     private void initActionBar(){
         getActionBar().setTitle(R.string.quiz);
         getActionBar().setIcon(R.drawable.abfrage_karte);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     @Override
@@ -227,6 +230,12 @@ public class QuizActivity extends FragmentActivity {
                 //open settings activity
                 Toast.makeText(this, "Einstellungen", Toast.LENGTH_SHORT).show();
                 settingsButtonActionbarClicked();
+                break;
+
+            case android.R.id.home:
+                Intent intent = new Intent(QuizActivity.this, SubjectActivity.class);
+                intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
+                startActivity(intent);
                 break;
         }
         return true;

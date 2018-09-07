@@ -23,7 +23,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     private List<Subject> subjectList;
     private OnItemClickListener listener;
     private Context context;
-    private boolean chooseModeIsOn = false;
+    private boolean chooseModeIsOn;
 
     SubjectAdapter(Context context, OnItemClickListener listener) {
         this.context = context;
@@ -97,28 +97,9 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                      itemView.setOnLongClickListener(new View.OnLongClickListener() {
                          @Override
                          public boolean onLongClick(View v) {
-                         /*
-                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-                         dialogBuilder.setTitle(R.string.delete_dialog);
-                         dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                             @Override
-                             public void onClick(DialogInterface dialog, int which) {
-                                 listener.onItemLongClicked(subject);
-                                 dialog.cancel();
-                             }
-                         });
-                         dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                             @Override
-                             public void onClick(DialogInterface dialog, int which) {
-                                 dialog.cancel();
-                             }
-                         });
-                         dialogBuilder.create().show();
-                         return true;
-                        */
                              if (!chooseModeIsOn) {
                                  AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-                                 dialogBuilder.setTitle("Zum Löschen auswählen beginnen?");
+                                 dialogBuilder.setTitle(R.string.subjects_want_to_select);
                                  dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                      @Override
                                      public void onClick(DialogInterface dialog, int which) {

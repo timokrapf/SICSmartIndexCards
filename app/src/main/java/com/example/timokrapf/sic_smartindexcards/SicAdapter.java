@@ -23,6 +23,7 @@ public class SicAdapter extends RecyclerView.Adapter<SicAdapter.SicViewHolder> {
     private List<SmartIndexCards> cards;
     private OnItemClickListener listener;
     private SmartIndexCards currentCard;
+    private boolean chooseModeIsOn;
 
     SicAdapter(Context context, OnItemClickListener listener) {
         this.context = context;
@@ -49,6 +50,10 @@ public class SicAdapter extends RecyclerView.Adapter<SicAdapter.SicViewHolder> {
         } else {
             return 0;
         }
+    }
+
+    void setChooseModeIsOn(boolean chooseModeIsOn) {
+        this.chooseModeIsOn = chooseModeIsOn;
     }
 
     void setCardsList(List<SmartIndexCards> cards) {
@@ -81,28 +86,31 @@ public class SicAdapter extends RecyclerView.Adapter<SicAdapter.SicViewHolder> {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        listener.onItemClicked(card);
+                        listener.onItemClicked(card, view);
                     }
                 });
                 itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-                        dialogBuilder.setTitle(R.string.delete_card_dialog);
-                        dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                listener.onItemLongClicked(card);
-                                dialog.cancel();
-                            }
-                        });
-                        dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                        dialogBuilder.create().show();
+                        if (!chooseModeIsOn) {
+                            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                            dialogBuilder.setTitle(R.string.cards_want_to_select);
+                            dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    listener.onItemLongClicked(card, view);
+                                    chooseModeIsOn = true;
+                                    dialog.cancel();
+                                }
+                            });
+                            dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            dialogBuilder.create().show();
+                        }
                         return true;
                     }
                 });
@@ -110,7 +118,7 @@ public class SicAdapter extends RecyclerView.Adapter<SicAdapter.SicViewHolder> {
         }
     }
     public interface OnItemClickListener {
-        void onItemClicked(SmartIndexCards card);
-        void onItemLongClicked(SmartIndexCards card);
+        void onItemClicked(SmartIndexCards card, TextView view);
+        void onItemLongClicked(SmartIndexCards card, TextView view);
     }
 }

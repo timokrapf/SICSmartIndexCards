@@ -91,7 +91,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="@string/schedule_planner"
+            android:text="@string/overview_actionbar"
             android:id="@+id/schedule_planner_button_id"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
