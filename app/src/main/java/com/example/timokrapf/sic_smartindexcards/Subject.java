@@ -25,6 +25,8 @@ public class Subject  {
     private String subjectTitle;
     @ColumnInfo(name = "number_of_cards")
     private int numberOfCards;
+    @ColumnInfo
+    private boolean isChosen = false;
 
     public Subject() {
     }
@@ -54,5 +56,11 @@ public class Subject  {
         this.numberOfCards = numberOfCards;
     }
 
+    public void setChosen(boolean chosen) {
+        isChosen = chosen;
+    }
 
+    public boolean isChosen() {
+        return isChosen;
+    }
 }

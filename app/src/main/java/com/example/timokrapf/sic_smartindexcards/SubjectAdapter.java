@@ -23,6 +23,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     private List<Subject> subjectList;
     private OnItemClickListener listener;
     private Context context;
+    private boolean chooseModeIsOn = false;
 
     SubjectAdapter(Context context, OnItemClickListener listener) {
         this.context = context;
@@ -65,6 +66,9 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     }
 
 
+    void setChooseModeIsOn(boolean chooseModeIsOn) {
+        this.chooseModeIsOn = chooseModeIsOn;
+    }
     void setSubjectList(List<Subject> subjectList) {
         this.subjectList = subjectList;
         notifyDataSetChanged();
@@ -86,12 +90,13 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                  itemView.setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
-                         listener.onItemClicked(subject);
+                         listener.onItemClicked(subject, subjectItemView);
                      }
                  });
-                 itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                     @Override
-                     public boolean onLongClick(View v) {
+
+                     itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                         @Override
+                         public boolean onLongClick(View v) {
                          /*
                          AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
                          dialogBuilder.setTitle(R.string.delete_dialog);
@@ -111,32 +116,34 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
                          dialogBuilder.create().show();
                          return true;
                         */
-                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-                         dialogBuilder.setTitle(subject.getSubjectTitle() + " auswählen?");
-                         dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                             @Override
-                             public void onClick(DialogInterface dialog, int which) {
-                                 listener.onItemLongClicked(subject, subjectItemView);
-                                 dialog.cancel();
+                             if (!chooseModeIsOn) {
+                                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                                 dialogBuilder.setTitle("Zum Löschen auswählen beginnen?");
+                                 dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                     @Override
+                                     public void onClick(DialogInterface dialog, int which) {
+                                         listener.onItemLongClicked(subject, subjectItemView);
+                                         chooseModeIsOn = true;
+                                         dialog.cancel();
+                                     }
+                                 });
+                                 dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                     @Override
+                                     public void onClick(DialogInterface dialog, int which) {
+                                         dialog.cancel();
+                                     }
+                                 });
+                                 dialogBuilder.create().show();
                              }
-                         });
-                         dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                             @Override
-                             public void onClick(DialogInterface dialog, int which) {
-                                 dialog.cancel();
-                             }
-                         });
-                         dialogBuilder.create().show();
-                         return true;
-                     }
-                 });
+                             return true;
+                         }
+                     });
              }
-
          }
      }
 
      public interface OnItemClickListener {
-        void onItemClicked(Subject subject);
-        void onItemLongClicked(Subject subject, TextView view);
+        void onItemClicked(Subject subject, TextView itemView);
+        void onItemLongClicked(Subject subject, TextView itemView);
      }
 }
