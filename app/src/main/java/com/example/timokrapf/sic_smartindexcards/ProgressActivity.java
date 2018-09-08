@@ -53,7 +53,7 @@ public class ProgressActivity extends FragmentActivity {
         }
     }
 
-    //get number of correct answers and amount of cards
+    // display number of correct answers and amount of cards
 
     private void setValuesForProgressText() {
         rightCards = new ArrayList<>();
@@ -71,6 +71,9 @@ public class ProgressActivity extends FragmentActivity {
                             }
                         }
                         progressText.setText("Du hast bereits " + rightCards.size() +  " von " + cards.size() + " Karten richtig beantwortet");
+                    } else{
+                        // if no cards are created display message:
+                        progressText.setText(R.string.progress_no_cards);
                     }
                 }
             });
@@ -113,7 +116,7 @@ public class ProgressActivity extends FragmentActivity {
         startActivity(i);
     }
 
-    // set ActionBar
+    // ActionBar
 
     private void initActionBar(){
         getActionBar().setTitle(R.string.progress);
@@ -127,6 +130,8 @@ public class ProgressActivity extends FragmentActivity {
         getMenuInflater().inflate(R.menu.menu_actionbar, menu);
         return true;
     }
+
+    // handle settings-button and back-button in ActionBar being pressed
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

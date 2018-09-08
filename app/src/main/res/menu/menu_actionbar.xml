@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<!-- menu file for ActionBar menu-item -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id = "@+id/settings_button_actionbar"
         android:title = "@string/settings"
@@ -8,6 +8,7 @@
         android:showAsAction="ifRoom" />
 
 
-    <!-- icons retrieved from https://material.io/tools/icons/?style=baseline -->
+    <!-- android:showAsAction throws warning, that app:showAsAction should be used instead.
+        However app:showAsAction does not work as expected but android:showAsAction does. -->
 
 </menu>

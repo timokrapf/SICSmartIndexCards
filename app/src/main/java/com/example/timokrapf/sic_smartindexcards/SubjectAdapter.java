@@ -79,60 +79,61 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         this.subjectList = subjectList;
         notifyDataSetChanged();
     }
-     class SubjectViewHolder extends RecyclerView.ViewHolder {
 
-         private final TextView subjectItemView;
+    class SubjectViewHolder extends RecyclerView.ViewHolder {
 
-         private SubjectViewHolder(View itemView) {
-             super(itemView);
-             subjectItemView = (TextView) itemView.findViewById(R.id.recyclerview_textview);
-         }
+        private final TextView subjectItemView;
 
-         private void bind(final Subject subject, final OnItemClickListener listener) {
-             if (subjectList == null) {
-                 subjectItemView.setText(R.string.empty_subject_list);
-             } else {
-                 subjectItemView.setText(subject.getSubjectTitle());
-                 itemView.setOnClickListener(new View.OnClickListener() {
-                     @Override
-                     public void onClick(View v) {
-                         listener.onItemClicked(subject, subjectItemView);
-                     }
-                 });
+        private SubjectViewHolder(View itemView) {
+            super(itemView);
+            subjectItemView = (TextView) itemView.findViewById(R.id.recyclerview_textview);
+        }
 
-                     itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                         @Override
-                         public boolean onLongClick(View v) {
-                             if (!chooseModeIsOn) {
-                                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-                                 dialogBuilder.setTitle(R.string.subjects_want_to_select);
-                                 dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                     @Override
-                                     public void onClick(DialogInterface dialog, int which) {
-                                         listener.onItemLongClicked(subject, subjectItemView);
-                                         chooseModeIsOn = true;
-                                         dialog.cancel();
-                                     }
-                                 });
-                                 dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                                     @Override
-                                     public void onClick(DialogInterface dialog, int which) {
-                                         dialog.cancel();
-                                     }
-                                 });
-                                 dialogBuilder.create().show();
-                             }
-                             return true;
-                         }
-                     });
-             }
-         }
-     }
+        private void bind(final Subject subject, final OnItemClickListener listener) {
+            if (subjectList == null) {
+                subjectItemView.setText(R.string.empty_subject_list);
+            } else {
+                subjectItemView.setText(subject.getSubjectTitle());
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClicked(subject, subjectItemView);
+                    }
+                });
+
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if (!chooseModeIsOn) {
+                            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                            dialogBuilder.setTitle(R.string.subjects_want_to_select);
+                            dialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    listener.onItemLongClicked(subject, subjectItemView);
+                                    chooseModeIsOn = true;
+                                    dialog.cancel();
+                                }
+                            });
+                            dialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            dialogBuilder.create().show();
+                        }
+                        return true;
+                    }
+                });
+            }
+        }
+    }
 
      //interface to implement click Methods
 
-     public interface OnItemClickListener {
+    public interface OnItemClickListener {
         void onItemClicked(Subject subject, TextView itemView);
         void onItemLongClicked(Subject subject, TextView itemView);
-     }
+    }
 }

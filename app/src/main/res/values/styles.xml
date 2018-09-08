@@ -2,7 +2,6 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -36,7 +35,8 @@
     <style name="ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/colorPrimary</item>
     </style>
-    <!--https://stackoverflow.com/questions/6556116/how-can-i-customize-the-action-modes-color-and-text-->
+    <!-- Style for Action Mode (Contextual ActionBar)
+    https://stackoverflow.com/questions/6556116/how-can-i-customize-the-action-modes-color-and-text-->
     <style name="ActionModeStyle" parent="@style/Widget.AppCompat.ActionMode">
         <item name="android:background">@color/colorPrimary</item>
     </style>

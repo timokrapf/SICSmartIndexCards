@@ -227,7 +227,7 @@ public class LearnplannerActivity extends FragmentActivity{
     }
 
 
-    //set ActionBar
+    //ActionBar
 
     private void initActionBar(){
         ActionBar actionBar = getActionBar();
@@ -243,7 +243,7 @@ public class LearnplannerActivity extends FragmentActivity{
         return true;
     }
 
-
+    // handle settings-button in Actionbar being pressed
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.settings_button_actionbar){

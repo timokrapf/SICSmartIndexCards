@@ -35,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
         initActionBar();
     }
 
-    //set up ActionBar
+    // ActionBar
 
     private void initActionBar() {
        ActionBar actionBar = getSupportActionBar();

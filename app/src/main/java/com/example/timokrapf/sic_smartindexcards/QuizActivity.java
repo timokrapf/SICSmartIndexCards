@@ -239,7 +239,7 @@ public class QuizActivity extends FragmentActivity {
 
     /*If user's answer is incorrect, play sound and let user try again
     Sound from https://freesound.org/search/?q=wrong&f=&s=score+desc&advanced=0&g=1 under creative common 0
-    Sound can be turned off in settingsactivity
+    Sound can be turned off in SettingsActivity
     */
 
     private void answerIsWrong(){
@@ -268,7 +268,7 @@ public class QuizActivity extends FragmentActivity {
     }
 
 
-    //set up ActionBar
+    // ActionBar
 
     private void initActionBar(){
         ActionBar actionBar = getActionBar();
@@ -284,6 +284,8 @@ public class QuizActivity extends FragmentActivity {
         getMenuInflater().inflate(R.menu.menu_actionbar, menu);
         return true;
     }
+
+    // handle back-button and settings-button in Actionbar being pressed
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

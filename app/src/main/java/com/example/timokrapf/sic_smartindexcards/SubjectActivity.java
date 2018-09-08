@@ -37,7 +37,7 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
         setOnClickListeners();
     }
 
-    // handle intent from StartActivity and set suubject name in header
+    // handle intent from StartActivity and set subject name in header
 
     private void handleIntent() {
         Intent i = getIntent();
@@ -169,7 +169,7 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
         startActivity(i);
     }
 
-    //set up ActionBar
+    //ActionBar
 
     private void initActionBar(){
         //title is set in handleIntent()

@@ -102,7 +102,7 @@ public class OverviewActivity extends FragmentActivity {
         }
     }
 
-    //receive Intent from Newsic Activity
+    //receive Intent from NewSicActivity
 
     private void handleIntent() {
         Intent intent = getIntent();
@@ -114,7 +114,7 @@ public class OverviewActivity extends FragmentActivity {
         }
     }
 
-    //fill Listview with cards
+    //fill ListView with cards
 
     private void initAdapter() {
         adapter = new SicAdapter(this, new SicAdapter.OnItemClickListener() {
@@ -206,7 +206,7 @@ public class OverviewActivity extends FragmentActivity {
         }
     }
 
-    //set ActionBar
+    // ActionBar
 
     private void initActionBar(){
         ActionBar actionBar = getActionBar();
@@ -223,6 +223,8 @@ public class OverviewActivity extends FragmentActivity {
         getMenuInflater().inflate(R.menu.menu_actionbar, menu);
         return true;
     }
+
+    // handle back-button and settings-button in Actionbar being pressed
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -245,8 +247,10 @@ public class OverviewActivity extends FragmentActivity {
         Intent settingsIntent = new Intent(OverviewActivity.this, SettingsActivity.class);
         startActivity(settingsIntent);
     }
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
+    //Action Mode for Contextual ActionBar
+
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -310,5 +314,6 @@ public class OverviewActivity extends FragmentActivity {
             views.clear();
         }
     };
+
 }
 

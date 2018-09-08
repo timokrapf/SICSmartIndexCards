@@ -1,5 +1,10 @@
 package com.example.timokrapf.sic_smartindexcards;
 
+/* All Icons used in this Project are either created by the developers or
+    retrieved From https://material.io/tools/icons/?style=baseline
+    under Apache license version 2.0.
+ */
+
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
@@ -31,7 +36,6 @@ import android.widget.Toast;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class StartActivity extends FragmentActivity implements AddButtonFragment.OnAddButtonFragmentClicked, AddSubjectFragment.OnAddSubjectButtonClicked{
 
@@ -206,9 +210,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
 
 
     //ActionBar:
-    //todo: create different menu-xml files for StartActivity and other Activities
-
-    //todo: if possible: replace initActionBar() with xml style
 
     private void initActionBar(){
         ActionBar actionBar = getActionBar();
@@ -240,9 +241,12 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         startActivity(settingsIntent);
     }
 
-  /*  http://blog.teamtreehouse.com/contextual-action-bars-removing-items-recyclerview*/
+    // Action Mode for Contextual ActionBar
+    /* From https://developer.android.com/guide/topics/ui/menus
+        And http://blog.teamtreehouse.com/contextual-action-bars-removing-items-recyclerview
+        minor changes made
+    */
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {

@@ -174,7 +174,8 @@ public class ScheduleActivity extends FragmentActivity {
             }
         }
     }
-    // set up ActionBar
+
+    // ActionBar
 
     private void initActionBar(){
         ActionBar actionBar = getActionBar();
@@ -212,7 +213,6 @@ public class ScheduleActivity extends FragmentActivity {
     }
 
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {

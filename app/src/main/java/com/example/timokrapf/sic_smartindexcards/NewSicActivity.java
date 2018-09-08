@@ -157,7 +157,7 @@ public class NewSicActivity extends FragmentActivity {
         startActivity(i);
     }
 
-    //set up ActionBar
+    //ActionBar
 
     private void initActionBar() {
         ActionBar actionBar = getActionBar();
@@ -174,7 +174,7 @@ public class NewSicActivity extends FragmentActivity {
         return true;
     }
 
-    //create backbutton and settingsbutton in Actionbar
+    // handle back-button and settings-button in Actionbar being pressed
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
