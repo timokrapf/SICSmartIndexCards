@@ -1,5 +1,6 @@
 package com.example.timokrapf.sic_smartindexcards;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScheduleActivity extends FragmentActivity {
+
+    //Activity to show schedule with planned quizes
 
 
     private String date, time, subject;
@@ -58,7 +61,7 @@ public class ScheduleActivity extends FragmentActivity {
 
     }
 
-
+    //initialise own adapter to set up schedules
 
     private void initAdapter(){
         adapter = new ScheduleAdapter(this, new ScheduleAdapter.OnItemClickListener() {
@@ -83,6 +86,9 @@ public class ScheduleActivity extends FragmentActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    //initialise model to either set scchedules or text if there are no planned schedules
+
+
     private void initModel() {
         viewModel = ViewModelProviders.of(this).get(SubjectViewModel.class);
         viewModel.getSchedulesList().observe(this, new Observer<List<Schedule>>() {
@@ -99,6 +105,8 @@ public class ScheduleActivity extends FragmentActivity {
             }
         });
     }
+
+    //initialise Buttons and set on click Listener
 
     private void initButtons(){
         Button subjectButton = (Button) findViewById(R.id.subject_button_id);
@@ -117,6 +125,8 @@ public class ScheduleActivity extends FragmentActivity {
         });
     }
 
+    //go to other activities via navigation buttons at bottom
+
     private void subjectButtonClicked(){
         Intent i = new Intent(ScheduleActivity.this, StartActivity.class);
         startActivity(i);
@@ -126,6 +136,8 @@ public class ScheduleActivity extends FragmentActivity {
         Intent i = new Intent (ScheduleActivity.this, LearnplannerActivity.class);
         startActivity(i);
     }
+
+    //handle intent from Learnplanner Activity
 
     private void handleIntent(){
         Intent i = getIntent();
@@ -137,6 +149,8 @@ public class ScheduleActivity extends FragmentActivity {
         }
     }
 
+    //enter new item to list and send Broadcast in order to send notification
+
     private void enterNewScheduleItem() {
         if(schedule != null) {
             viewModel.insertSchedule(schedule);
@@ -146,6 +160,9 @@ public class ScheduleActivity extends FragmentActivity {
             sendBroadcast(intent);
         }
     }
+
+    //possible to delete plannes schedules
+
     private void selectItem(Schedule schedule, View view) {
         if (multiSelect) {
             if (schedules.contains(schedule)) {
@@ -157,13 +174,15 @@ public class ScheduleActivity extends FragmentActivity {
             }
         }
     }
-    //ActionBar:
-    //todo: if possible: replace initActionBar() with xml style
+    // set up ActionBar
+
     private void initActionBar(){
-        getActionBar().setTitle(R.string.schedule_planner);
-        //todo: icon for learnplanner
-        getActionBar().setIcon(R.drawable.logo_sic);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.schedule_planner);
+            actionBar.setIcon(R.drawable.logo_sic);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
@@ -191,6 +210,7 @@ public class ScheduleActivity extends FragmentActivity {
         Intent settingsIntent = new Intent(ScheduleActivity.this, SettingsActivity.class);
         startActivity(settingsIntent);
     }
+
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
 

@@ -20,6 +20,8 @@ import android.widget.ToggleButton;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    //Activity were you can set individual settings
+
     public static final String KEY_PREF_NOTIFICATION_SWITCH = "notification_pref";
     public static final String KEY_PREF_SOUND_SWITCH = "sound_pref";
     public static final String KEY_PREF_VIBRATE_SWITCH = "vibrate_pref";
@@ -33,10 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
         initActionBar();
     }
 
-    //ActionBar:
-    //todo: create different menu-xml files for StartActivity and other Activities
-
-    //todo: if possible: replace initActionBar() with xml style
+    //set up ActionBar
 
     private void initActionBar() {
        ActionBar actionBar = getSupportActionBar();
@@ -48,13 +47,13 @@ public class SettingsActivity extends AppCompatActivity {
        }
     }
 
+    //init back Buttons
+
     @Override
     public boolean onSupportNavigateUp(){
         finish();
         return true;
     }
-
-
 
     public static class SettingsFragment extends PreferenceFragment {
         @Override

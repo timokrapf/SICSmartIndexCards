@@ -14,10 +14,13 @@ import android.widget.TextView;
 import java.util.List;
 
 /*
-https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#10
+FROM https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#10 and
 https://antonioleiva.com/recyclerview-listener/
+Minor changes were made.
  */
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder>{
+
+    //Adapter to set up
 
     private LayoutInflater inflater;
     private List<Subject> subjectList;
@@ -45,6 +48,8 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
 
     }
 
+    //get number of subjects
+
     @Override
     public int getItemCount() {
         if(subjectList != null) {
@@ -53,6 +58,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         return 0;
     }
 
+    //check if subject already exists
 
     boolean isNewSubject(Subject newSubject) {
         for(int i = 0; i < getItemCount(); i++) {
@@ -122,6 +128,8 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
              }
          }
      }
+
+     //interface to implement click Methods
 
      public interface OnItemClickListener {
         void onItemClicked(Subject subject, TextView itemView);

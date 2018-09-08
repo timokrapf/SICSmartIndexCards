@@ -1,5 +1,6 @@
 package com.example.timokrapf.sic_smartindexcards;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
@@ -30,6 +31,8 @@ import java.util.List;
 
 public class OverviewActivity extends FragmentActivity {
 
+    //Activity to show all the cards that user has already created
+
     private TextView currentCardView;
     private TextView emptyText;
     private String subjectTitle;
@@ -54,6 +57,8 @@ public class OverviewActivity extends FragmentActivity {
         initButtons();
     }
 
+    //set Listener so that user can swipe up or down to see either question or answer
+
     private void setSwipeListener() {
         View view = (View) findViewById(R.id.overview_parent);
         view.setOnTouchListener(new OnSwipeTouchListener(this) {
@@ -71,6 +76,8 @@ public class OverviewActivity extends FragmentActivity {
             }
         });
     }
+
+    //initialise viewmodel to show cards
 
     private void initViewModel() {
         if(subjectTitle != null) {
@@ -95,6 +102,8 @@ public class OverviewActivity extends FragmentActivity {
         }
     }
 
+    //receive Intent from Newsic Activity
+
     private void handleIntent() {
         Intent intent = getIntent();
         if(intent != null) {
@@ -104,6 +113,8 @@ public class OverviewActivity extends FragmentActivity {
             }
         }
     }
+
+    //fill Listview with cards
 
     private void initAdapter() {
         adapter = new SicAdapter(this, new SicAdapter.OnItemClickListener() {
@@ -137,6 +148,8 @@ public class OverviewActivity extends FragmentActivity {
 
     }
 
+    //update subject number of cards
+
     private void updateSubject() {
         new Thread(new Runnable() {
             @Override
@@ -147,6 +160,8 @@ public class OverviewActivity extends FragmentActivity {
             }
         }).start();
     }
+
+    //set up Buttons and set on click listener
 
     private void initButtons(){
         Button subjectButton = (Button) findViewById(R.id.subject_button_id);
@@ -165,6 +180,8 @@ public class OverviewActivity extends FragmentActivity {
         });
     }
 
+    //go to other activities via navigation buttons at bottom
+
     private void subjectButtonClicked(){
         Intent i = new Intent(OverviewActivity.this, StartActivity.class);
         startActivity(i);
@@ -174,6 +191,9 @@ public class OverviewActivity extends FragmentActivity {
         Intent i = new Intent (OverviewActivity.this, LearnplannerActivity.class);
         startActivity(i);
     }
+
+    //select cards in order to delete them
+
     private void selectItem(SmartIndexCards card, TextView view) {
         if (multiSelect) {
             if (cards.contains(card)) {
@@ -185,12 +205,16 @@ public class OverviewActivity extends FragmentActivity {
             }
         }
     }
-    //ActionBar:
-    //todo: if possible: replace initActionBar() with xml style
+
+    //set ActionBar
+
     private void initActionBar(){
-        getActionBar().setTitle(R.string.overview_actionbar);
-        getActionBar().setIcon(R.drawable.kartenuebersicht);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.overview_actionbar);
+            actionBar.setIcon(R.drawable.kartenuebersicht);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
     }
 
@@ -236,6 +260,8 @@ public class OverviewActivity extends FragmentActivity {
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
             return false;
         }
+
+        //delete more cards at once
 
         @Override
         public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {

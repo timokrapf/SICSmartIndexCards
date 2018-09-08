@@ -18,6 +18,8 @@ import java.util.List;
 
 public class SicAdapter extends RecyclerView.Adapter<SicAdapter.SicViewHolder> {
 
+    //Adapter to fill Overview Activity
+
     private Context context;
     private LayoutInflater inflater;
     private List<SmartIndexCards> cards;

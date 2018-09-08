@@ -1,5 +1,6 @@
 package com.example.timokrapf.sic_smartindexcards;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
@@ -21,6 +22,8 @@ import java.util.List;
 
 public class NewSicActivity extends FragmentActivity {
 
+    //Activity to create new index Cards for Subjects
+
     private EditText question, answer;
     private String subjectTitle;
     private String emptyText = "";
@@ -38,14 +41,17 @@ public class NewSicActivity extends FragmentActivity {
         initButtons();
     }
 
+    //method to set up new subjectViewModel
+
     private void setViewModel() {
         model = ViewModelProviders.of(this).get(SubjectViewModel.class);
         model.getCards().observe(this, new Observer<List<SmartIndexCards>>() {
             @Override
             public void onChanged(@Nullable List<SmartIndexCards> cards) {
-                for(int i = 0; i < cards.size(); i++) {
+                for (int i = 0; i < cards.size(); i++) {
                     SmartIndexCards currentCard = cards.get(i);
-                    if(currentCard.getQuestion().compareToIgnoreCase(card.getQuestion()) == 0) {
+                    if (currentCard.getQuestion().replaceAll("\\s+", "").compareToIgnoreCase
+                            (card.getQuestion().replaceAll("\\s+", "")) == 0) {
                         Toast.makeText(NewSicActivity.this, getString(R.string.no_new_card), Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -60,6 +66,8 @@ public class NewSicActivity extends FragmentActivity {
 
     }
 
+    //method to get the number of created cards for each subject
+
     private void updateSubject() {
         new Thread(new Runnable() {
             @Override
@@ -73,23 +81,26 @@ public class NewSicActivity extends FragmentActivity {
         }).start();
     }
 
+    //get intent from subjectClass-Activity to know in which subject you are
 
     private void handleIntent() {
         Intent i = getIntent();
-        if(i != null) {
+        if (i != null) {
             Bundle extras = i.getExtras();
-            if(extras != null) {
+            if (extras != null) {
                 subjectTitle = extras.getString(Constants.SUBJECT_TITLE_KEY);
             }
         }
     }
 
-    private void initUI(){
+    private void initUI() {
         question = (EditText) findViewById(R.id.question_id);
         answer = (EditText) findViewById(R.id.answer_id);
     }
 
-    private void initButtons(){
+    //initialise Button and set on click Listeners
+
+    private void initButtons() {
         Button saveButton = (Button) findViewById(R.id.save_button_id);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,13 +124,15 @@ public class NewSicActivity extends FragmentActivity {
         });
     }
 
-    private void saveButtonClicked(){
-        if(subjectTitle != null) {
+    //save new cards
+
+    private void saveButtonClicked() {
+        if (subjectTitle != null) {
             String questionString = question.getText().toString();
             String answerString = answer.getText().toString();
-            if(questionString.equals(emptyText) || answerString.equals(emptyText)) {
-               Toast.makeText(this, getString(R.string.no_complete_card), Toast.LENGTH_SHORT).show();
-            } else if(questionString.compareToIgnoreCase(answerString) == 0) {
+            if (questionString.equals(emptyText) || answerString.equals(emptyText)) {
+                Toast.makeText(this, getString(R.string.no_complete_card), Toast.LENGTH_SHORT).show();
+            } else if (questionString.compareToIgnoreCase(answerString) == 0) {
                 Toast.makeText(this, getString(R.string.answer_equals_question), Toast.LENGTH_SHORT).show();
             } else {
                 card = new SmartIndexCards();
@@ -131,23 +144,28 @@ public class NewSicActivity extends FragmentActivity {
         }
     }
 
-    private void subjectButtonClicked(){
+    //go to other activities via navigation buttons at bottom
+
+    private void subjectButtonClicked() {
         Intent i = new Intent(NewSicActivity.this, StartActivity.class);
         startActivity(i);
     }
 
-    private void overviewButtonClicked(){
-        Intent i = new Intent (NewSicActivity.this, OverviewActivity.class);
+    private void overviewButtonClicked() {
+        Intent i = new Intent(NewSicActivity.this, OverviewActivity.class);
         i.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
         startActivity(i);
     }
 
-    //ActionBar:
-    //todo: if possible: replace initActionBar() with xml style
-    private void initActionBar(){
-        getActionBar().setTitle(R.string.new_sic);
-        getActionBar().setIcon(R.drawable.karteikarte);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+    //set up ActionBar
+
+    private void initActionBar() {
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.new_sic);
+            actionBar.setIcon(R.drawable.karteikarte);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
@@ -155,6 +173,8 @@ public class NewSicActivity extends FragmentActivity {
         getMenuInflater().inflate(R.menu.menu_actionbar, menu);
         return true;
     }
+
+    //create backbutton and settingsbutton in Actionbar
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -173,7 +193,7 @@ public class NewSicActivity extends FragmentActivity {
         return true;
     }
 
-    private void settingsButtonActionbarClicked(){
+    private void settingsButtonActionbarClicked() {
         Intent settingsIntent = new Intent(NewSicActivity.this, SettingsActivity.class);
         startActivity(settingsIntent);
     }

@@ -9,9 +9,12 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 /*
-https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#8
+From https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#8
+Minor changes were made
  */
 public class SubjectViewModel extends AndroidViewModel {
+
+    //repository to save Data
 
     private SubjectRepository myRepository;
     private LiveData<List<Subject>> subjects;

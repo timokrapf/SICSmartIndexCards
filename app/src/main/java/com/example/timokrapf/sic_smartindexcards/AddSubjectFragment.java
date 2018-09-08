@@ -16,6 +16,8 @@ public class AddSubjectFragment extends Fragment {
     OnAddSubjectButtonClicked mCallback;
     EditText text;
 
+    //Fragment-Class to show "plus-Button" after chosing "Hinzufügen-Button"
+
     public AddSubjectFragment(){
     }
 
@@ -47,6 +49,8 @@ public class AddSubjectFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+    //interface for what happens when subject-Button is clicked
 
     public interface OnAddSubjectButtonClicked {
         void addSubjectButtonClicked(String subjectTitle);

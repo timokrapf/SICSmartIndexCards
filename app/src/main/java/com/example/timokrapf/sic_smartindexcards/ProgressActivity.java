@@ -23,6 +23,8 @@ import java.util.List;
 
 public class ProgressActivity extends FragmentActivity {
 
+    //shows how many cards were answered correctly
+
     private String subjectTitle;
     private ArrayList<SmartIndexCards> rightCards;
     private TextView progressText;
@@ -39,6 +41,8 @@ public class ProgressActivity extends FragmentActivity {
 
     }
 
+    //get Intent from Newsic Activity
+
     private void handleIntent() {
         Intent intent = getIntent();
         if(intent != null) {
@@ -48,6 +52,8 @@ public class ProgressActivity extends FragmentActivity {
             }
         }
     }
+
+    //get number of correct answers and amount of cards
 
     private void setValuesForProgressText() {
         rightCards = new ArrayList<>();
@@ -76,6 +82,8 @@ public class ProgressActivity extends FragmentActivity {
         progressText = (TextView)findViewById(R.id.progress_textview_id);
     }
 
+    //initialise Buttons and set on ClickListener
+
     private void initButtons(){
         Button subjectButton = (Button) findViewById(R.id.subject_button_id);
         subjectButton.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +101,8 @@ public class ProgressActivity extends FragmentActivity {
         });
     }
 
+    //go to other activities via navigation buttons at bottom
+
     private void subjectButtonClicked(){
         Intent i = new Intent(ProgressActivity.this, StartActivity.class);
         startActivity(i);
@@ -103,8 +113,8 @@ public class ProgressActivity extends FragmentActivity {
         startActivity(i);
     }
 
-    //ActionBar:
-    //todo: if possible: replace initActionBar() with xml style
+    // set ActionBar
+
     private void initActionBar(){
         getActionBar().setTitle(R.string.progress);
         getActionBar().setIcon(R.drawable.lernerfolg_karte);

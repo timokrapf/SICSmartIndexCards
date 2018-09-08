@@ -35,6 +35,7 @@ import java.util.List;
 
 public class StartActivity extends FragmentActivity implements AddButtonFragment.OnAddButtonFragmentClicked, AddSubjectFragment.OnAddSubjectButtonClicked{
 
+    //Activity when first opening the app, our MainActivity
 
     private Button scheduleButton;
     private AddButtonFragment addButtonFragment;
@@ -48,9 +49,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     private ArrayList<TextView> views;
     private boolean multiSelect = false;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,12 +60,12 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         setClickListener();
         initActionBar();
         initSettings();
-
     }
 
-
     /*
-    https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#13 am 07.08.18
+    Initialise Adapter to fill subject
+    From https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#13 am 07.08.18
+    Minor changes made.
      */
 
     private void initAdapter() {
@@ -120,6 +118,8 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
 
     }
 
+    //initialise Buttons
+
     private void initButtons() {
         Button subjectButton = (Button) findViewById(R.id.subject_button_id);
         scheduleButton = (Button) findViewById(R.id.schedule_planner_button_id);
@@ -133,15 +133,14 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
                 scheduleButtonClicked();
             }
         });
-
     }
-
 
     private void scheduleButtonClicked() {
         Intent i = new Intent(StartActivity.this, LearnplannerActivity.class);
         startActivity(i);
-
     }
+
+    //set up Addbutton
 
     private void initStartFragment() {
         addButtonFragment = new AddButtonFragment();
@@ -150,6 +149,8 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         transaction.commit();
     }
 
+
+
     @Override
     public void addButtonFragmentClicked() {
         addSubjectFragment = new AddSubjectFragment();
@@ -157,7 +158,6 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         transaction.replace(R.id.fragment_container, addSubjectFragment);
         transaction.addToBackStack(null);
         transaction.commit();
-
     }
 
     @Override
@@ -179,6 +179,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         }
     }
 
+    //set up +Button after clicking "Hinzufügen"
 
     private void replaceWithAddButtonFragment() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();

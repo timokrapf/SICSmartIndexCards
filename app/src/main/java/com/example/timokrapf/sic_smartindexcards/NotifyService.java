@@ -25,6 +25,8 @@ import java.util.List;
 
 public class NotifyService extends Service {
 
+    //Service to sent Notification to User on chosen Date and Time
+
     public static final String INTENT_NOTIFY = "com.blundell.tut.service.INTENT_NOTIFY";
     private final IBinder iBinder = new ServiceBinder();
     private NotificationManager notifManager;
@@ -43,6 +45,10 @@ public class NotifyService extends Service {
     public void onCreate() {
         Log.i("NotifyService", "onCreate()");
     }
+
+    //start Service if subject and request code are correct,
+    // don't send if user chose not to get notification in settingsActivity
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -72,66 +78,12 @@ public class NotifyService extends Service {
     }
 
     /*
-    http://www.brevitysoftware.com/how-to-get-heads-up-notifications-in-android/
+    create Notification for users with different SDK-Level
+    From http://www.brevitysoftware.com/how-to-get-heads-up-notifications-in-android/
+    Changes were made.
+    If User switches off sound and vibration, notification won't make sound or vibrate
     */
-/*
-    @SuppressWarnings("deprecation")
-    private void sendNotification(Schedule schedule) {
-            createNotificationChannel();
-            NotificationCompat.Builder mBuilder;
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                mBuilder = new NotificationCompat.Builder(NotifyService.this, NOTIFICATION_ID);
-                mBuilder.setSmallIcon(R.drawable.logo_sic);
-                mBuilder.setContentTitle("Abfrage");
-                mBuilder.setContentText("deine Abfrage in " + schedule.getSubjectTitle());
-                mBuilder.setDefaults(Notification.DEFAULT_ALL);
 
-            } else {
-                mBuilder = new NotificationCompat.Builder(NotifyService.this);
-                mBuilder.setSmallIcon(R.drawable.logo_sic);
-                mBuilder.setContentTitle("Abfrage");
-                mBuilder.setContentText("deine Abfrage in " + schedule.getSubjectTitle());
-                mBuilder.setDefaults(Notification.DEFAULT_ALL);
-                Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-                mBuilder.setSound(uri);
-                mBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
-            }
-            Intent resultIntent = new Intent(this, SubjectActivity.class);
-            resultIntent.putExtra(Constants.SUBJECT_TITLE_KEY, schedule.getSubjectTitle());
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-            stackBuilder.addParentStack(SubjectActivity.class);
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent =
-                    stackBuilder.getPendingIntent(
-                            0,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
-            mBuilder.setContentIntent(resultPendingIntent);
-            mBuilder.setAutoCancel(true);
-            mBuilder.setVibrate(new long[]{0, 50, 100, 50, 100, 50, 100, 400, 100, 300, 100, 350, 50, 200, 100, 100, 50, 600});
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mBuilder.setVisibility(Notification.VISIBILITY_SECRET);
-        }
-        if (notificationManager != null) {
-                notificationManager.notify(schedule.getRequestCode(), mBuilder.build());
-        }
-        stopSelf();
-        }
-
-    private void createNotificationChannel(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel notificationChannel = notificationManager.getNotificationChannel(NOTIFICATION_ID);
-            if(notificationChannel == null) {
-                int importance = NotificationManager.IMPORTANCE_HIGH;
-                CharSequence channelName = NOTIFICATION_CHANNEL_NAME;
-                notificationChannel = new NotificationChannel(NOTIFICATION_ID, channelName, importance);
-                notificationChannel.enableVibration(true);
-                notificationChannel.setVibrationPattern(new long[]{0, 50, 100, 50, 100, 50, 100, 400, 100, 300, 100, 350, 50, 200, 100, 100, 50, 600});
-                notificationManager.createNotificationChannel(notificationChannel);
-            }
-        }
-    }
-*/
     public void createNotification(String subjectTitle, int requestcode) {
         Intent intent;
         PendingIntent pendingIntent;
@@ -150,16 +102,23 @@ public class NotifyService extends Service {
                 mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
                 notifManager.createNotificationChannel(mChannel);
             }
+
             builder = new Notification.Builder(this, NOTIFICATION_ID);
             intent = new Intent(this, SubjectActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
-            pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-            builder.setContentTitle("Abfrage")  // required
-                    .setSmallIcon(R.drawable.logo_sic) // required
-                    .setContentText("deine Abfrage in " + subjectTitle)  // required
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+            stackBuilder.addParentStack(SubjectActivity.class);
+            stackBuilder.addNextIntent(intent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            builder.setContentTitle("Abfrage")
+                    .setSmallIcon(R.drawable.logo_sic)
+                    .setContentText("deine Abfrage in " + subjectTitle)
                     .setAutoCancel(true)
-                    .setContentIntent(pendingIntent)
+                    .setContentIntent(resultPendingIntent)
                     .setTicker("Abfrage")
                     .setChannelId(NOTIFICATION_ID)
                     .setPriority(Notification.PRIORITY_MAX);
@@ -176,14 +135,20 @@ public class NotifyService extends Service {
         } else {
             builder = new Notification.Builder(this);
             intent = new Intent(this, SubjectActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
-            pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-            builder.setContentTitle("Abfrage")                           // required
-                    .setSmallIcon(R.drawable.logo_sic) // required
-                    .setContentText("deine Abfrage in " + subjectTitle)  // required
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+            stackBuilder.addParentStack(SubjectActivity.class);
+            stackBuilder.addNextIntent(intent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            builder.setContentTitle("Abfrage")
+                    .setSmallIcon(R.drawable.logo_sic)
+                    .setContentText("deine Abfrage in " + subjectTitle)
                     .setAutoCancel(true)
-                    .setContentIntent(pendingIntent)
+                    .setContentIntent(resultPendingIntent)
                     .setTicker("Abfrage")
                     .setPriority(Notification.PRIORITY_MAX);
             Boolean switchPref = sharedPref.getBoolean

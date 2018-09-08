@@ -2,6 +2,8 @@ package com.example.timokrapf.sic_smartindexcards;
 
 public class Constants {
 
+    //Constants used to reach from various activities
+
     public static final String SUBJECT_TITLE_KEY = "title";
     public static final String CHOSEN_SCHEDULE = "schedule";
     public static final String RECEIVER_STATUS = "status";

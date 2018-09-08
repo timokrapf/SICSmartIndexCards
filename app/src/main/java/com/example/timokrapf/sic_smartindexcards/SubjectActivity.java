@@ -1,5 +1,6 @@
 package com.example.timokrapf.sic_smartindexcards;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 public class SubjectActivity extends FragmentActivity implements View.OnClickListener{
+
+    //Activity to show different options for each subject
 
     private ImageButton newSic, quizCard, overviewSic, progressCard;
     private Button subjectsButton, scheduleButton;
@@ -32,8 +35,9 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
         initActionBar();
         handleIntent();
         setOnClickListeners();
-
     }
+
+    // handle intent from StartActivity and set suubject name in header
 
     private void handleIntent() {
         Intent i = getIntent();
@@ -43,7 +47,10 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
                 subjectTitle = extras.getString(Constants.SUBJECT_TITLE_KEY);
                 activityHeading.setText(getString(R.string.subject_activity_header) + " " + subjectTitle);
                 //ActionBar title displays selected subject
-                getActionBar().setTitle("Fach: " + subjectTitle);
+                ActionBar actionbar = getActionBar();
+                if (actionbar != null) {
+                    actionbar.setTitle("Fach: " + subjectTitle);
+                }
                 String toastText1 = extras.getString(Constants.TOAST_FOR_All_QUESTION_ANSWERED);
                 String toastText2 = extras.getString(Constants.TOAST_FOR_ALMOST);
                 if(toastText1 != null) {
@@ -74,6 +81,8 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
         scheduleButton.setOnClickListener(this);
     }
 
+    //check which button was clicked and change to this activity
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -97,6 +106,8 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
                 break;
         }
     }
+
+    //handle click events and change to new activities
 
     private void newSicButtonClicked() {
         Intent i = new Intent(SubjectActivity.this, NewSicActivity.class);
@@ -146,6 +157,8 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
         startActivity(i);
     }
 
+    //go to other activities via navigation buttons at bottom
+
     private void subjectButtonClicked(){
         Intent i = new Intent(SubjectActivity.this, StartActivity.class);
         startActivity(i);
@@ -156,11 +169,14 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
         startActivity(i);
     }
 
-    //ActionBar:
-    //todo: if possible: replace initActionBar() with xml style
+    //set up ActionBar
+
     private void initActionBar(){
         //title is set in handleIntent()
-        getActionBar().setIcon(R.drawable.subject_icon_stripes);
+        ActionBar actionBar = getActionBar();
+        if(actionBar != null) {
+            actionBar.setIcon(R.drawable.subject_icon_stripes);
+        }
     }
 
     @Override
@@ -185,6 +201,4 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
         Intent settingsIntent = new Intent(SubjectActivity.this, SettingsActivity.class);
         startActivity(settingsIntent);
     }
-
-
 }

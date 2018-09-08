@@ -12,6 +12,7 @@ public class AddButtonFragment extends Fragment {
 
     OnAddButtonFragmentClicked mCallback;
 
+    //Fragmentclass to show button on first activity, button used to add new subjects
     public AddButtonFragment() {
     }
 
@@ -37,6 +38,8 @@ public class AddButtonFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+    //interface for what happens when add Button is clicked
 
     public interface OnAddButtonFragmentClicked {
          void addButtonFragmentClicked();

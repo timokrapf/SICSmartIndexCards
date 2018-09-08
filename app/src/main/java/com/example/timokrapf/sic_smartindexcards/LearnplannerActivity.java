@@ -47,6 +47,8 @@ import android.support.v7.widget.Toolbar;
 
 public class LearnplannerActivity extends FragmentActivity{
 
+    //Activity where user can choose when to learn specific subject
+
     private Button subjectButton, saveButton, learnplannerButton;
     private SubjectSpinnerAdapter adapter;
     private TextView time;
@@ -69,12 +71,15 @@ public class LearnplannerActivity extends FragmentActivity{
 
     }
 
+    //set up User Interface
+
     public void initUI() {
         time = (TextView) findViewById(R.id.time_id);
         datePicker = (DatePicker) findViewById(R.id.date_picker_id);
         datePicker.setMinDate(System.currentTimeMillis() - 1000);
-
     }
+
+    //set up Buttons
 
     public void initButtons() {
         subjectButton = (Button) findViewById(R.id.subject_button_id);
@@ -83,7 +88,10 @@ public class LearnplannerActivity extends FragmentActivity{
     }
 
     /*
-    https://abhiandroid.com/ui/timepicker#Example_of_TimePickerDialog_in_Android_Studio
+     set click-Listeners for Buttons
+     set up time Picker
+     From https://abhiandroid.com/ui/timepicker#Example_of_TimePickerDialog_in_Android_Studio
+     Minor changes were done
     */
 
     private void setClickListener() {
@@ -126,6 +134,8 @@ public class LearnplannerActivity extends FragmentActivity{
         });
     }
 
+    //show time in common way
+
     private void setTimeText(int selectedHour, int selectedMinute) {
         String hourString = Integer.toString(selectedHour);
         String minuteString = Integer.toString(selectedMinute);
@@ -138,6 +148,8 @@ public class LearnplannerActivity extends FragmentActivity{
         time.setText(hourString + ":" + minuteString);
     }
 
+    //go to other activities via navigation buttons at bottom
+
     private void subjectButtonClicked() {
         Intent i = new Intent(LearnplannerActivity.this, StartActivity.class);
         startActivity(i);
@@ -147,6 +159,8 @@ public class LearnplannerActivity extends FragmentActivity{
         Intent i = new Intent(LearnplannerActivity.this, ScheduleActivity.class);
         startActivity(i);
     }
+
+    //start schedule activity save chosen date,time and subject after pressing save button
 
     private void saveButtonClicked() {
         int day = datePicker.getDayOfMonth();
@@ -163,6 +177,8 @@ public class LearnplannerActivity extends FragmentActivity{
             startScheduleActivity();
         }
     }
+
+    //save chosen data as calender to make notification
 
     private void onDateSelectedButtonView(String date, String chosenTime){
         int day = datePicker.getDayOfMonth();
@@ -182,13 +198,15 @@ public class LearnplannerActivity extends FragmentActivity{
         schedule.setRequestCode(requestCode);
     }
 
-
+    //start ScheduleActivity via Intent
 
     private void startScheduleActivity(){
         Intent i = new Intent(LearnplannerActivity.this, ScheduleActivity.class);
         i.putExtra(Constants.CHOSEN_SCHEDULE, schedule);
         startActivity(i);
     }
+
+    //get subjects to fill Spinner, using own SubjectSpinnerAdapter
 
     private void getList() {
         adapter = new SubjectSpinnerAdapter(this);
@@ -201,14 +219,16 @@ public class LearnplannerActivity extends FragmentActivity{
         });
     }
 
+    //fill subjectSpinner with data from getList
+
     private void initSpinner() {
         Spinner subjectSpinner = (Spinner) findViewById(R.id.spinner_chosen_subject_id);
         subjectSpinner.setAdapter(adapter);
     }
 
 
-    //ActionBar:
-    //todo: if possible: replace initActionBar() with xml style
+    //set ActionBar
+
     private void initActionBar(){
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {

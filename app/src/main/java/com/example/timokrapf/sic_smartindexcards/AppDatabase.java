@@ -20,7 +20,9 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract SmartIndexCardsDao cardsDao();
 
     /*
-     https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#6
+     AppDatabase to persist Data
+     From https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#6
+     Minor changes were done.
       */
 
     public static AppDatabase getDatabase(final Context context) {
@@ -33,16 +35,4 @@ public abstract class AppDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
-    /*
-    https://android.jlelse.eu/room-persistence-library-typeconverters-and-database-migration-3a7d68837d6c
-     Wir momentan nicht gebraucht
-
-    private static final Migration MIGRATION_1_2 = new Migration(1, 2) {
-        @Override
-        public void migrate(SupportSQLiteDatabase database) {
-            database.execSQL("ALTER TABLE subject_table "
-                    + " ADD COLUMN subject_plan TEXT");
-        }
-    };
-    */
 }

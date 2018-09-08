@@ -11,8 +11,9 @@ import android.os.AsyncTask;
 import java.util.List;
 
 /*
-https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#7
+From https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#7 and
 https://www.techotopia.com/index.php/An_Android_Room_Database_and_Repository_Tutorial
+Minor changes were made.
  */
 public class SubjectRepository implements AsyncResult {
 

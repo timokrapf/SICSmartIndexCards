@@ -23,7 +23,8 @@ public interface SubjectDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateSubject(Subject subject);
     /*
-    https://www.lukegjpotter.com/2017/12/android-room-database-tutorial-with.html
+    FROM https://www.lukegjpotter.com/2017/12/android-room-database-tutorial-with.html
+    Minor changes were made
      */
     @Query("SELECT COUNT(*) FROM subject_table")
     Integer getNumber();
@@ -32,7 +33,8 @@ public interface SubjectDao {
     Subject findSubjectByName(String subjectTitle);
 
     /*
-    https://www.sqlite.org/datatype3.html#collation
+    FROM https://www.sqlite.org/datatype3.html#collation
+    Minor changes were made.
      */
 
     @Query("SELECT * FROM subject_table ORDER BY subject_title COLLATE NOCASE")

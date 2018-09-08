@@ -11,6 +11,8 @@ import java.util.List;
 
 public class SubjectSpinnerAdapter extends BaseAdapter {
 
+    //Adapter to fill Spinner in LearnplannerActivity
+
     private List<Subject> list;
     private Context context;
     private LayoutInflater inflater;
@@ -22,10 +24,14 @@ public class SubjectSpinnerAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
     }
 
+    //get List of subjects
+
     void setSubjectList(List<Subject> list) {
         this.list = list;
         notifyDataSetChanged();
     }
+
+    //get name of Subject
 
     String getSubjectTitle() {
         if(view != null) {

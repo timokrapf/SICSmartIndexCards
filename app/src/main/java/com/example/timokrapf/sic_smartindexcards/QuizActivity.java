@@ -1,12 +1,15 @@
 package com.example.timokrapf.sic_smartindexcards;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
@@ -27,6 +30,8 @@ import java.util.List;
 import java.util.Random;
 
 public class QuizActivity extends FragmentActivity {
+
+    //activity to check if user knows answers to his cards
 
     private TextView question;
     private EditText answer;
@@ -49,6 +54,8 @@ public class QuizActivity extends FragmentActivity {
         setListener();
         initInstruction();
     }
+
+    //set Listeners for swiping when next card should appear
 
     private void setListener() {
         View  layout = (View) findViewById(R.id.frame_layout);
@@ -76,6 +83,8 @@ public class QuizActivity extends FragmentActivity {
         });
     }
 
+    //get intent from newsic Activity
+
     private void handleIntent() {
         Intent intent = getIntent();
         if(intent != null) {
@@ -92,6 +101,13 @@ public class QuizActivity extends FragmentActivity {
         answer = (EditText) findViewById(R.id.solution_id);
     }
 
+    /*
+    Method to show instruction when user opens activity for very first time
+    From http://www.christianpeeters.com/android-tutorials/android-tutorial-overlay-with-user-instructions/
+    Changes were made.
+     */
+
+
     private void initInstruction(){
         topLevelLayout = findViewById(R.id.instruction_layer_id);
         if (isFirstTime()) {
@@ -99,9 +115,7 @@ public class QuizActivity extends FragmentActivity {
         }
     }
 
-    /*
-    http://www.christianpeeters.com/android-tutorials/android-tutorial-overlay-with-user-instructions/
-     */
+
 
     @SuppressLint("ClickableViewAccessibility")
     private boolean isFirstTime()
@@ -126,8 +140,11 @@ public class QuizActivity extends FragmentActivity {
         return ranBefore;
     }
     /*
-    https://developer.android.com/reference/java/util/Random
+    Activity to fill question on indexcard
+    From https://developer.android.com/reference/java/util/Random
+    Minor changes were made
      */
+
     private void setQuestionText(){
         if(subjectTitle != null) {
             viewModel = ViewModelProviders.of(this).get(SubjectViewModel.class);
@@ -142,6 +159,8 @@ public class QuizActivity extends FragmentActivity {
 
         }
     }
+
+    // method to set question on index card
 
     private void setCurrentCard() {
         Random random = new Random();
@@ -158,6 +177,12 @@ public class QuizActivity extends FragmentActivity {
             startActivity(intent);
         }
     }
+
+     /*
+     initialise Buttons
+     From https://stackoverflow.com/questions/17973964/how-to-compare-two-strings-in-java-without-considering-spaces
+     Minor changes made.
+      */
 
     private void initButtons(){
         Button subjectButton = (Button) findViewById(R.id.subject_button_id);
@@ -182,20 +207,55 @@ public class QuizActivity extends FragmentActivity {
                 String rightAnswer = currentCard.getAnswer();
                 if(givenAnswer.equals("")) {
                     Toast.makeText(QuizActivity.this, getString(R.string.no_answer_given), Toast.LENGTH_SHORT).show();
-                } else if(givenAnswer.compareToIgnoreCase(rightAnswer) == 0) {
-                    Toast.makeText(QuizActivity.this, getString(R.string.right_answer_given), Toast.LENGTH_SHORT).show();
-                    answer.setText("");
-                    currentCard.setWasRightAnswer(true);
-                    viewModel.updateCard(currentCard);
-                    currentCards.remove(currentCard);
-                    setCurrentCard();
+                } else if(givenAnswer.replaceAll("\\s+","").compareToIgnoreCase(rightAnswer.replaceAll("\\s+","")) == 0) {
+                    answerIsCorrect();
                 } else {
-                    Toast.makeText(QuizActivity.this, getString(R.string.wrong_answer_given), Toast.LENGTH_SHORT).show();
-                    answer.setText("");
+                    answerIsWrong();
                 }
             }
         });
     }
+    /*
+    If user's answer is correct, play sound and get next card
+    Sound from https://freesound.org/people/Higgs01/sounds/428156/ under creative common 0 license
+     */
+
+    private void answerIsCorrect(){
+        SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean soundSwitchPref = sharedPref.getBoolean
+                (SettingsActivity.KEY_PREF_SOUND_SWITCH, false);
+        if(soundSwitchPref) {
+            MediaPlayer correct = MediaPlayer.create(QuizActivity.this, R.raw.yay);
+            correct.start();
+        }
+        Toast.makeText(QuizActivity.this, getString(R.string.right_answer_given), Toast.LENGTH_SHORT).show();
+        answer.setText("");
+        currentCard.setWasRightAnswer(true);
+        viewModel.updateCard(currentCard);
+        currentCards.remove(currentCard);
+        setCurrentCard();
+    }
+
+    /*If user's answer is incorrect, play sound and let user try again
+    Sound from https://freesound.org/search/?q=wrong&f=&s=score+desc&advanced=0&g=1 under creative common 0
+    Sound can be turned off in settingsactivity
+    */
+
+    private void answerIsWrong(){
+        SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean soundSwitchPref = sharedPref.getBoolean
+                (SettingsActivity.KEY_PREF_SOUND_SWITCH, false);
+        if(soundSwitchPref) {
+            MediaPlayer wrong = MediaPlayer.create(QuizActivity.this, R.raw.wrong);
+            wrong.start();
+        }
+        Toast.makeText(QuizActivity.this, getString(R.string.wrong_answer_given), Toast.LENGTH_SHORT).show();
+        answer.setText("");
+    }
+
+    //go to other activities via navigation buttons at bottom
 
     private void subjectButtonClicked(){
         Intent i = new Intent(QuizActivity.this, StartActivity.class);
@@ -208,13 +268,15 @@ public class QuizActivity extends FragmentActivity {
     }
 
 
-    //ActionBar:
-    //todo: if possible: replace initActionBar() with xml style
-    private void initActionBar(){
-        getActionBar().setTitle(R.string.quiz);
-        getActionBar().setIcon(R.drawable.abfrage_karte);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+    //set up ActionBar
 
+    private void initActionBar(){
+        ActionBar actionBar = getActionBar();
+        if(actionBar != null) {
+            actionBar.setTitle(R.string.quiz);
+            actionBar.setIcon(R.drawable.abfrage_karte);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override

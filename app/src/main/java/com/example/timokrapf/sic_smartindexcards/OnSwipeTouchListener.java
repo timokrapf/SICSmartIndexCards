@@ -6,11 +6,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 /*
-https://stackoverflow.com/questions/41634823/android-show-hide-textview-using-swipe-left-to-right
+From https://stackoverflow.com/questions/41634823/android-show-hide-textview-using-swipe-left-to-right
  */
         /**
         * This TouchListener is Using for very First time ThemeSelection Screen with SwipeLeft Finger
+         * created for Overview and QuizActivity
         */
+
 public class OnSwipeTouchListener implements View.OnTouchListener {
 
     private final GestureDetector gestureDetector;
@@ -23,6 +25,8 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
     public boolean onTouch(View v, MotionEvent event) {
         return gestureDetector.onTouchEvent(event);
     }
+
+    //class to get different swipe directions
 
     private final class GestureListener extends SimpleOnGestureListener {
 

@@ -14,6 +14,8 @@ import java.util.List;
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder> {
 
+    //Adapter to set schedules to List
+
     private LayoutInflater inflater;
     private Context context;
     private List<Schedule> scheduleList;
@@ -38,6 +40,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         Schedule schedule = scheduleList.get(position);
         holder.bind(schedule, listener);
     }
+
+    //get number of list
 
     @Override
     public int getItemCount() {
