@@ -10,7 +10,7 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
-
+//Data Access Object with methods
 @Dao
 public interface SubjectDao {
 
@@ -22,12 +22,6 @@ public interface SubjectDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateSubject(Subject subject);
-    /*
-    FROM https://www.lukegjpotter.com/2017/12/android-room-database-tutorial-with.html
-    Minor changes were made
-     */
-    @Query("SELECT COUNT(*) FROM subject_table")
-    Integer getNumber();
 
     @Query("SELECT * FROM subject_table WHERE subject_title LIKE :subjectTitle LIMIT 1")
     Subject findSubjectByName(String subjectTitle);

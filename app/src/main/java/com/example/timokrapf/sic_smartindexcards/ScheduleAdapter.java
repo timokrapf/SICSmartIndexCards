@@ -27,7 +27,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         inflater = LayoutInflater.from(context);
         this.listener = listener;
     }
-
+    //returns viewholder for specific view
     @NonNull
     @Override
     public ScheduleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -35,13 +35,14 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         return new ScheduleViewHolder(view);
     }
 
+    //connects specific schedule to viewholder
     @Override
     public void onBindViewHolder(@NonNull ScheduleViewHolder holder, int position) {
         Schedule schedule = scheduleList.get(position);
         holder.bind(schedule, listener);
     }
 
-    //get number of list
+    //get number of items
 
     @Override
     public int getItemCount() {
@@ -50,16 +51,18 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         }
         return 0;
     }
-
+    //sets boolean to inform adapter about current status
     void setChooseModeIsOn(boolean chooseModeIsOn) {
         this.chooseModeIsOn = chooseModeIsOn;
     }
+
+    //sets list for adapter
     void setScheduleList(List<Schedule> scheduleList) {
         this.scheduleList = scheduleList;
         notifyDataSetChanged();
     }
 
-
+   //connects correct view with specific database item (sets correct Text) and sets listener
     class ScheduleViewHolder extends RecyclerView.ViewHolder {
 
         TextView subjectTitleView, dateView, timeView;
@@ -113,6 +116,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
                 }
             }
         }
+    //Listener for events
     public interface OnItemClickListener {
         void onItemLongClicked(Schedule schedule, View itemView);
         void onItemClicked(Schedule schedule, View itemView);

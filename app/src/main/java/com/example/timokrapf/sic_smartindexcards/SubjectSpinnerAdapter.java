@@ -39,6 +39,8 @@ public class SubjectSpinnerAdapter extends BaseAdapter {
         }
         return context.getString(R.string.no_subject_was_chosen);
     }
+
+    //get size of list
     @Override
     public int getCount() {
         if(list != null) {
@@ -57,6 +59,7 @@ public class SubjectSpinnerAdapter extends BaseAdapter {
         return 0;
     }
 
+    //set text for specific textview of spinner
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.recyclerview_subject_item, null);

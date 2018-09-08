@@ -64,20 +64,31 @@ public class OverviewActivity extends FragmentActivity {
         view.setOnTouchListener(new OnSwipeTouchListener(this) {
             @Override
             public void onSwipeTop() {
-                super.onSwipeLeft();
-                SmartIndexCards currentCard = adapter.getCurrentCard();
-                if(currentCard != null) {
-                    if(currentCard.getQuestion().equals(currentCardView.getText().toString())) {
-                        currentCardView.setText(currentCard.getAnswer());
-                    } else {
-                        currentCardView.setText(currentCard.getQuestion());
-                    }
-                }
+                super.onSwipeTop();
+                changeText();
+            }
+            @Override
+            public void onSwipeBottom() {
+                super.onSwipeBottom();
+                changeText();
             }
         });
     }
 
-    //initialise viewmodel to show cards
+    //changes current cards text from answer to question or the other way around
+
+    private void changeText() {
+        SmartIndexCards currentCard = adapter.getCurrentCard();
+        if(currentCard != null) {
+            if(currentCard.getQuestion().equals(currentCardView.getText().toString())) {
+                currentCardView.setText(currentCard.getAnswer());
+            } else {
+                currentCardView.setText(currentCard.getQuestion());
+            }
+        }
+    }
+
+    //initialise viewmodel and observe cards for subject and handle visibility of UI
 
     private void initViewModel() {
         if(subjectTitle != null) {
@@ -102,7 +113,7 @@ public class OverviewActivity extends FragmentActivity {
         }
     }
 
-    //receive Intent from NewSicActivity
+    //receive Intent
 
     private void handleIntent() {
         Intent intent = getIntent();
@@ -114,7 +125,7 @@ public class OverviewActivity extends FragmentActivity {
         }
     }
 
-    //fill ListView with cards
+    //fill ListView with cards and handle events and set adapter
 
     private void initAdapter() {
         adapter = new SicAdapter(this, new SicAdapter.OnItemClickListener() {
@@ -192,7 +203,7 @@ public class OverviewActivity extends FragmentActivity {
         startActivity(i);
     }
 
-    //select cards in order to delete them
+    //select cards in order to delete/add them from/to current cardslist and set right background
 
     private void selectItem(SmartIndexCards card, TextView view) {
         if (multiSelect) {
@@ -265,7 +276,7 @@ public class OverviewActivity extends FragmentActivity {
             return false;
         }
 
-        //delete more cards at once
+        //delete more cards at once via dialog
 
         @Override
         public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
@@ -300,7 +311,7 @@ public class OverviewActivity extends FragmentActivity {
                     return false;
             }
         }
-
+        //set activity status to its start status in order to start contextual action again
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             mActionMode = null;

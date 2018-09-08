@@ -13,17 +13,13 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,8 +28,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +61,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     }
 
     /*
-    Initialise Adapter to fill subject
+    Initialise Adapter with listners and set adapter to recyclerview
     From https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#13 am 07.08.18
     Minor changes made.
      */
@@ -100,6 +94,8 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
+    //initialise UI and model to observe subjects list
 
     private void initUI() {
         subjects = new ArrayList<>();
@@ -154,7 +150,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     }
 
 
-
+    //replaces fragment
     @Override
     public void addButtonFragmentClicked() {
         addSubjectFragment = new AddSubjectFragment();
@@ -163,7 +159,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         transaction.addToBackStack(null);
         transaction.commit();
     }
-
+    //stores subject if possible
     @Override
     public void addSubjectButtonClicked(String subjectTitle) {
         if(subjectTitle.isEmpty()) {
@@ -183,7 +179,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         }
     }
 
-    //set up +Button after clicking "Hinzufügen"
+    //set up +Button after clicking "Hinzufügen" by replacing fragment
 
     private void replaceWithAddButtonFragment() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -191,6 +187,8 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+    //select subjects in order to delete/add them from/to current subject list and set right background
 
     private void selectItem(Subject subject, TextView view) {
         if (multiSelect) {
@@ -218,7 +216,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
             actionBar.setIcon(R.drawable.logo_sic);
         }
     }
-
+    //create menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_actionbar, menu);
@@ -248,6 +246,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
     */
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
+        //inflates menu
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater inflater = mode.getMenuInflater();
@@ -261,6 +260,7 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
             return false;
         }
 
+        //delete chosen subjects via dialog
         @Override
         public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
             Context context = StartActivity.this;
@@ -293,6 +293,8 @@ public class StartActivity extends FragmentActivity implements AddButtonFragment
                     return false;
             }
         }
+
+        //set activity status to its start status in order to start contextual action again
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {

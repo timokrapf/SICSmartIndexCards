@@ -41,7 +41,7 @@ public class NewSicActivity extends FragmentActivity {
         initButtons();
     }
 
-    //method to set up new subjectViewModel
+    //method to set up new subjectViewModel to observe cards for subject
 
     private void setViewModel() {
         model = ViewModelProviders.of(this).get(SubjectViewModel.class);
@@ -66,7 +66,7 @@ public class NewSicActivity extends FragmentActivity {
 
     }
 
-    //method to get the number of created cards for each subject
+    //method for increasing cards int and updating subject afterwards
 
     private void updateSubject() {
         new Thread(new Runnable() {
@@ -124,7 +124,7 @@ public class NewSicActivity extends FragmentActivity {
         });
     }
 
-    //save new cards
+    //save new cards per observer
 
     private void saveButtonClicked() {
         if (subjectTitle != null) {

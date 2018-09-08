@@ -24,7 +24,6 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
     private TextView activityHeading;
     private String subjectTitle;
     private SubjectRepository repository;
-    private int quizActivityCanBeOpenedInt= 0;
 
 
     @Override
@@ -37,7 +36,7 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
         setOnClickListeners();
     }
 
-    // handle intent from StartActivity and set subject name in header
+    // handle intent  and set subject name in header
 
     private void handleIntent() {
         Intent i = getIntent();
@@ -117,6 +116,7 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
         startActivity(i);
     }
 
+    //starts activity if at least one card was created
     private void quizCardButtonClicked(){
         repository = new SubjectRepository(getApplication());
         final Intent i = new Intent(SubjectActivity.this, QuizActivity.class);
@@ -141,6 +141,7 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
         }
     }
 
+    //methods start specific activities
     private void overviewSicButtonClicked(){
         Intent i = new Intent (SubjectActivity.this, OverviewActivity.class);
         if(subjectTitle != null) {

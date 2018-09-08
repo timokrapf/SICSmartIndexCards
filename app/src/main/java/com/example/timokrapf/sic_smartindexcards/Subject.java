@@ -12,7 +12,7 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 /*
-generate parcelable
+normal Entity with getters and setters
  */
 @Entity(tableName = "subject_table")
 public class Subject  {

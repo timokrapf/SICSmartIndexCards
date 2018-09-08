@@ -7,7 +7,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 /*
-mit generate
+made parcelable through generate function of android studio
+except for that it´s a normal entity class with getter and setters
  */
 @Entity(tableName = "schedule_table")
 public class Schedule implements Parcelable {

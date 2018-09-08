@@ -55,15 +55,14 @@ public class QuizActivity extends FragmentActivity {
         initInstruction();
     }
 
-    //set Listeners for swiping when next card should appear
+    /*
+    set Listener for swiping to change from question to anwser and to change card afterwards
+    or start other activity
+     */
 
     private void setListener() {
         View  layout = (View) findViewById(R.id.frame_layout);
         layout.setOnTouchListener(new OnSwipeTouchListener(this) {
-            @Override
-            public void onSwipeLeft() {
-                super.onSwipeLeft();
-            }
             @Override
             public void onSwipeRight() {
                 super.onSwipeRight();
@@ -139,11 +138,7 @@ public class QuizActivity extends FragmentActivity {
         }
         return ranBefore;
     }
-    /*
-    Activity to fill question on indexcard
-    From https://developer.android.com/reference/java/util/Random
-    Minor changes were made
-     */
+
 
     private void setQuestionText(){
         if(subjectTitle != null) {
@@ -160,7 +155,11 @@ public class QuizActivity extends FragmentActivity {
         }
     }
 
-    // method to set question on index card
+   /*
+    method to get random indexcard
+    From https://developer.android.com/reference/java/util/Random
+    Minor changes were made
+     */
 
     private void setCurrentCard() {
         Random random = new Random();

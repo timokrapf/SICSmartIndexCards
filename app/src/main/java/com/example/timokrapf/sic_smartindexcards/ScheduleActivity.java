@@ -28,7 +28,7 @@ import java.util.List;
 
 public class ScheduleActivity extends FragmentActivity {
 
-    //Activity to show schedule with planned quizes
+    //Activity to show schedule for a specific time and subject
 
 
     private String date, time, subject;
@@ -61,7 +61,7 @@ public class ScheduleActivity extends FragmentActivity {
 
     }
 
-    //initialise own adapter to set up schedules
+    //initialise own adapter with listener and connect it with recyclerview
 
     private void initAdapter(){
         adapter = new ScheduleAdapter(this, new ScheduleAdapter.OnItemClickListener() {
@@ -86,7 +86,7 @@ public class ScheduleActivity extends FragmentActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    //initialise model to either set scchedules or text if there are no planned schedules
+    //initialise model with observer to either set scchedules or text if there are no planned schedules
 
 
     private void initModel() {
@@ -161,7 +161,8 @@ public class ScheduleActivity extends FragmentActivity {
         }
     }
 
-    //possible to delete plannes schedules
+
+    //select schedules in order to delete/add them from/to current schedules and set right background
 
     private void selectItem(Schedule schedule, View view) {
         if (multiSelect) {
@@ -185,13 +186,14 @@ public class ScheduleActivity extends FragmentActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
-
+    //inflates menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_actionbar, menu);
         return true;
     }
 
+    //method to handle a selected menuitem
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -214,6 +216,7 @@ public class ScheduleActivity extends FragmentActivity {
 
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
+        //inflate contextual menu
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater inflater = mode.getMenuInflater();
@@ -227,6 +230,7 @@ public class ScheduleActivity extends FragmentActivity {
             return false;
         }
 
+        //deletes chosen schedules and stops notification via dialog and broadcast receiver
         @Override
         public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
             Context context = ScheduleActivity.this;
@@ -263,6 +267,8 @@ public class ScheduleActivity extends FragmentActivity {
                     return false;
             }
         }
+
+        //set activity status to its start status in order to start contextual action again
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {

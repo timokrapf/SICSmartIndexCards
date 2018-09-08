@@ -41,7 +41,7 @@ public class ProgressActivity extends FragmentActivity {
 
     }
 
-    //get Intent from Newsic Activity
+    //get Intent from SubjectActivity
 
     private void handleIntent() {
         Intent intent = getIntent();

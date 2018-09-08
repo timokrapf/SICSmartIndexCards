@@ -9,6 +9,7 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
+//Data access object for Schedule with methods
 @Dao
 public interface ScheduleDao {
 

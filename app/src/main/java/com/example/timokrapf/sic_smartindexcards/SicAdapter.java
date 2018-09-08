@@ -32,13 +32,16 @@ public class SicAdapter extends RecyclerView.Adapter<SicAdapter.SicViewHolder> {
         inflater = LayoutInflater.from(context);
         this.listener = listener;
     }
+
+    //returns viewholder for specific view
+
     @NonNull
     @Override
     public SicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.overview_item, parent, false);
         return new SicViewHolder(view);
     }
-
+    //connects specific card to viewholder
     @Override
     public void onBindViewHolder(@NonNull SicViewHolder holder, int position) {
         SmartIndexCards card = cards.get(position);
@@ -54,22 +57,31 @@ public class SicAdapter extends RecyclerView.Adapter<SicAdapter.SicViewHolder> {
         }
     }
 
+    //sets boolean to inform adapter about current status
+
     void setChooseModeIsOn(boolean chooseModeIsOn) {
         this.chooseModeIsOn = chooseModeIsOn;
     }
+
+    //sets list for adapter
 
     void setCardsList(List<SmartIndexCards> cards) {
         this.cards = cards;
         notifyDataSetChanged();
     }
+    //sets current card for overviewactivity
 
     void setCurrentCard(SmartIndexCards card) {
         currentCard = card;
     }
 
+    //gets current card
+
     SmartIndexCards getCurrentCard() {
         return currentCard;
     }
+
+    //connects correct view with specific database item (sets correct Text) and sets listener
 
     public class SicViewHolder extends RecyclerView.ViewHolder {
 
@@ -119,6 +131,9 @@ public class SicAdapter extends RecyclerView.Adapter<SicAdapter.SicViewHolder> {
             }
         }
     }
+
+    //Listener for events
+
     public interface OnItemClickListener {
         void onItemClicked(SmartIndexCards card, TextView view);
         void onItemLongClicked(SmartIndexCards card, TextView view);

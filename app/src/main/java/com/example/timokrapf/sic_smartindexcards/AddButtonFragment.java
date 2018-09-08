@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+//Fragmentclass to show button on first activity, button used to add new subjects
+
 public class AddButtonFragment extends Fragment {
 
     OnAddButtonFragmentClicked mCallback;
 
-    //Fragmentclass to show button on first activity, button used to add new subjects
     public AddButtonFragment() {
     }
 
@@ -28,7 +29,7 @@ public class AddButtonFragment extends Fragment {
         });
         return v;
     }
-
+    // check if activity implements listener
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

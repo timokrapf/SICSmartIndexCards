@@ -29,6 +29,8 @@ public class SubjectViewModel extends AndroidViewModel {
         cards = myRepository.getMyCardsList();
     }
 
+    //getters for observable livedata
+
     LiveData<List<Schedule>> getSchedulesList() {
         return schedules;
     }
@@ -40,6 +42,8 @@ public class SubjectViewModel extends AndroidViewModel {
     MutableLiveData<List<SmartIndexCards>> getCards() {
         return cards;
     }
+
+    //methods to invoke subjectrepository methods
 
     public void insertSubject(Subject subject) {
         myRepository.insertSubject(subject);
@@ -65,14 +69,6 @@ public class SubjectViewModel extends AndroidViewModel {
         myRepository.deleteCard(card);
     }
 
-    public void findCardsForSubject(String subjectTitle) {
-        myRepository.findCardsForSubject(subjectTitle);
-    }
-
-    Subject fetchSubject(String subjectTitle) {
-        return myRepository.getFetchedSubject(subjectTitle);
-    }
-
     public void updateCard(SmartIndexCards card) {
         myRepository.updateCard(card);
     }
@@ -80,5 +76,17 @@ public class SubjectViewModel extends AndroidViewModel {
     public void updateSubject(Subject subject) {
         myRepository.updateSubject(subject);
     }
+
+
+    //sets Cards list which can be observed
+    public void findCardsForSubject(String subjectTitle) {
+        myRepository.findCardsForSubject(subjectTitle);
+    }
+
+    //gets specific subject
+    Subject fetchSubject(String subjectTitle) {
+        return myRepository.getFetchedSubject(subjectTitle);
+    }
+
 
 }

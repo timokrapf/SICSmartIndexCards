@@ -122,7 +122,7 @@ public class LearnplannerActivity extends FragmentActivity{
                         minute = selectedMinute;
                     }
                 }, currentHour, currentMinute, true);
-                timePicker.setTitle(Constants.SELECT_DATE);
+                timePicker.setTitle(R.string.timepicker_title);
                 timePicker.show();
             }
         });

@@ -28,7 +28,7 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 /*
-https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#2
+ From https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#2
  */
 ext {
     roomVersion = '1.1.1'

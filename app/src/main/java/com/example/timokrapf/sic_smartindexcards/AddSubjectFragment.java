@@ -4,7 +4,6 @@ package com.example.timokrapf.sic_smartindexcards;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,9 @@ import android.widget.EditText;
 public class AddSubjectFragment extends Fragment {
 
     OnAddSubjectButtonClicked mCallback;
-    EditText text;
+    private EditText text;
 
-    //Fragment-Class to show "plus-Button" after chosing "Hinzufügen-Button"
+    //Fragment-Class to store specific subject
 
     public AddSubjectFragment(){
     }
@@ -36,9 +35,13 @@ public class AddSubjectFragment extends Fragment {
         return view;
     }
 
+    //Clears EditText
+
     public void deleteKeyboardEntry() {
         text.getText().clear();
     }
+
+    // check if activity implements listener
 
     @Override
     public void onAttach(Activity activity) {

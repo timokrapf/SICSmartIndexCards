@@ -16,7 +16,7 @@ import java.util.List;
 /*
 FROM https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#10 and
 https://antonioleiva.com/recyclerview-listener/
-Minor changes were made.
+Changes were made.
  */
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder>{
 
@@ -34,12 +34,16 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         this.listener = listener;
     }
 
+    //returns viewholder for specific view
+
     @NonNull
     @Override
     public SubjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.recyclerview_subject_item, parent, false);
         return new SubjectViewHolder(view);
     }
+
+    //connects specific card to viewholder
 
     @Override
     public void onBindViewHolder(@NonNull SubjectViewHolder holder, int position) {
@@ -71,14 +75,19 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
         return true;
     }
 
+    //sets boolean to inform adapter about current status
 
     void setChooseModeIsOn(boolean chooseModeIsOn) {
         this.chooseModeIsOn = chooseModeIsOn;
     }
+
+    //sets list for adapter
+
     void setSubjectList(List<Subject> subjectList) {
         this.subjectList = subjectList;
         notifyDataSetChanged();
     }
+    //connects correct view with specific database item (sets correct Text) and sets listener
 
     class SubjectViewHolder extends RecyclerView.ViewHolder {
 

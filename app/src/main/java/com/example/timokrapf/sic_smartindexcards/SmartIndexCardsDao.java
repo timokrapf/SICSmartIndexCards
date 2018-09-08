@@ -10,7 +10,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import java.util.List;
-
+//Data access object with methods
 @Dao
 public interface SmartIndexCardsDao {
 
@@ -25,9 +25,6 @@ public interface SmartIndexCardsDao {
 
     @Query("SELECT * FROM sic WHERE subject LIKE :subjectTitle")
     List<SmartIndexCards> getCardsForSubject(String subjectTitle);
-
-    @Query("SELECT * FROM sic WHERE boolean = :hasBeenAnsweredRight")
-    List<SmartIndexCards> getRightAnsweredCards(boolean hasBeenAnsweredRight);
 
     @Query("DELETE FROM sic WHERE subject LIKE :subjectTitle")
     void deleteCardsByTitle(String subjectTitle);

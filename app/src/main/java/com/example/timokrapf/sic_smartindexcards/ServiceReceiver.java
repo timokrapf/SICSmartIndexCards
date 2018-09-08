@@ -6,9 +6,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 /*
-ServiceReveiver to set AlarmManager and create Notification
+ServiceReveiver to set/stop AlarmManager and send Notification or not
 From https://www.thepolyglotdeveloper.com/2014/10/use-broadcast-receiver-background-services-android/
-changes were made
+Changes were made
  */
 public class ServiceReceiver extends BroadcastReceiver {
 

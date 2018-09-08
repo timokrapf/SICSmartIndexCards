@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+//normal entity with getters and setters
+
 @Entity(tableName = "sic")
 public class SmartIndexCards {
     @ColumnInfo(name = "subject")

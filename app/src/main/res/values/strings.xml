@@ -76,4 +76,5 @@
     <string name="subjects_want_to_select">Willst du Fächer markieren, um sie zu löschen</string>
     <string name="progress_no_cards">Erstelle zuerst Karteikarten und lass dich abfragen.
         Dann wird Dir hier dein Lernfortschritt angezeigt.</string>
+    <string name="timepicker_title">Bitte wähle ein Zeit aus</string>
 </resources>

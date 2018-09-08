@@ -11,21 +11,31 @@ import android.os.AsyncTask;
 import java.util.List;
 
 /*
-From https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#7 and
+Idea from https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#7 and
 https://www.techotopia.com/index.php/An_Android_Room_Database_and_Repository_Tutorial
-Minor changes were made.
+Multiple changes were made.
+This repository serves as bridge between Room Database and its Data Access Objects
  */
 public class SubjectRepository implements AsyncResult {
+
+    //Data Access Objects
 
     private SubjectDao mySubjectDao;
     private ScheduleDao myScheduleDao;
     private SmartIndexCardsDao myCardsDao;
+
+    //Observeable LiveData containing different lists of database items
+
     private LiveData<List<Subject>> mySubjectList;
     private LiveData<List<Schedule>> myScheduleList;
-    private MutableLiveData<List<SmartIndexCards>> myCardsList = new MutableLiveData<>() ;
+    private MutableLiveData<List<SmartIndexCards>> myCardsList = new MutableLiveData<>();
+
+    //Booleans to check if object should be deleted or add
+
     private static boolean isNewSubject = true;
     private static boolean isNewSchedule = true;
     private static boolean isNewCard = true;
+
     private Context context;
 
     SubjectRepository(Application application) {
@@ -37,6 +47,8 @@ public class SubjectRepository implements AsyncResult {
         myCardsDao = database.cardsDao();
         context = application.getBaseContext();
     }
+
+    //getter for SubjectViewModel
 
     LiveData<List<Schedule>> getScheduleList() {
         return myScheduleList;
@@ -50,6 +62,8 @@ public class SubjectRepository implements AsyncResult {
         return myCardsList;
     }
 
+    //methods to upate specific items
+
     public void updateSubject(Subject subject) {
         new UpdateOldSubjectTask(mySubjectDao).execute(subject);
     }
@@ -58,23 +72,26 @@ public class SubjectRepository implements AsyncResult {
         new UpdateOldCardTask(myCardsDao).execute(card);
     }
 
+    //method to delete one schedule item by its Requestcode
+
     public void removeScheduleByRequestCode(int requestcode) {
         new RemoveScheduleByRequestcodeTask(myScheduleDao).execute(requestcode);
     }
+
+    //method to get one specific subject by its title
 
     public Subject getFetchedSubject(String subjectTitle) {
         return mySubjectDao.findSubjectByName(subjectTitle);
     }
 
-    public List<SmartIndexCards> getRightAnswers(boolean isRight) {
-        return myCardsDao.getRightAnsweredCards(isRight);
-    }
+    //methods to delete and add specific item
 
     public void insertSubject(Subject subject) {
         isNewSubject = true;
         new SubjectUpdateTask(mySubjectDao, myScheduleDao, myCardsDao).execute(subject);
     }
 
+    //also stops app from sending notification
     public void deleteSubject(final Subject subject) {
         isNewSubject = false;
         new Thread(new Runnable() {
@@ -114,6 +131,10 @@ public class SubjectRepository implements AsyncResult {
     }
 
 
+    /*
+    From https://www.techotopia.com/index.php/An_Android_Room_Database_and_Repository_Tutorial
+    Code was adapted to fit into context
+     */
 
     public void findCardsForSubject(String subjectTitle) {
         CardsTask task = new CardsTask(myCardsDao);
@@ -126,6 +147,8 @@ public class SubjectRepository implements AsyncResult {
     public void asyncFinished(List<SmartIndexCards> cards) {
         myCardsList.setValue(cards);
     }
+
+    //AsyncTasks to handle specific database tasks like adding or updating
 
     private static class SubjectUpdateTask extends AsyncTask<Subject, Void, String> {
 
@@ -208,7 +231,10 @@ public class SubjectRepository implements AsyncResult {
         }
     }
 
-
+    /*
+       From https://www.techotopia.com/index.php/An_Android_Room_Database_and_Repository_Tutorial
+       Code was adapted to fit into context
+        */
     private static class CardsTask extends AsyncTask<String, Void, List<SmartIndexCards>> {
 
         private SmartIndexCardsDao cardsDao;
