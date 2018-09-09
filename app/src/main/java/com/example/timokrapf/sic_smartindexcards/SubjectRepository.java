@@ -7,6 +7,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -62,11 +63,29 @@ public class SubjectRepository implements AsyncResult {
         return myCardsList;
     }
 
-    //methods to upate specific items
+    //defines how quizactivity starts subjectactivity after quiz is over
 
-    public void updateSubject(Subject subject) {
-        new UpdateOldSubjectTask(mySubjectDao).execute(subject);
+    public void handleNumberOfCards(final int number, final String subjectTitle) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String forToast;
+                if(number == myCardsDao.getNumber(subjectTitle)) {
+                    forToast = context.getString(R.string.answered_all_questions);
+
+                } else {
+                    forToast = context.getString(R.string.almost_everything_right);
+                }
+                Intent intent = new Intent(context, SubjectActivity.class);
+                intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
+                intent.putExtra(Constants.TOAST_FOR_QUIZ_IS_OVER, forToast);
+                context.startActivity(intent);
+            }
+        }).start();
     }
+
+    //method to update specific card
 
     public void updateCard(SmartIndexCards card) {
         new UpdateOldCardTask(myCardsDao).execute(card);
@@ -143,9 +162,28 @@ public class SubjectRepository implements AsyncResult {
     }
 
 
+    public void findSubjectByName(String subjectTitle, int status) {
+        FindSubjectTask task = new FindSubjectTask(mySubjectDao, myCardsDao, status);
+        task.delegate = this;
+        task.execute(subjectTitle);
+    }
+
     @Override
-    public void asyncFinished(List<SmartIndexCards> cards) {
+    public void cardsTaskFinished(List<SmartIndexCards> cards) {
         myCardsList.setValue(cards);
+    }
+
+    @Override
+    public void findSubjectTaskFinished(Subject subject, int status) {
+        if(status == 0) {
+            if(subject.getNumberOfCards() == 0) {
+                Toast.makeText(context, context.getString(R.string.no_card_created), Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(context, QuizActivity.class);
+                intent.putExtra(Constants.SUBJECT_TITLE_KEY, subject.getSubjectTitle());
+                context.startActivity(intent);
+            }
+        }
     }
 
     //AsyncTasks to handle specific database tasks like adding or updating
@@ -160,6 +198,7 @@ public class SubjectRepository implements AsyncResult {
             subjectTaskDao = dao;
             scheduleDao = dataAccessO;
             smartIndexCardsDao = sicDao;
+
         }
 
         @Override
@@ -240,6 +279,7 @@ public class SubjectRepository implements AsyncResult {
         private SmartIndexCardsDao cardsDao;
         private SubjectRepository delegate = null;
 
+
         CardsTask(SmartIndexCardsDao dao) {
             cardsDao = dao;
         }
@@ -251,22 +291,7 @@ public class SubjectRepository implements AsyncResult {
 
         @Override
         protected void onPostExecute(List<SmartIndexCards> cards) {
-            delegate.asyncFinished(cards);
-        }
-    }
-
-    private static class UpdateOldSubjectTask extends AsyncTask<Subject, Void, Void> {
-
-        private SubjectDao subjectDao;
-
-        UpdateOldSubjectTask(SubjectDao dao) {
-            subjectDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(Subject... subjects) {
-            subjectDao.updateSubject(subjects[0]);
-            return null;
+            delegate.cardsTaskFinished(cards);
         }
     }
 
@@ -282,6 +307,34 @@ public class SubjectRepository implements AsyncResult {
         protected Void doInBackground(SmartIndexCards... smartIndexCards) {
             cardsDao.updateCard(smartIndexCards[0]);
             return null;
+        }
+    }
+    //Update subject if necessary or send toast if no card was created
+    private static class FindSubjectTask extends AsyncTask<String, Void, Subject> {
+
+        private SubjectRepository delegate = null;
+        private SubjectDao dao;
+        private SmartIndexCardsDao cardsDao;
+        private int status;
+
+        FindSubjectTask(SubjectDao dao,SmartIndexCardsDao cardsDao, int status) {
+            this.dao = dao;
+            this.status = status;
+            this.cardsDao = cardsDao;
+        }
+        @Override
+        protected Subject doInBackground(String... strings) {
+            Subject subject =dao.findSubjectByName(strings[0]);
+            if(status == Constants.UPDATE_SUBJECT_NUMBER) {
+                subject.setNumberOfCards(cardsDao.getNumber(strings[0]));
+                dao.updateSubject(subject);
+            }
+            return subject;
+        }
+
+        @Override
+        protected void onPostExecute(Subject subject) {
+            delegate.findSubjectTaskFinished(subject, status);
         }
     }
 }

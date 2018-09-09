@@ -7,5 +7,8 @@ Code was adapted to fit into App
  */
 
 public interface AsyncResult {
-    void asyncFinished(List<SmartIndexCards> cards);
+    void cardsTaskFinished(List<SmartIndexCards> cards);
+    void findSubjectTaskFinished(Subject subject, int status);
 }
+
+

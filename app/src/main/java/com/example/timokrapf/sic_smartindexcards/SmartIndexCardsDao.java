@@ -23,6 +23,13 @@ public interface SmartIndexCardsDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateCard(SmartIndexCards card);
 
+    /*
+   From https://stackoverflow.com/questions/47864156/how-can-i-get-count-of-number-of-rows-that-have-boolean-value-trueor-1-in-room;
+   code was adapted,
+    */
+    @Query("SELECT COUNT(*) FROM sic WHERE subject =:subjectTitle")
+    int getNumber(String subjectTitle);
+
     @Query("SELECT * FROM sic WHERE subject LIKE :subjectTitle")
     List<SmartIndexCards> getCardsForSubject(String subjectTitle);
 

@@ -43,6 +43,8 @@ public class SubjectViewModel extends AndroidViewModel {
         return cards;
     }
 
+
+
     //methods to invoke subjectrepository methods
 
     public void insertSubject(Subject subject) {
@@ -73,20 +75,21 @@ public class SubjectViewModel extends AndroidViewModel {
         myRepository.updateCard(card);
     }
 
-    public void updateSubject(Subject subject) {
-        myRepository.updateSubject(subject);
-    }
-
-
     //sets Cards list which can be observed
+
     public void findCardsForSubject(String subjectTitle) {
         myRepository.findCardsForSubject(subjectTitle);
     }
+    //update subject if necessary. otherwise show toast if no card was created
 
-    //gets specific subject
-    Subject fetchSubject(String subjectTitle) {
-        return myRepository.getFetchedSubject(subjectTitle);
+    public void updateSubjectByName(String subjectTitle, int status) {
+        myRepository.findSubjectByName(subjectTitle, status);
     }
 
+    //defines how quizactivity starts subjectactivity after quiz is over
+
+    public void handleNumberOfCards(int number, String subjectTitle) {
+        myRepository.handleNumberOfCards(number,subjectTitle);
+    }
 
 }

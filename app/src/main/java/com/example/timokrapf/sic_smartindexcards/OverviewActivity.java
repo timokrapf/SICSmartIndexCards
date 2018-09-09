@@ -88,7 +88,7 @@ public class OverviewActivity extends FragmentActivity {
         }
     }
 
-    //initialise viewmodel and observe cards for subject and handle visibility of UI
+    //initialise viewmodel and observe cards for subject and update subject and handle visibility of UI
 
     private void initViewModel() {
         if(subjectTitle != null) {
@@ -98,7 +98,7 @@ public class OverviewActivity extends FragmentActivity {
                 @Override
                 public void onChanged(@Nullable List<SmartIndexCards> cards) {
                     adapter.setCardsList(cards);
-                    updateSubject();
+                    model.updateSubjectByName(subjectTitle, Constants.UPDATE_SUBJECT_NUMBER);
                     if(adapter.getItemCount() == 0) {
                         view.setVisibility(View.GONE);
                         currentCardView.setVisibility(View.GONE);
@@ -157,19 +157,7 @@ public class OverviewActivity extends FragmentActivity {
         view = (RecyclerView) findViewById(R.id.recyclerview_overview);
         emptyText = (TextView) findViewById(android.R.id.empty);
 
-    }
 
-    //update subject number of cards
-
-    private void updateSubject() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Subject subject = model.fetchSubject(subjectTitle);
-                subject.setNumberOfCards(adapter.getItemCount());
-                model.updateSubject(subject);
-            }
-        }).start();
     }
 
     //set up Buttons and set on click listener

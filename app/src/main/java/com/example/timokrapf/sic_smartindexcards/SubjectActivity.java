@@ -2,8 +2,11 @@ package com.example.timokrapf.sic_smartindexcards;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +26,6 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
     private Button subjectsButton, scheduleButton;
     private TextView activityHeading;
     private String subjectTitle;
-    private SubjectRepository repository;
 
 
     @Override
@@ -50,17 +52,16 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
                 if (actionbar != null) {
                     actionbar.setTitle("Fach: " + subjectTitle);
                 }
-                String toastText1 = extras.getString(Constants.TOAST_FOR_All_QUESTION_ANSWERED);
-                String toastText2 = extras.getString(Constants.TOAST_FOR_ALMOST);
+                String toastText1 = extras.getString(Constants.TOAST_FOR_QUIZ_IS_OVER);
+
                 if(toastText1 != null) {
                     Toast.makeText(this, toastText1, Toast.LENGTH_LONG).show();
-                }
-                if(toastText2 != null) {
-                    Toast.makeText(this, toastText2, Toast.LENGTH_LONG).show();
                 }
             }
         }
     }
+
+
     private void initUI() {
         activityHeading = (TextView) findViewById(R.id.subject_activity_textview);
         newSic = (ImageButton) findViewById(R.id.new_sic_id);
@@ -118,27 +119,10 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
 
     //starts activity if at least one card was created
     private void quizCardButtonClicked(){
-        repository = new SubjectRepository(getApplication());
-        final Intent i = new Intent(SubjectActivity.this, QuizActivity.class);
-        if(subjectTitle != null) {
-            i.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Subject subject = repository.getFetchedSubject(subjectTitle);
-                    if(subject.getNumberOfCards() == 0) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(SubjectActivity.this, getString(R.string.no_card_created), Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    } else {
-                        startActivity(i);
-                    }
-                }
-            }).start();
-        }
+        SubjectRepository repository = new SubjectRepository(getApplication());
+        repository.findSubjectByName(subjectTitle, Constants.CHECK_FOR_CARDS_NUMBER);
+
+
     }
 
     //methods start specific activities

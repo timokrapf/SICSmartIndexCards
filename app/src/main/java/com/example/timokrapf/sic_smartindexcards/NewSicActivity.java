@@ -41,7 +41,11 @@ public class NewSicActivity extends FragmentActivity {
         initButtons();
     }
 
-    //method to set up new subjectViewModel to observe cards for subject
+    /*
+    method to set up new subjectViewModel to observe cards for subject and insert card + update
+    subject and views
+     */
+
 
     private void setViewModel() {
         model = ViewModelProviders.of(this).get(SubjectViewModel.class);
@@ -57,28 +61,13 @@ public class NewSicActivity extends FragmentActivity {
                     }
                 }
                 model.insertCard(card);
-                updateSubject();
+                model.updateSubjectByName(subjectTitle, Constants.UPDATE_SUBJECT_NUMBER);
                 answer.setText(emptyText);
                 question.setText(emptyText);
                 Toast.makeText(NewSicActivity.this, getString(R.string.new_card), Toast.LENGTH_SHORT).show();
             }
         });
 
-    }
-
-    //method for increasing cards int and updating subject afterwards
-
-    private void updateSubject() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Subject subject = model.fetchSubject(subjectTitle);
-                int currentNumber = subject.getNumberOfCards();
-                int newNumber = currentNumber + 1;
-                subject.setNumberOfCards(newNumber);
-                model.updateSubject(subject);
-            }
-        }).start();
     }
 
     //get intent from subjectClass-Activity to know in which subject you are

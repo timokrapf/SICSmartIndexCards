@@ -41,6 +41,7 @@ public class QuizActivity extends FragmentActivity {
     private List<SmartIndexCards> currentCards;
     private SmartIndexCards currentCard;
     private SubjectViewModel viewModel;
+    private int numberOfCorrectCards;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,10 +70,7 @@ public class QuizActivity extends FragmentActivity {
                 if(question.getText().equals(currentCard.getQuestion())) {
                     question.setText(currentCard.getAnswer());
                 } else if(currentCards.size() == 1){
-                    Intent intent = new Intent(QuizActivity.this, SubjectActivity.class);
-                    intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
-                    intent.putExtra(Constants.TOAST_FOR_ALMOST, getString(R.string.almost_everything_right));
-                    startActivity(intent);
+                    viewModel.handleNumberOfCards(numberOfCorrectCards, subjectTitle);
                 } else {
                     currentCards.remove(currentCard);
                     setCurrentCard();
@@ -169,11 +167,8 @@ public class QuizActivity extends FragmentActivity {
             question.setText(currentCard.getQuestion());
             question.setTextSize(40);
 
-        } else {
-            Intent intent = new Intent(QuizActivity.this, SubjectActivity.class);
-            intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
-            intent.putExtra(Constants.TOAST_FOR_All_QUESTION_ANSWERED, getString(R.string.answered_all_questions));
-            startActivity(intent);
+        } else  {
+            viewModel.handleNumberOfCards(numberOfCorrectCards, subjectTitle);
         }
     }
 
@@ -232,6 +227,7 @@ public class QuizActivity extends FragmentActivity {
         answer.setText("");
         currentCard.setWasRightAnswer(true);
         viewModel.updateCard(currentCard);
+        numberOfCorrectCards += 1;
         currentCards.remove(currentCard);
         setCurrentCard();
     }
