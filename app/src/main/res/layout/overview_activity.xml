@@ -1,79 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/overview_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:id="@+id/overview_parent"
-    android:weightSum="1">
+    >
 
     <TextView
         android:id="@+id/overview_textview_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/overview_header"
-        android:textSize="25sp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textSize="25sp" />
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="0.95"
-    android:orientation="horizontal"
-    android:id="@+id/overview_linear"
-    android:weightSum="1"
-    android:paddingStart="5dp"
-    android:paddingEnd="5dp"
-    android:background="@android:color/white">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview_overview"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.5"
+    <LinearLayout
+        android:id="@+id/overview_linear"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.99"
         android:background="@android:color/white"
-        tools:listitem="layout/recyclerview_subject_item"
-        />
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="@string/no_cards_created"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        />
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_weight="0.5"
-        android:layout_marginEnd="5dp"
-        android:id="@+id/overview_card"
-        android:text="@string/choose_card"
-        android:textSize="16sp"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:background="@drawable/karteikarte"
-        android:layout_gravity="center"
-        />
-</LinearLayout>
-<!--
-    <GridView
-        android:id="@+id/gridView_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/overview_textview_id"
-        android:numColumns="2">
-    </GridView>
--->
+        android:orientation="horizontal"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_overview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="@android:color/white"
+            tools:listitem="layout/recyclerview_subject_item" />
+
+        <TextView
+            android:id="@android:id/empty"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/no_cards_created"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/overview_card"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/karteikarte"
+            android:gravity="center"
+            android:text="@string/choose_card"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/buttons_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_weight="0.01"
         android:orientation="horizontal"
-        android:layout_weight="0.05"
         android:weightSum="1">
 
         <Button

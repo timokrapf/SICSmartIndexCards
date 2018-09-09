@@ -47,7 +47,11 @@ public class NotifyService extends Service {
     }
 
     //start Service if subject and request code are correct,
-    // don't send if user chose not to get notification in settingsActivity
+    /*
+     don't send if user chose not to get notification in settingsActivity
+     From https://developer.android.com/guide/topics/ui/settings
+     Changes made.
+     */
 
 
     @Override
@@ -86,7 +90,6 @@ public class NotifyService extends Service {
 
     public void createNotification(String subjectTitle, int requestcode) {
         Intent intent;
-        PendingIntent pendingIntent;
         Notification.Builder builder;
         SharedPreferences sharedPref =
                 PreferenceManager.getDefaultSharedPreferences(this);

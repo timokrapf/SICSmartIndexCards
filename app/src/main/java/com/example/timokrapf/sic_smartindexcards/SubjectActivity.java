@@ -118,11 +118,10 @@ public class SubjectActivity extends FragmentActivity implements View.OnClickLis
     }
 
     //starts activity if at least one card was created
+
     private void quizCardButtonClicked(){
         SubjectRepository repository = new SubjectRepository(getApplication());
         repository.findSubjectByName(subjectTitle, Constants.CHECK_FOR_CARDS_NUMBER);
-
-
     }
 
     //methods start specific activities

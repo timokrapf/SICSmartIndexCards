@@ -7,6 +7,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.widget.Toast;
 
 import java.util.List;
@@ -80,6 +81,9 @@ public class SubjectRepository implements AsyncResult {
                 Intent intent = new Intent(context, SubjectActivity.class);
                 intent.putExtra(Constants.SUBJECT_TITLE_KEY, subjectTitle);
                 intent.putExtra(Constants.TOAST_FOR_QUIZ_IS_OVER, forToast);
+                if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M){
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                }
                 context.startActivity(intent);
             }
         }).start();
@@ -181,6 +185,9 @@ public class SubjectRepository implements AsyncResult {
             } else {
                 Intent intent = new Intent(context, QuizActivity.class);
                 intent.putExtra(Constants.SUBJECT_TITLE_KEY, subject.getSubjectTitle());
+                if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M){
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                }
                 context.startActivity(intent);
             }
         }

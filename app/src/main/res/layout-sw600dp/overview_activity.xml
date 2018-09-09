@@ -4,26 +4,24 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:id="@+id/overview_parent"
-    android:weightSum="1">
+    android:id="@+id/overview_parent">
 
     <TextView
         android:id="@+id/overview_textview_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/overview_header"
-        android:textSize="25sp"
-        android:textAlignment="center"/>
+        android:textSize="35sp"
+        android:textAlignment="center"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.95"
+        android:layout_weight="0.99"
         android:orientation="horizontal"
         android:id="@+id/overview_linear"
         android:weightSum="1"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
         android:background="@android:color/white">
 
         <android.support.v7.widget.RecyclerView
@@ -41,7 +39,7 @@
             android:layout_weight="1"
             android:text="@string/no_cards_created"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="35sp"
             />
         <TextView
             android:layout_width="0dp"
@@ -50,22 +48,13 @@
             android:layout_marginEnd="5dp"
             android:id="@+id/overview_card"
             android:text="@string/choose_card"
-            android:textSize="16sp"
+            android:textSize="25sp"
             android:textAlignment="center"
             android:gravity="center"
             android:background="@drawable/karteikarte"
             android:layout_gravity="center"
             />
     </LinearLayout>
-    <!--
-        <GridView
-            android:id="@+id/gridView_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/overview_textview_id"
-            android:numColumns="2">
-        </GridView>
-    -->
 
     <LinearLayout
         android:id="@+id/buttons_id"
@@ -73,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
-        android:layout_weight="0.05"
+        android:layout_weight="0.01"
         android:weightSum="1">
 
         <Button
@@ -85,7 +74,7 @@
             android:background="@color/colorPrimary"
             android:text="@string/subject_button"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="35sp" />
 
         <Button
             android:id="@+id/schedule_planner_button_id"
@@ -96,7 +85,7 @@
             android:background="@color/colorPrimary"
             android:text="@string/schedule_planner"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="35sp" />
 
     </LinearLayout>
 </LinearLayout>
