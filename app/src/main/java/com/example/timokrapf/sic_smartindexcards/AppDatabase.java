@@ -6,7 +6,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 //Room database to persist data of three Entities
-@Database(entities = {Subject.class, Schedule.class, SmartIndexCards.class}, version = 12)
+@Database(entities = {Subject.class, Schedule.class, SmartIndexCards.class}, version = 12, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

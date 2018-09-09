@@ -24,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/schedule_date"
+        android:layout_toRightOf="@+id/schedule_date"
         android:layout_below="@+id/schedule_name"/>
 
 

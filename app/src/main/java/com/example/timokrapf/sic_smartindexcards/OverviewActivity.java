@@ -197,7 +197,7 @@ public class OverviewActivity extends FragmentActivity {
         if (multiSelect) {
             if (cards.contains(card)) {
                 cards.remove(card);
-                view.setBackground(getDrawable(R.drawable.karteikarte));
+                view.setBackground(getResources().getDrawable(R.drawable.karteikarte));
             } else {
                 cards.add(card);
                 view.setBackgroundColor(Color.RED);
@@ -306,7 +306,7 @@ public class OverviewActivity extends FragmentActivity {
             adapter.setChooseModeIsOn(false);
             for(int j = 0; j < views.size(); j++) {
                 TextView view = views.get(j);
-                view.setBackground(getDrawable(R.drawable.karteikarte));
+                view.setBackground(getResources().getDrawable(R.drawable.karteikarte));
             }
             cards.clear();
             multiSelect = false;

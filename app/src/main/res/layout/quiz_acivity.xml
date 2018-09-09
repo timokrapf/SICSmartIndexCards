@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:gravity="center"
         android:paddingTop="20dp"
         android:text="@string/sic_quiz"
         android:textSize="25sp" />
@@ -36,7 +37,8 @@
         android:id="@+id/solution_id"
         android:hint="@string/solution"
         android:textAlignment="center"
-        android:maxLength="200"
+        android:gravity="center"
+        android:maxLength="150"
         android:maxLines="5"
         android:inputType="text|textMultiLine"
         android:paddingBottom="20dp"/>

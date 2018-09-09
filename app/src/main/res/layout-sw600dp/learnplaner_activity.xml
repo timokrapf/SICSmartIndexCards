@@ -68,6 +68,7 @@
         android:textSize="35sp"
         android:layout_below="@+id/time_id"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         />
 
     <LinearLayout

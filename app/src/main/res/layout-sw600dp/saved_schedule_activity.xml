@@ -12,6 +12,7 @@
         android:text="@string/schedule"
         android:textSize="35sp"
         android:paddingTop="25dp"
+        android:gravity="center"
         android:textAlignment="center" />
 
 
@@ -69,6 +70,7 @@
         android:textAlignment="center"
         android:textSize="30sp"
         android:layout_below="@id/schedule_heading"
+        android:gravity="center"
         />
 
 

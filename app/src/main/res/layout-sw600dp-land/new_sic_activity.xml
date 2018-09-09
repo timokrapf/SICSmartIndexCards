@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:text="@string/produce_new_sic"
         android:layout_gravity="center"
+        android:gravity="center"
         android:textSize="35sp"
         android:paddingTop="25dp"/>
 
@@ -29,11 +30,12 @@
             android:scaleX="0.8"
             android:scaleY="0.8"
             android:hint="@string/question"
+            android:gravity="center"
             android:textSize="35sp"
             android:textAlignment="center"
             android:background="@drawable/karteikarte"
             android:inputType="text|textMultiLine"
-            android:maxLength="200"
+            android:maxLength="150"
             android:maxLines="5"
             />
 
@@ -45,11 +47,12 @@
             android:hint="@string/answer"
             android:textSize="35sp"
             android:textAlignment="center"
+            android:gravity="center"
             android:scaleX="0.8"
             android:scaleY="0.8"
             android:background="@drawable/karteikarte"
             android:inputType="text|textMultiLine"
-            android:maxLength="200"
+            android:maxLength="150"
             android:maxLines="5"
             />
 
